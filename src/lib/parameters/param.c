@@ -120,7 +120,7 @@ int size_param_changed_storage_bytes = 0;
 const int bits_per_allocation_unit  = (sizeof(*param_changed_storage) * 8);
 
 
-static unsigned
+_EXT_ITCM static unsigned
 get_param_info_count(void)
 {
 	/* Singleton creation of and array of bits to track changed values */
@@ -174,7 +174,7 @@ static px4_sem_t param_sem_save; ///< this protects against concurrent param sav
 ///< needs to take the reader lock
 
 /** lock the parameter store for read access */
-static void
+_EXT_ITCM static void
 param_lock_reader(void)
 {
 	do {} while (px4_sem_wait(&reader_lock_holders_lock) != 0);
@@ -190,14 +190,14 @@ param_lock_reader(void)
 }
 
 /** lock the parameter store for write access */
-static void
+_EXT_ITCM static void
 param_lock_writer(void)
 {
 	do {} while (px4_sem_wait(&param_sem) != 0);
 }
 
 /** unlock the parameter store */
-static void
+_EXT_ITCM static void
 param_unlock_reader(void)
 {
 	do {} while (px4_sem_wait(&reader_lock_holders_lock) != 0);
@@ -213,20 +213,20 @@ param_unlock_reader(void)
 }
 
 /** unlock the parameter store */
-static void
+_EXT_ITCM static void
 param_unlock_writer(void)
 {
 	px4_sem_post(&param_sem);
 }
 
 /** assert that the parameter store is locked */
-static void
+_EXT_ITCM static void
 param_assert_locked(void)
 {
 	/* XXX */
 }
 
-void
+_EXT_ITCM void
 param_init(void)
 {
 	px4_sem_init(&param_sem, 0, 1);
@@ -245,7 +245,7 @@ param_init(void)
  * @param param			The parameter handle to test.
  * @return			True if the handle is valid.
  */
-static bool
+_EXT_ITCM static bool
 handle_in_range(param_t param)
 {
 	unsigned count = get_param_info_count();
@@ -257,7 +257,7 @@ handle_in_range(param_t param)
  *
  * This function is suitable for passing to qsort or bsearch.
  */
-static int
+_EXT_ITCM static int
 param_compare_values(const void *a, const void *b)
 {
 	struct param_wbuf_s *pa = (struct param_wbuf_s *)a;
@@ -281,7 +281,7 @@ param_compare_values(const void *a, const void *b)
  * @return			The structure holding the modified value, or
  *				NULL if the parameter has not been modified.
  */
-static struct param_wbuf_s *
+_EXT_ITCM static struct param_wbuf_s *
 param_find_changed(param_t param)
 {
 	struct param_wbuf_s	*s = NULL;
@@ -297,7 +297,7 @@ param_find_changed(param_t param)
 	return s;
 }
 
-static void
+_EXT_ITCM static void
 _param_notify_changes(void)
 {
 #if !defined(PARAM_NO_ORB)
@@ -320,13 +320,13 @@ _param_notify_changes(void)
 #endif
 }
 
-void
+_EXT_ITCM void
 param_notify_changes(void)
 {
 	_param_notify_changes();
 }
 
-param_t
+_EXT_ITCM param_t
 param_find_internal(const char *name, bool notification)
 {
 	perf_begin(param_find_perf);
@@ -367,25 +367,25 @@ param_find_internal(const char *name, bool notification)
 	return PARAM_INVALID;
 }
 
-param_t
+_EXT_ITCM param_t
 param_find(const char *name)
 {
 	return param_find_internal(name, true);
 }
 
-param_t
+_EXT_ITCM param_t
 param_find_no_notification(const char *name)
 {
 	return param_find_internal(name, false);
 }
 
-unsigned
+_EXT_ITCM unsigned
 param_count(void)
 {
 	return get_param_info_count();
 }
 
-unsigned
+_EXT_ITCM unsigned
 param_count_used(void)
 {
 	unsigned count = 0;
@@ -405,7 +405,7 @@ param_count_used(void)
 	return count;
 }
 
-param_t
+_EXT_ITCM param_t
 param_for_index(unsigned index)
 {
 	unsigned count = get_param_info_count();
@@ -417,7 +417,7 @@ param_for_index(unsigned index)
 	return PARAM_INVALID;
 }
 
-param_t
+_EXT_ITCM param_t
 param_for_used_index(unsigned index)
 {
 	int count = get_param_info_count();
@@ -446,7 +446,7 @@ param_for_used_index(unsigned index)
 	return PARAM_INVALID;
 }
 
-int
+_EXT_ITCM int
 param_get_index(param_t param)
 {
 	if (handle_in_range(param)) {
@@ -456,7 +456,7 @@ param_get_index(param_t param)
 	return -1;
 }
 
-int
+_EXT_ITCM int
 param_get_used_index(param_t param)
 {
 	/* this tests for out of bounds and does a constant time lookup */
@@ -483,19 +483,19 @@ param_get_used_index(param_t param)
 	return -1;
 }
 
-const char *
+_EXT_ITCM const char *
 param_name(param_t param)
 {
 	return handle_in_range(param) ? param_info_base[param].name : NULL;
 }
 
-bool
+_EXT_ITCM bool
 param_is_volatile(param_t param)
 {
 	return handle_in_range(param) ? param_info_base[param].volatile_param : false;
 }
 
-bool
+_EXT_ITCM bool
 param_value_is_default(param_t param)
 {
 	struct param_wbuf_s *s;
@@ -505,7 +505,7 @@ param_value_is_default(param_t param)
 	return s ? false : true;
 }
 
-bool
+_EXT_ITCM bool
 param_value_unsaved(param_t param)
 {
 	struct param_wbuf_s *s;
@@ -516,13 +516,13 @@ param_value_unsaved(param_t param)
 	return ret;
 }
 
-param_type_t
+_EXT_ITCM param_type_t
 param_type(param_t param)
 {
 	return handle_in_range(param) ? param_info_base[param].type : PARAM_TYPE_UNKNOWN;
 }
 
-size_t
+_EXT_ITCM size_t
 param_size(param_t param)
 {
 	if (handle_in_range(param)) {
@@ -552,7 +552,7 @@ param_size(param_t param)
  * @return			A pointer to the parameter value, or NULL
  *				if the parameter does not exist.
  */
-static const void *
+_EXT_ITCM static const void *
 param_get_value_ptr(param_t param)
 {
 	const void *result = NULL;
@@ -586,7 +586,7 @@ param_get_value_ptr(param_t param)
 	return result;
 }
 
-int
+_EXT_ITCM int
 param_get(param_t param, void *val)
 {
 	int result = -1;
@@ -613,7 +613,7 @@ param_get(param_t param, void *val)
  * worker callback method to save the parameters
  * @param arg unused
  */
-static void
+_EXT_ITCM static void
 autosave_worker(void *arg)
 {
 	bool disabled = false;
@@ -643,7 +643,7 @@ autosave_worker(void *arg)
  * This needs to be called with the writer lock held (it's not necessary that it's the writer lock, but it
  * needs to be the same lock as autosave_worker() and param_control_autosave() use).
  */
-static void
+_EXT_ITCM static void
 param_autosave(void)
 {
 #ifndef PARAM_NO_AUTOSAVE
@@ -670,7 +670,7 @@ param_autosave(void)
 #endif /* PARAM_NO_AUTOSAVE */
 }
 
-void
+_EXT_ITCM void
 param_control_autosave(bool enable)
 {
 #ifndef PARAM_NO_AUTOSAVE
@@ -686,7 +686,7 @@ param_control_autosave(bool enable)
 #endif /* PARAM_NO_AUTOSAVE */
 }
 
-static int
+_EXT_ITCM static int
 param_set_internal(param_t param, const void *val, bool mark_saved, bool notify_changes)
 {
 	int result = -1;
@@ -788,30 +788,30 @@ out:
 }
 
 #if defined(FLASH_BASED_PARAMS)
-int param_set_external(param_t param, const void *val, bool mark_saved, bool notify_changes)
+_EXT_ITCM int param_set_external(param_t param, const void *val, bool mark_saved, bool notify_changes)
 {
 	return param_set_internal(param, val, mark_saved, notify_changes);
 }
 
-const void *param_get_value_ptr_external(param_t param)
+_EXT_ITCM const void *param_get_value_ptr_external(param_t param)
 {
 	return param_get_value_ptr(param);
 }
 #endif
 
-int
+_EXT_ITCM int
 param_set(param_t param, const void *val)
 {
 	return param_set_internal(param, val, false, true);
 }
 
-int
+_EXT_ITCM int
 param_set_no_notification(param_t param, const void *val)
 {
 	return param_set_internal(param, val, false, false);
 }
 
-bool
+_EXT_ITCM bool
 param_used(param_t param)
 {
 	int param_index = param_get_index(param);
@@ -824,12 +824,12 @@ param_used(param_t param)
 	       (1 << param_index % bits_per_allocation_unit);
 }
 
-void param_set_used(param_t param)
+_EXT_ITCM void param_set_used(param_t param)
 {
 	param_set_used_internal(param);
 }
 
-void param_set_used_internal(param_t param)
+_EXT_ITCM void param_set_used_internal(param_t param)
 {
 	int param_index = param_get_index(param);
 
@@ -842,7 +842,7 @@ void param_set_used_internal(param_t param)
 		(1 << param_index % bits_per_allocation_unit);
 }
 
-int
+_EXT_ITCM int
 param_reset(param_t param)
 {
 	struct param_wbuf_s *s = NULL;
@@ -874,7 +874,7 @@ param_reset(param_t param)
 
 	return (!param_found);
 }
-static void
+_EXT_ITCM static void
 param_reset_all_internal(bool auto_save)
 {
 	param_lock_writer();
@@ -895,13 +895,13 @@ param_reset_all_internal(bool auto_save)
 	_param_notify_changes();
 }
 
-void
+_EXT_ITCM void
 param_reset_all(void)
 {
 	param_reset_all_internal(true);
 }
 
-void
+_EXT_ITCM void
 param_reset_excludes(const char *excludes[], int num_excludes)
 {
 	param_t	param;
@@ -930,7 +930,7 @@ param_reset_excludes(const char *excludes[], int num_excludes)
 	_param_notify_changes();
 }
 
-int
+_EXT_ITCM int
 param_set_default_file(const char *filename)
 {
 	if (param_user_file != NULL) {
@@ -946,13 +946,13 @@ param_set_default_file(const char *filename)
 	return 0;
 }
 
-const char *
+_EXT_ITCM const char *
 param_get_default_file(void)
 {
 	return (param_user_file != NULL) ? param_user_file : param_default_file;
 }
 
-int
+_EXT_ITCM int
 param_save_default(void)
 {
 	int res = PX4_ERROR;
@@ -997,7 +997,7 @@ param_save_default(void)
 /**
  * @return 0 on success, 1 if all params have not yet been stored, -1 if device open failed, -2 if writing parameters failed
  */
-int
+_EXT_ITCM int
 param_load_default(void)
 {
 	int res = 0;
@@ -1029,7 +1029,7 @@ param_load_default(void)
 	return res;
 }
 
-int
+_EXT_ITCM int
 param_export(int fd, bool only_unsaved)
 {
 	perf_begin(param_export_perf);
@@ -1149,7 +1149,7 @@ struct param_import_state {
 	bool mark_saved;
 };
 
-static int
+_EXT_ITCM static int
 param_import_callback(bson_decoder_t decoder, void *private, bson_node_t node)
 {
 	float f;
@@ -1272,7 +1272,7 @@ out:
 	return result;
 }
 
-static int
+_EXT_ITCM static int
 param_import_internal(int fd, bool mark_saved)
 {
 	struct bson_decoder_s decoder;
@@ -1295,7 +1295,7 @@ param_import_internal(int fd, bool mark_saved)
 	return result;
 }
 
-int
+_EXT_ITCM int
 param_import(int fd)
 {
 #if !defined(FLASH_BASED_PARAMS)
@@ -1307,14 +1307,14 @@ param_import(int fd)
 #endif
 }
 
-int
+_EXT_ITCM int
 param_load(int fd)
 {
 	param_reset_all_internal(false);
 	return param_import_internal(fd, true);
 }
 
-void
+_EXT_ITCM void
 param_foreach(void (*func)(void *arg, param_t param), void *arg, bool only_changed, bool only_used)
 {
 	param_t	param;
@@ -1334,7 +1334,7 @@ param_foreach(void (*func)(void *arg, param_t param), void *arg, bool only_chang
 	}
 }
 
-uint32_t param_hash_check(void)
+_EXT_ITCM uint32_t param_hash_check(void)
 {
 	uint32_t param_hash = 0;
 

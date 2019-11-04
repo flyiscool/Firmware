@@ -46,40 +46,40 @@ extern "C" __EXPORT int send_event_main(int argc, char *argv[]);
 class SendEvent : public ModuleBase<SendEvent>
 {
 public:
-	SendEvent();
+	_EXT_ITCM SendEvent();
 
 	/**
 	 * Initialize class in the same context as the work queue. And start the background listener.
 	 * @return 0 if successful, <0 on error */
-	static int task_spawn(int argc, char *argv[]);
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int custom_command(int argc, char *argv[]);
+	_EXT_ITCM static int custom_command(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int print_usage(const char *reason = nullptr);
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
 private:
 
 	/** Start background listening for commands
 	 *
 	 * @return 0 if successful, <0 on error. */
-	int start();
+	_EXT_ITCM int start();
 
 
 	/** Trampoline for initialisation. */
-	static void initialize_trampoline(void *arg);
+	_EXT_ITCM static void initialize_trampoline(void *arg);
 	/** Trampoline for the work queue. */
-	static void cycle_trampoline(void *arg);
+	_EXT_ITCM static void cycle_trampoline(void *arg);
 
 	/** call process_commands() and schedule the next cycle. */
-	void cycle();
+	_EXT_ITCM void cycle();
 
 	/** check for new commands and process them. */
-	void process_commands();
+	_EXT_ITCM void process_commands();
 
 	/** return an ACK to a vehicle_command */
-	void answer_command(const vehicle_command_s &cmd, unsigned result);
+	_EXT_ITCM void answer_command(const vehicle_command_s &cmd, unsigned result);
 
 	static struct work_s _work;
 	events::SubscriberHandler _subscriber_handler;

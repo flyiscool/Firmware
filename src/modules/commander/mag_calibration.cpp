@@ -96,7 +96,7 @@ typedef struct  {
 } mag_worker_data_t;
 
 
-int do_mag_calibration(orb_advert_t *mavlink_log_pub)
+_EXT_ITCM int do_mag_calibration(orb_advert_t *mavlink_log_pub)
 {
 	calibration_log_info(mavlink_log_pub, CAL_QGC_STARTED_MSG, sensor_name);
 
@@ -262,7 +262,7 @@ int do_mag_calibration(orb_advert_t *mavlink_log_pub)
 	return result;
 }
 
-static bool reject_sample(float sx, float sy, float sz, float x[], float y[], float z[], unsigned count,
+_EXT_ITCM static bool reject_sample(float sx, float sy, float sz, float x[], float y[], float z[], unsigned count,
 			  unsigned max_count)
 {
 	float min_sample_dist = fabsf(5.4f * mag_sphere_radius / sqrtf(max_count)) / 3.0f;
@@ -281,14 +281,14 @@ static bool reject_sample(float sx, float sy, float sz, float x[], float y[], fl
 	return false;
 }
 
-static unsigned progress_percentage(mag_worker_data_t *worker_data)
+_EXT_ITCM static unsigned progress_percentage(mag_worker_data_t *worker_data)
 {
 	return 100 * ((float)worker_data->done_count) / calibration_sides;
 }
 
 // Returns calibrate_return_error if any parameter is not finite
 // Logs if parameters are out of range
-static calibrate_return check_calibration_result(float offset_x, float offset_y, float offset_z,
+_EXT_ITCM static calibrate_return check_calibration_result(float offset_x, float offset_y, float offset_z,
 				float sphere_radius,
 				float diag_x, float diag_y, float diag_z,
 				float offdiag_x, float offdiag_y, float offdiag_z,
@@ -335,7 +335,7 @@ static calibrate_return check_calibration_result(float offset_x, float offset_y,
 	return calibrate_return_ok;
 }
 
-static calibrate_return mag_calibration_worker(detect_orientation_return orientation, int cancel_sub, void *data)
+_EXT_ITCM static calibrate_return mag_calibration_worker(detect_orientation_return orientation, int cancel_sub, void *data)
 {
 	calibrate_return result = calibrate_return_ok;
 
@@ -517,7 +517,7 @@ static calibrate_return mag_calibration_worker(detect_orientation_return orienta
 	return result;
 }
 
-calibrate_return mag_calibrate_all(orb_advert_t *mavlink_log_pub)
+_EXT_ITCM calibrate_return mag_calibrate_all(orb_advert_t *mavlink_log_pub)
 {
 	calibrate_return result = calibrate_return_ok;
 

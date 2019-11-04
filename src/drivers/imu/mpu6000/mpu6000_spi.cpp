@@ -100,16 +100,16 @@ device::Device *MPU6000_SPI_interface(int bus, int device_type, bool external_bu
 class MPU6000_SPI : public device::SPI
 {
 public:
-	MPU6000_SPI(int bus, uint32_t device, int device_type);
-	virtual ~MPU6000_SPI();
+	_EXT_ITCM MPU6000_SPI(int bus, uint32_t device, int device_type);
+	_EXT_ITCM virtual ~MPU6000_SPI();
 
-	virtual int	init();
-	virtual int	read(unsigned address, void *data, unsigned count);
-	virtual int	write(unsigned address, void *data, unsigned count);
+	_EXT_ITCM virtual int	init();
+	_EXT_ITCM virtual int	read(unsigned address, void *data, unsigned count);
+	_EXT_ITCM virtual int	write(unsigned address, void *data, unsigned count);
 
-	virtual int	ioctl(unsigned operation, unsigned &arg);
+	_EXT_ITCM virtual int	ioctl(unsigned operation, unsigned &arg);
 protected:
-	virtual int probe();
+	_EXT_ITCM virtual int probe();
 
 private:
 
@@ -117,7 +117,7 @@ private:
 	/* Helper to set the desired speed and isolate the register on return */
 
 	int _max_frequency;
-	void set_bus_frequency(unsigned &reg_speed_reg_out);
+	_EXT_ITCM void set_bus_frequency(unsigned &reg_speed_reg_out);
 };
 
 device::Device *

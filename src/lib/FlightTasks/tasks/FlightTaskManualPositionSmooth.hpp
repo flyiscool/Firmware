@@ -45,13 +45,13 @@
 class FlightTaskManualPositionSmooth : public FlightTaskManualPosition
 {
 public:
-	FlightTaskManualPositionSmooth();
+	_EXT_ITCM FlightTaskManualPositionSmooth();
 
 	virtual ~FlightTaskManualPositionSmooth() = default;
 
 protected:
 
-	virtual void _updateSetpoints() override;
+	_EXT_ITCM virtual void _updateSetpoints() override;
 
 private:
 	ManualSmoothingXY _smoothingXY; /**< smoothing for velocity setpoints in xy */

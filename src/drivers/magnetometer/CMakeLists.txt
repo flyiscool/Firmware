@@ -31,7 +31,7 @@
 #
 ############################################################################
 
-add_subdirectory(bmm150)
-add_subdirectory(hmc5883)
+#add_subdirectory(bmm150)
+#add_subdirectory(hmc5883)
 add_subdirectory(ist8310)
-add_subdirectory(lis3mdl)
+#add_subdirectory(lis3mdl)

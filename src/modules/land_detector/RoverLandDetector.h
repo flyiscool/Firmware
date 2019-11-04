@@ -44,31 +44,24 @@
 #include <uORB/topics/airspeed.h>
 
 #include "LandDetector.h"
-
+#include "chip.h"
 namespace land_detector
 {
 
 class RoverLandDetector : public LandDetector
 {
 public:
-	RoverLandDetector() = default;
+	 RoverLandDetector() = default;
 
 protected:
-	virtual void _initialize_topics() override;
-
-	virtual void _update_params() override;
-
-	virtual void _update_topics() override;
-
-	virtual bool _get_landed_state() override;
-
-	virtual bool  _get_ground_contact_state() override;
-
-	virtual bool _get_maybe_landed_state() override;
-
-	virtual bool _get_freefall_state() override;
-
-	virtual float _get_max_altitude() override;
+	_EXT_ITCM virtual void _initialize_topics() override;
+	_EXT_ITCM virtual void _update_params() override;
+	_EXT_ITCM virtual void _update_topics() override;
+	_EXT_ITCM virtual bool _get_landed_state() override;
+	_EXT_ITCM virtual bool  _get_ground_contact_state() override;
+	_EXT_ITCM virtual bool _get_maybe_landed_state() override;
+	_EXT_ITCM virtual bool _get_freefall_state() override;
+	_EXT_ITCM virtual float _get_max_altitude() override;
 
 private:
 };

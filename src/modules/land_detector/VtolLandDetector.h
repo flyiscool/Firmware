@@ -52,14 +52,14 @@ namespace land_detector
 class VtolLandDetector : public MulticopterLandDetector
 {
 public:
-	VtolLandDetector();
+	_EXT_ITCM VtolLandDetector();
 
 protected:
-	void _initialize_topics() override;
-	void _update_params() override;
-	void _update_topics() override;
-	bool _get_landed_state() override;
-	bool _get_maybe_landed_state() override;
+	_EXT_ITCM void _initialize_topics() override;
+	_EXT_ITCM void _update_params() override;
+	_EXT_ITCM void _update_topics() override;
+	_EXT_ITCM bool _get_landed_state() override;
+	_EXT_ITCM bool _get_maybe_landed_state() override;
 
 private:
 	struct {

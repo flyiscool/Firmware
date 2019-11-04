@@ -97,7 +97,7 @@
  * Name: read
  ****************************************************************************/
 
-inline static void read(bootloader_app_shared_t *pshared)
+_EXT_ITCM inline static void read(bootloader_app_shared_t *pshared)
 {
 	pshared->signature = getreg32(signature_LOC);
 	pshared->bus_speed = getreg32(bus_speed_LOC);
@@ -111,7 +111,7 @@ inline static void read(bootloader_app_shared_t *pshared)
  * Name: write
  ****************************************************************************/
 
-inline static void write(bootloader_app_shared_t *pshared)
+_EXT_ITCM inline static void write(bootloader_app_shared_t *pshared)
 {
 	putreg32(pshared->signature, signature_LOC);
 	putreg32(pshared->bus_speed, bus_speed_LOC);
@@ -125,7 +125,7 @@ inline static void write(bootloader_app_shared_t *pshared)
  * Name: calulate_signature
  ****************************************************************************/
 
-static uint64_t calulate_signature(bootloader_app_shared_t *pshared)
+_EXT_ITCM static uint64_t calulate_signature(bootloader_app_shared_t *pshared)
 {
 	uint64_t crc;
 	crc = crc64_add_word(CRC64_INITIAL, pshared->signature);
@@ -138,7 +138,7 @@ static uint64_t calulate_signature(bootloader_app_shared_t *pshared)
 /****************************************************************************
  * Name: bootloader_app_shared_init
  ****************************************************************************/
-static void bootloader_app_shared_init(bootloader_app_shared_t *pshared, eRole_t role)
+_EXT_ITCM static void bootloader_app_shared_init(bootloader_app_shared_t *pshared, eRole_t role)
 {
 	memset(pshared, 0, sizeof(bootloader_app_shared_t));
 
@@ -183,7 +183,7 @@ static void bootloader_app_shared_init(bootloader_app_shared_t *pshared, eRole_t
  ****************************************************************************/
 
 __EXPORT
-int bootloader_app_shared_read(bootloader_app_shared_t *shared,
+_EXT_ITCM int bootloader_app_shared_read(bootloader_app_shared_t *shared,
 			       eRole_t role)
 {
 	int rv = -EBADR;
@@ -225,7 +225,7 @@ int bootloader_app_shared_read(bootloader_app_shared_t *shared,
  *
  ****************************************************************************/
 __EXPORT
-void bootloader_app_shared_write(bootloader_app_shared_t *shared,
+_EXT_ITCM void bootloader_app_shared_write(bootloader_app_shared_t *shared,
 				 eRole_t role)
 {
 	bootloader_app_shared_t working = *shared;
@@ -257,7 +257,7 @@ void bootloader_app_shared_write(bootloader_app_shared_t *shared,
  ****************************************************************************/
 
 __EXPORT
-void bootloader_app_shared_invalidate(void)
+_EXT_ITCM void bootloader_app_shared_invalidate(void)
 {
 	bootloader_app_shared_t working;
 	bootloader_app_shared_init(&working, Invalid);

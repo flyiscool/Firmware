@@ -217,7 +217,7 @@ The tasks can be started via CLI or uORB topics (vehicle_command from MAVLink, e
 }
 
 
-int send_event_main(int argc, char *argv[])
+_EXT_ITCM int send_event_main(int argc, char *argv[])
 {
 	return SendEvent::main(argc, argv);
 }

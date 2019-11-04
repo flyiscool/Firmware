@@ -41,7 +41,7 @@ void    usage();
  * This function only returns if the driver is up and running
  * or failed to detect the sensor.
  */
-void
+_EXT_ITCM void
 start(bool external_bus, enum Rotation rotation, enum sensor_type sensor)
 {
 
@@ -157,7 +157,7 @@ fail_gyro:
 
 }
 
-void
+_EXT_ITCM void
 stop(bool external_bus, enum sensor_type sensor)
 {
 	BMI055_accel **g_dev_acc_ptr = external_bus ? &g_acc_dev_ext : &g_acc_dev_int;
@@ -194,7 +194,7 @@ stop(bool external_bus, enum sensor_type sensor)
  * make sure we can collect data from the sensor in polled
  * and automatic modes.
  */
-void
+_EXT_ITCM void
 test(bool external_bus, enum sensor_type sensor)
 {
 	const char *path_accel = external_bus ? BMI055_DEVICE_PATH_ACCEL_EXT : BMI055_DEVICE_PATH_ACCEL;
@@ -278,7 +278,7 @@ test(bool external_bus, enum sensor_type sensor)
 /**
  * Reset the driver.
  */
-void
+_EXT_ITCM void
 reset(bool external_bus, enum sensor_type sensor)
 {
 	const char *path_accel = external_bus ? BMI055_DEVICE_PATH_ACCEL_EXT : BMI055_DEVICE_PATH_ACCEL;
@@ -328,7 +328,7 @@ reset(bool external_bus, enum sensor_type sensor)
 /**
  * Print a little info about the driver.
  */
-void
+_EXT_ITCM void
 info(bool external_bus, enum sensor_type sensor)
 {
 	BMI055_accel **g_dev_acc_ptr = external_bus ? &g_acc_dev_ext : &g_acc_dev_int;
@@ -358,7 +358,7 @@ info(bool external_bus, enum sensor_type sensor)
 /**
  * Dump the register information
  */
-void
+_EXT_ITCM void
 regdump(bool external_bus, enum sensor_type sensor)
 {
 	BMI055_accel **g_dev_acc_ptr = external_bus ? &g_acc_dev_ext : &g_acc_dev_int;
@@ -389,7 +389,7 @@ regdump(bool external_bus, enum sensor_type sensor)
 /**
  * deliberately produce an error to test recovery
  */
-void
+_EXT_ITCM void
 testerror(bool external_bus, enum sensor_type sensor)
 {
 	BMI055_accel **g_dev_acc_ptr = external_bus ? &g_acc_dev_ext : &g_acc_dev_int;
@@ -414,7 +414,7 @@ testerror(bool external_bus, enum sensor_type sensor)
 	exit(0);
 }
 
-void
+_EXT_ITCM void
 usage()
 {
 	warnx("missing command: try 'start', 'info', 'test', 'stop',\n'reset', 'regdump', 'testerror'");
@@ -499,7 +499,7 @@ BMI055::write_reg(unsigned reg, uint8_t value)
 
 
 
-int
+_EXT_ITCM int
 bmi055_main(int argc, char *argv[])
 {
 	bool external_bus = false;

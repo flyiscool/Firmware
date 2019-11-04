@@ -72,7 +72,7 @@ using namespace DriverFramework;
 namespace Preflight
 {
 
-static int check_calibration(DevHandle &h, const char *param_template, int &devid)
+_EXT_ITCM static int check_calibration(DevHandle &h, const char *param_template, int &devid)
 {
 	bool calibration_found = false;
 
@@ -109,7 +109,7 @@ static int check_calibration(DevHandle &h, const char *param_template, int &devi
 	return !calibration_found;
 }
 
-static bool magnometerCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, unsigned instance, bool optional, int &device_id, bool report_fail)
+_EXT_ITCM static bool magnometerCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, unsigned instance, bool optional, int &device_id, bool report_fail)
 {
 	bool present = true;
 	bool success = true;
@@ -161,7 +161,7 @@ out:
 	return success;
 }
 
-static bool imuConsistencyCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, bool report_status)
+_EXT_ITCM static bool imuConsistencyCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, bool report_status)
 {
 	bool success = true; // start with a pass and change to a fail if any test fails
 	float test_limit = 1.0f; // pass limit re-used for each test
@@ -218,7 +218,7 @@ out:
 }
 
 // return false if the magnetomer measurements are inconsistent
-static bool magConsistencyCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, bool report_status)
+_EXT_ITCM static bool magConsistencyCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, bool report_status)
 {
 	// get the sensor preflight data
 	int sensors_sub = orb_subscribe(ORB_ID(sensor_preflight));
@@ -248,7 +248,7 @@ static bool magConsistencyCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s 
 	return true;
 }
 
-static bool accelerometerCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, unsigned instance, bool optional, bool dynamic, int &device_id, bool report_fail)
+_EXT_ITCM static bool accelerometerCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, unsigned instance, bool optional, bool dynamic, int &device_id, bool report_fail)
 {
 	bool present = true;
 	bool success = true;
@@ -334,7 +334,7 @@ out:
 	return success;
 }
 
-static bool gyroCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, unsigned instance, bool optional, int &device_id, bool report_fail)
+_EXT_ITCM static bool gyroCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, unsigned instance, bool optional, int &device_id, bool report_fail)
 {
 	bool present = true;
 	bool success = true;
@@ -386,7 +386,7 @@ out:
 	return success;
 }
 
-static bool baroCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, unsigned instance, bool optional, int &device_id, bool report_fail)
+_EXT_ITCM static bool baroCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, unsigned instance, bool optional, int &device_id, bool report_fail)
 {
 	bool success = true;
 
@@ -422,7 +422,7 @@ static bool baroCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, u
 	return success;
 }
 
-static bool airspeedCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, bool optional, bool report_fail, bool prearm)
+_EXT_ITCM static bool airspeedCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, bool optional, bool report_fail, bool prearm)
 {
 	bool present = true;
 	bool success = true;
@@ -489,7 +489,7 @@ out:
 	return success;
 }
 
-static bool powerCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, bool report_fail, bool prearm)
+_EXT_ITCM static bool powerCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, bool report_fail, bool prearm)
 {
 	bool success = true;
 
@@ -537,7 +537,7 @@ static bool powerCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status, 
 	return success;
 }
 
-static bool ekf2Check(orb_advert_t *mavlink_log_pub, vehicle_status_s &vehicle_status, bool optional, bool report_fail, bool enforce_gps_required)
+_EXT_ITCM static bool ekf2Check(orb_advert_t *mavlink_log_pub, vehicle_status_s &vehicle_status, bool optional, bool report_fail, bool enforce_gps_required)
 {
 	bool success = true; // start with a pass and change to a fail if any test fails
 	bool present = true;
@@ -684,7 +684,7 @@ out:
 	return success;
 }
 
-bool preflightCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status,
+_EXT_ITCM bool preflightCheck(orb_advert_t *mavlink_log_pub, vehicle_status_s &status,
 		    vehicle_status_flags_s &status_flags, bool checkGNSS, bool reportFailures, bool prearm,
 		    const hrt_abstime &time_since_boot)
 {

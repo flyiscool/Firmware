@@ -46,12 +46,12 @@
 namespace land_detector
 {
 
-VtolLandDetector::VtolLandDetector()
+_EXT_ITCM VtolLandDetector::VtolLandDetector()
 {
 	_paramHandle.maxAirSpeed = param_find("LNDFW_AIRSPD_MAX");
 }
 
-void VtolLandDetector::_initialize_topics()
+_EXT_ITCM void VtolLandDetector::_initialize_topics()
 {
 	MulticopterLandDetector::_initialize_topics();
 
@@ -59,7 +59,7 @@ void VtolLandDetector::_initialize_topics()
 	_vehicle_status_sub = orb_subscribe(ORB_ID(vehicle_status));
 }
 
-void VtolLandDetector::_update_topics()
+_EXT_ITCM void VtolLandDetector::_update_topics()
 {
 	MulticopterLandDetector::_update_topics();
 
@@ -67,7 +67,7 @@ void VtolLandDetector::_update_topics()
 	_orb_update(ORB_ID(vehicle_status), _vehicle_status_sub, &_vehicle_status);
 }
 
-bool VtolLandDetector::_get_maybe_landed_state()
+_EXT_ITCM bool VtolLandDetector::_get_maybe_landed_state()
 {
 	// Only trigger in RW mode
 	if ((_vehicle_status.timestamp != 0) && !_vehicle_status.is_rotary_wing) {
@@ -77,7 +77,7 @@ bool VtolLandDetector::_get_maybe_landed_state()
 	return MulticopterLandDetector::_get_maybe_landed_state();
 }
 
-bool VtolLandDetector::_get_landed_state()
+_EXT_ITCM bool VtolLandDetector::_get_landed_state()
 {
 	// Only trigger in RW mode
 	if ((_vehicle_status.timestamp != 0) && !_vehicle_status.is_rotary_wing) {
@@ -109,7 +109,7 @@ bool VtolLandDetector::_get_landed_state()
 	return landed;
 }
 
-void VtolLandDetector::_update_params()
+_EXT_ITCM void VtolLandDetector::_update_params()
 {
 	MulticopterLandDetector::_update_params();
 

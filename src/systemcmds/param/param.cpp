@@ -88,7 +88,7 @@ static int 	do_reset(const char *excludes[], int num_excludes);
 static int	do_reset_nostart(const char *excludes[], int num_excludes);
 static int	do_find(const char *name);
 
-static void print_usage()
+_EXT_ITCM static void print_usage()
 {
 	PRINT_MODULE_DESCRIPTION(
 		R"DESCR_STR(
@@ -151,7 +151,7 @@ $ reboot
 	PRINT_MODULE_USAGE_ARG("<param>", "param name", false);
 }
 
-int
+_EXT_ITCM int
 param_main(int argc, char *argv[])
 {
 	if (argc >= 2) {
@@ -317,26 +317,26 @@ param_main(int argc, char *argv[])
  * default param calls, which will in turn take care of locking and calling to the
  * flash backend.
  */
-static int
+_EXT_ITCM static int
 do_save(const char *param_file_name)
 {
 	return param_save_default();
 }
 
-static int
+_EXT_ITCM static int
 do_load(const char *param_file_name)
 {
 	return param_load_default();
 }
 
-static int
+_EXT_ITCM static int
 do_import(const char *param_file_name)
 {
 	return param_import(-1);
 }
 #else
 
-static int
+_EXT_ITCM static int
 do_save(const char *param_file_name)
 {
 	/* create the file */
@@ -361,7 +361,7 @@ do_save(const char *param_file_name)
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_load(const char *param_file_name)
 {
 	int fd = open(param_file_name, O_RDONLY);
@@ -382,7 +382,7 @@ do_load(const char *param_file_name)
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_import(const char *param_file_name)
 {
 	int fd = open(param_file_name, O_RDONLY);
@@ -404,13 +404,13 @@ do_import(const char *param_file_name)
 }
 #endif
 
-static int
+_EXT_ITCM static int
 do_save_default()
 {
 	return param_save_default();
 }
 
-static int
+_EXT_ITCM static int
 do_show(const char *search_string, bool only_changed)
 {
 	PARAM_PRINT("Symbols: x = used, + = saved, * = unsaved\n");
@@ -420,7 +420,7 @@ do_show(const char *search_string, bool only_changed)
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_find(const char *name)
 {
 	param_t ret = param_find_no_notification(name);
@@ -434,7 +434,7 @@ do_find(const char *name)
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_show_index(const char *index, bool used_index)
 {
 	char *end;
@@ -481,7 +481,7 @@ do_show_index(const char *index, bool used_index)
 	return 0;
 }
 
-static void
+_EXT_ITCM static void
 do_show_print(void *arg, param_t param)
 {
 	int32_t i;
@@ -562,7 +562,7 @@ do_show_print(void *arg, param_t param)
 	PARAM_PRINT("<error fetching parameter %lu>\n", (unsigned long)param);
 }
 
-static int
+_EXT_ITCM static int
 do_set(const char *name, const char *val, bool fail_on_not_found)
 {
 	int32_t i;
@@ -631,7 +631,7 @@ do_set(const char *name, const char *val, bool fail_on_not_found)
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_compare(const char *name, char *vals[], unsigned comparisons, enum COMPARE_OPERATOR cmp_op)
 {
 	int32_t i;
@@ -706,7 +706,7 @@ do_compare(const char *name, char *vals[], unsigned comparisons, enum COMPARE_OP
 	return ret;
 }
 
-static int
+_EXT_ITCM static int
 do_reset(const char *excludes[], int num_excludes)
 {
 	if (num_excludes > 0) {
@@ -719,7 +719,7 @@ do_reset(const char *excludes[], int num_excludes)
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_reset_nostart(const char *excludes[], int num_excludes)
 {
 	int32_t autostart;

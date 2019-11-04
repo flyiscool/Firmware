@@ -147,98 +147,98 @@ public:
 	};
 
 	// public methods
-	BlockLocalPositionEstimator();
-	void update();
+	_EXT_ITCM BlockLocalPositionEstimator();
+	_EXT_ITCM void update();
 	virtual ~BlockLocalPositionEstimator() = default;
 
 private:
-	BlockLocalPositionEstimator(const BlockLocalPositionEstimator &) = delete;
-	BlockLocalPositionEstimator operator=(const BlockLocalPositionEstimator &) = delete;
+	_EXT_ITCM BlockLocalPositionEstimator(const BlockLocalPositionEstimator &) = delete;
+	_EXT_ITCM BlockLocalPositionEstimator operator=(const BlockLocalPositionEstimator &) = delete;
 
 	// methods
 	// ----------------------------
 	//
-	Vector<float, n_x> dynamics(
+	_EXT_ITCM Vector<float, n_x> dynamics(
 		float t,
 		const Vector<float, n_x> &x,
 		const Vector<float, n_u> &u);
-	void initP();
-	void initSS();
-	void updateSSStates();
-	void updateSSParams();
+	_EXT_ITCM void initP();
+	_EXT_ITCM void initSS();
+	_EXT_ITCM void updateSSStates();
+	_EXT_ITCM void updateSSParams();
 
 	// predict the next state
-	void predict();
+	_EXT_ITCM void predict();
 
 	// lidar
-	int  lidarMeasure(Vector<float, n_y_lidar> &y);
-	void lidarCorrect();
-	void lidarInit();
-	void lidarCheckTimeout();
+	_EXT_ITCM int  lidarMeasure(Vector<float, n_y_lidar> &y);
+	_EXT_ITCM void lidarCorrect();
+	_EXT_ITCM void lidarInit();
+	_EXT_ITCM void lidarCheckTimeout();
 
 	// sonar
-	int  sonarMeasure(Vector<float, n_y_sonar> &y);
-	void sonarCorrect();
-	void sonarInit();
-	void sonarCheckTimeout();
+	_EXT_ITCM int  sonarMeasure(Vector<float, n_y_sonar> &y);
+	_EXT_ITCM void sonarCorrect();
+	_EXT_ITCM void sonarInit();
+	_EXT_ITCM void sonarCheckTimeout();
 
 	// baro
-	int  baroMeasure(Vector<float, n_y_baro> &y);
-	void baroCorrect();
-	void baroInit();
-	void baroCheckTimeout();
+	_EXT_ITCM int  baroMeasure(Vector<float, n_y_baro> &y);
+	_EXT_ITCM void baroCorrect();
+	_EXT_ITCM void baroInit();
+	_EXT_ITCM void baroCheckTimeout();
 
 	// gps
-	int  gpsMeasure(Vector<double, n_y_gps> &y);
-	void gpsCorrect();
-	void gpsInit();
-	void gpsCheckTimeout();
+	_EXT_ITCM int  gpsMeasure(Vector<double, n_y_gps> &y);
+	_EXT_ITCM void gpsCorrect();
+	_EXT_ITCM void gpsInit();
+	_EXT_ITCM void gpsCheckTimeout();
 
 	// flow
-	int  flowMeasure(Vector<float, n_y_flow> &y);
-	void flowCorrect();
-	void flowInit();
-	void flowCheckTimeout();
+	_EXT_ITCM int  flowMeasure(Vector<float, n_y_flow> &y);
+	_EXT_ITCM void flowCorrect();
+	_EXT_ITCM void flowInit();
+	_EXT_ITCM void flowCheckTimeout();
 
 	// vision
-	int  visionMeasure(Vector<float, n_y_vision> &y);
-	void visionCorrect();
-	void visionInit();
-	void visionCheckTimeout();
+	_EXT_ITCM int  visionMeasure(Vector<float, n_y_vision> &y);
+	_EXT_ITCM void visionCorrect();
+	_EXT_ITCM void visionInit();
+	_EXT_ITCM void visionCheckTimeout();
 
 	// mocap
-	int  mocapMeasure(Vector<float, n_y_mocap> &y);
-	void mocapCorrect();
-	void mocapInit();
-	void mocapCheckTimeout();
+	_EXT_ITCM int  mocapMeasure(Vector<float, n_y_mocap> &y);
+	_EXT_ITCM void mocapCorrect();
+	_EXT_ITCM void mocapInit();
+	_EXT_ITCM void mocapCheckTimeout();
 
 	// land
-	int  landMeasure(Vector<float, n_y_land> &y);
-	void landCorrect();
-	void landInit();
-	void landCheckTimeout();
+	_EXT_ITCM int  landMeasure(Vector<float, n_y_land> &y);
+	_EXT_ITCM void landCorrect();
+	_EXT_ITCM void landInit();
+	_EXT_ITCM void landCheckTimeout();
 
 	// landing target
-	int  landingTargetMeasure(Vector<float, n_y_target> &y);
-	void landingTargetCorrect();
-	void landingTargetInit();
-	void landingTargetCheckTimeout();
+	_EXT_ITCM int  landingTargetMeasure(Vector<float, n_y_target> &y);
+	_EXT_ITCM void landingTargetCorrect();
+	_EXT_ITCM void landingTargetInit();
+	_EXT_ITCM void landingTargetCheckTimeout();
 
 	// timeouts
-	void checkTimeouts();
+	_EXT_ITCM void checkTimeouts();
 
 	// misc
-	inline float agl()
+	_EXT_ITCM inline float agl()
 	{
 		return _x(X_tz) - _x(X_z);
 	}
-	bool landed();
-	int getDelayPeriods(float delay, uint8_t *periods);
+	_EXT_ITCM bool landed();
+	_EXT_ITCM int getDelayPeriods(float delay, uint8_t *periods);
 
 	// publications
-	void publishLocalPos();
-	void publishGlobalPos();
-	void publishEstimatorStatus();
+	_EXT_ITCM void publishLocalPos();
+	_EXT_ITCM void publishGlobalPos();
+	_EXT_ITCM void publishEstimatorStatus();
 
 	// attributes
 	// ----------------------------

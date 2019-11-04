@@ -44,11 +44,11 @@
 class FlightTaskManualAltitudeSmooth : public FlightTaskManualAltitude
 {
 public:
-	FlightTaskManualAltitudeSmooth();
-	virtual ~FlightTaskManualAltitudeSmooth() = default;
+	_EXT_ITCM FlightTaskManualAltitudeSmooth();
+	 virtual ~FlightTaskManualAltitudeSmooth() = default;
 
 protected:
-	virtual void _updateSetpoints() override;
+	_EXT_ITCM virtual void _updateSetpoints() override;
 
 private:
 	ManualSmoothingZ _smoothing; /**< smoothing for velocity setpoints */

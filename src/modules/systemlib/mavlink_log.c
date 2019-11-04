@@ -51,7 +51,7 @@
 #define MAVLINK_LOG_QUEUE_SIZE 5
 
 
-__EXPORT void mavlink_vasprintf(int severity, orb_advert_t *mavlink_log_pub, const char *fmt, ...)
+ __EXPORT void mavlink_vasprintf(int severity, orb_advert_t *mavlink_log_pub, const char *fmt, ...)
 {
 	// TODO: add compile check for maxlen
 

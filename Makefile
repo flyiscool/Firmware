@@ -57,7 +57,7 @@ endif
 # in that directory with the target upload.
 
 #  explicity set default build target
-all: posix_sitl_default
+all: coolfly-f1_default
 
 # Parsing
 # --------------------------------------------------------------------
@@ -401,3 +401,8 @@ help:
 # Print a list of all config targets.
 list_config_targets:
 	@for targ in $(patsubst nuttx_%,[nuttx_]%,$(ALL_CONFIG_TARGETS)); do echo $$targ; done
+
+
+.PHONY: elf
+elf:
+	readelf -S build/*/*.elf

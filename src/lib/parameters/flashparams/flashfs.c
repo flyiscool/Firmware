@@ -136,7 +136,7 @@ const flash_file_token_t parameters_token = {
  *
  ****************************************************************************/
 
-void parameter_flashfs_free(void)
+_EXT_ITCM void parameter_flashfs_free(void)
 {
 	if (!working_buffer_static && working_buffer != NULL) {
 		free(working_buffer);
@@ -161,7 +161,7 @@ void parameter_flashfs_free(void)
  *
  ****************************************************************************/
 
-static inline int blank_flash(uint32_t *pf)
+_EXT_ITCM static inline int blank_flash(uint32_t *pf)
 {
 	return *pf == BlankSig;
 }
@@ -181,7 +181,7 @@ static inline int blank_flash(uint32_t *pf)
  *
  ****************************************************************************/
 
-static bool blank_check(flash_entry_header_t *pf,
+_EXT_ITCM static bool blank_check(flash_entry_header_t *pf,
 			size_t new_size)
 {
 	bool rv = true;
@@ -213,7 +213,7 @@ static bool blank_check(flash_entry_header_t *pf,
  *
  ****************************************************************************/
 
-static inline int valid_magic(h_magic_t *pm)
+_EXT_ITCM static inline int valid_magic(h_magic_t *pm)
 {
 	return *pm == MagicSig;
 }
@@ -234,7 +234,7 @@ static inline int valid_magic(h_magic_t *pm)
  *
  ****************************************************************************/
 
-static inline int blank_magic(h_magic_t *pm)
+_EXT_ITCM static inline int blank_magic(h_magic_t *pm)
 {
 	return *pm == BlankSig;
 }
@@ -253,7 +253,7 @@ static inline int blank_magic(h_magic_t *pm)
  *
  ****************************************************************************/
 
-static inline int erased_entry(flash_entry_header_t *fi)
+_EXT_ITCM static inline int erased_entry(flash_entry_header_t *fi)
 {
 	return (fi->flag & MaskEntry) == ErasedEntry;
 }
@@ -273,7 +273,7 @@ static inline int erased_entry(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static inline int blank_entry(flash_entry_header_t *fi)
+_EXT_ITCM static inline int blank_entry(flash_entry_header_t *fi)
 {
 	return fi->magic == BlankSig  &&  fi->flag == BlankEntry;
 }
@@ -293,7 +293,7 @@ static inline int blank_entry(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static inline int valid_entry(flash_entry_header_t *fi)
+_EXT_ITCM static inline int valid_entry(flash_entry_header_t *fi)
 {
 	return (fi->flag & MaskEntry) == ValidEntry;
 }
@@ -313,7 +313,7 @@ static inline int valid_entry(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static inline int entry_size_adjust(flash_entry_header_t *fi)
+_EXT_ITCM static inline int entry_size_adjust(flash_entry_header_t *fi)
 {
 	return fi->flag & SizeMask;
 }
@@ -334,7 +334,7 @@ static inline int entry_size_adjust(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static inline flash_entry_header_t *next_entry(flash_entry_header_t *fi)
+_EXT_ITCM static inline flash_entry_header_t *next_entry(flash_entry_header_t *fi)
 {
 	uint8_t *pb = (uint8_t *)fi;
 	return (flash_entry_header_t *) &pb[fi->size];
@@ -355,7 +355,7 @@ static inline flash_entry_header_t *next_entry(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static inline uint8_t *entry_data(flash_entry_header_t *fi)
+_EXT_ITCM static inline uint8_t *entry_data(flash_entry_header_t *fi)
 {
 	return ((uint8_t *)fi) + sizeof(flash_entry_header_t);
 }
@@ -375,7 +375,7 @@ static inline uint8_t *entry_data(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static inline data_size_t entry_data_length(flash_entry_header_t *fi)
+_EXT_ITCM static inline data_size_t entry_data_length(flash_entry_header_t *fi)
 {
 	return fi->size - (sizeof(flash_entry_header_t) + entry_size_adjust(fi));
 }
@@ -396,7 +396,7 @@ static inline data_size_t entry_data_length(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static inline const uint8_t *entry_crc_start(flash_entry_header_t *fi)
+_EXT_ITCM static inline const uint8_t *entry_crc_start(flash_entry_header_t *fi)
 {
 	return (const uint8_t *)&fi->size;
 }
@@ -417,7 +417,7 @@ static inline const uint8_t *entry_crc_start(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static inline data_size_t entry_crc_length(flash_entry_header_t *fi)
+_EXT_ITCM static inline data_size_t entry_crc_length(flash_entry_header_t *fi)
 {
 	return fi->size - offsetof(flash_entry_header_t, size);
 }
@@ -437,7 +437,7 @@ static inline data_size_t entry_crc_length(flash_entry_header_t *fi)
  *
  ****************************************************************************/
 
-static flash_entry_header_t *find_entry(flash_file_token_t token)
+_EXT_ITCM static flash_entry_header_t *find_entry(flash_file_token_t token)
 {
 	for (int s = 0; sector_map[s].address; s++) {
 
@@ -512,7 +512,7 @@ cont:
  *
  ****************************************************************************/
 
-static flash_entry_header_t *find_free(data_size_t required)
+_EXT_ITCM static flash_entry_header_t *find_free(data_size_t required)
 {
 	for (int s = 0; sector_map[s].address; s++) {
 
@@ -573,7 +573,7 @@ static flash_entry_header_t *find_free(data_size_t required)
  *
  ****************************************************************************/
 
-static sector_descriptor_t *get_next_sector_descriptor(sector_descriptor_t *
+_EXT_ITCM static sector_descriptor_t *get_next_sector_descriptor(sector_descriptor_t *
 		current)
 {
 	for (int s = 0; sector_map[s].address; s++) {
@@ -609,7 +609,7 @@ static sector_descriptor_t *get_next_sector_descriptor(sector_descriptor_t *
  *
  ****************************************************************************/
 
-static sector_descriptor_t *get_sector_info(flash_entry_header_t *current)
+_EXT_ITCM static sector_descriptor_t *get_sector_info(flash_entry_header_t *current)
 {
 	for (int s = 0; sector_map[s].address != 0; s++) {
 		uint8_t *pb = (uint8_t *) sector_map[s].address;
@@ -642,7 +642,7 @@ static sector_descriptor_t *get_sector_info(flash_entry_header_t *current)
  *
  ****************************************************************************/
 
-static int erase_sector(sector_descriptor_t *sm, flash_entry_header_t *pf)
+_EXT_ITCM static int erase_sector(sector_descriptor_t *sm, flash_entry_header_t *pf)
 {
 	int rv = 0;
 	ssize_t page = up_progmem_getpage((size_t)pf);
@@ -675,7 +675,7 @@ static int erase_sector(sector_descriptor_t *sm, flash_entry_header_t *pf)
  *
  ****************************************************************************/
 
-static int erase_entry(flash_entry_header_t *pf)
+_EXT_ITCM static int erase_entry(flash_entry_header_t *pf)
 {
 	h_flag_t data = ErasedEntry;
 	size_t size = sizeof(h_flag_t);
@@ -699,7 +699,7 @@ static int erase_entry(flash_entry_header_t *pf)
  *
  ****************************************************************************/
 
-static sector_descriptor_t *check_free_space_in_sector(flash_entry_header_t
+_EXT_ITCM static sector_descriptor_t *check_free_space_in_sector(flash_entry_header_t
 		*pf, size_t new_size)
 {
 	sector_descriptor_t *sm = get_sector_info(pf);
@@ -737,7 +737,7 @@ static sector_descriptor_t *check_free_space_in_sector(flash_entry_header_t
  *
  ****************************************************************************/
 
-int parameter_flashfs_read(flash_file_token_t token, uint8_t **buffer, size_t
+_EXT_ITCM int parameter_flashfs_read(flash_file_token_t token, uint8_t **buffer, size_t
 			   *buf_size)
 {
 	int rv = -ENXIO;
@@ -776,7 +776,7 @@ int parameter_flashfs_read(flash_file_token_t token, uint8_t **buffer, size_t
  *
  ****************************************************************************/
 
-int
+_EXT_ITCM int
 parameter_flashfs_write(flash_file_token_t token, uint8_t *buffer, size_t buf_size)
 {
 	int rv = -ENXIO;
@@ -912,7 +912,7 @@ parameter_flashfs_write(flash_file_token_t token, uint8_t *buffer, size_t buf_si
  *
  ****************************************************************************/
 
-int parameter_flashfs_alloc(flash_file_token_t token, uint8_t **buffer, size_t *buf_size)
+_EXT_ITCM int parameter_flashfs_alloc(flash_file_token_t token, uint8_t **buffer, size_t *buf_size)
 {
 	int rv = -ENXIO;
 
@@ -961,7 +961,7 @@ int parameter_flashfs_alloc(flash_file_token_t token, uint8_t **buffer, size_t *
  *
  ****************************************************************************/
 
-int parameter_flashfs_erase(void)
+_EXT_ITCM int parameter_flashfs_erase(void)
 {
 	int rv = -ENXIO;
 
@@ -1010,7 +1010,7 @@ int parameter_flashfs_erase(void)
  *
  ****************************************************************************/
 
-int parameter_flashfs_init(sector_descriptor_t *fconfig, uint8_t *buffer, uint16_t size)
+_EXT_ITCM int parameter_flashfs_init(sector_descriptor_t *fconfig, uint8_t *buffer, uint16_t size)
 {
 	int rv = 0;
 	sector_map = fconfig;

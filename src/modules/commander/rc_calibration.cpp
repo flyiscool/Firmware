@@ -51,7 +51,7 @@
 #include <parameters/param.h>
 #include <systemlib/err.h>
 
-int do_trim_calibration(orb_advert_t *mavlink_log_pub)
+_EXT_ITCM int do_trim_calibration(orb_advert_t *mavlink_log_pub)
 {
 	int sub_man = orb_subscribe(ORB_ID(manual_control_setpoint));
 	usleep(400000);

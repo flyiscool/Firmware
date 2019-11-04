@@ -67,61 +67,61 @@ extern "C" __EXPORT int mc_att_control_main(int argc, char *argv[]);
 class MulticopterAttitudeControl : public ModuleBase<MulticopterAttitudeControl>, public ModuleParams
 {
 public:
-	MulticopterAttitudeControl();
+	_EXT_ITCM MulticopterAttitudeControl();
 
 	virtual ~MulticopterAttitudeControl() = default;
 
 	/** @see ModuleBase */
-	static int task_spawn(int argc, char *argv[]);
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static MulticopterAttitudeControl *instantiate(int argc, char *argv[]);
+	_EXT_ITCM static MulticopterAttitudeControl *instantiate(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int custom_command(int argc, char *argv[]);
+	_EXT_ITCM static int custom_command(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int print_usage(const char *reason = nullptr);
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
 	/** @see ModuleBase::run() */
-	void run() override;
+	_EXT_ITCM void run() override;
 
 private:
 
 	/**
 	 * initialize some vectors/matrices from parameters
 	 */
-	void			parameters_updated();
+	_EXT_ITCM void			parameters_updated();
 
 	/**
 	 * Check for parameter update and handle it.
 	 */
-	void		battery_status_poll();
-	void		parameter_update_poll();
-	void		sensor_bias_poll();
-	void		sensor_correction_poll();
-	void		vehicle_attitude_poll();
-	void		vehicle_attitude_setpoint_poll();
-	void		vehicle_control_mode_poll();
-	void		vehicle_manual_poll();
-	void		vehicle_motor_limits_poll();
-	void		vehicle_rates_setpoint_poll();
-	void		vehicle_status_poll();
+	_EXT_ITCM void		battery_status_poll();
+	_EXT_ITCM void		parameter_update_poll();
+	_EXT_ITCM void		sensor_bias_poll();
+	_EXT_ITCM void		sensor_correction_poll();
+	_EXT_ITCM void		vehicle_attitude_poll();
+	_EXT_ITCM void		vehicle_attitude_setpoint_poll();
+	_EXT_ITCM void		vehicle_control_mode_poll();
+	_EXT_ITCM void		vehicle_manual_poll();
+	_EXT_ITCM void		vehicle_motor_limits_poll();
+	_EXT_ITCM void		vehicle_rates_setpoint_poll();
+	_EXT_ITCM void		vehicle_status_poll();
 
 	/**
 	 * Attitude controller.
 	 */
-	void		control_attitude(float dt);
+	_EXT_ITCM void		control_attitude(float dt);
 
 	/**
 	 * Attitude rates controller.
 	 */
-	void		control_attitude_rates(float dt);
+	_EXT_ITCM void		control_attitude_rates(float dt);
 
 	/**
 	 * Throttle PID attenuation.
 	 */
-	matrix::Vector3f pid_attenuations(float tpa_breakpoint, float tpa_rate);
+	_EXT_ITCM matrix::Vector3f pid_attenuations(float tpa_breakpoint, float tpa_rate);
 
 
 	int		_v_att_sub{-1};			/**< vehicle attitude subscription */

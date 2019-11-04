@@ -2457,7 +2457,6 @@ void MavlinkReceiver::handle_message_debug_vect(mavlink_message_t *msg)
 void *
 MavlinkReceiver::receive_thread(void *arg)
 {
-
 	/* set thread name */
 	{
 		char thread_name[24];
@@ -2518,10 +2517,118 @@ MavlinkReceiver::receive_thread(void *arg)
 	ssize_t nread = 0;
 	hrt_abstime last_send_update = 0;
 
-	while (!_mavlink->_task_should_exit) {
-		if (poll(&fds[0], 1, timeout) > 0) {
-			if (_mavlink->get_protocol() == SERIAL) {
 
+	while (!_mavlink->_task_should_exit) {
+
+		if(_mavlink->isUserCustomUart()) {
+			
+			const unsigned character_count = 20;
+
+			STRU_MavlinkInterCoreHeader *header = (STRU_MavlinkInterCoreHeader *)SRAM_MAVLINK_INTERCORE_RD_HEADER_ST_ADDR;
+
+	 		uint8_t *rd_buffer = (uint8_t *)SRAM_MAVLINK_INTERCORE_RD_BUFFER;
+
+			nread = 0;  
+
+			// set in_use tell cpu2 cpu0 is write data
+			header->in_use = 1;
+
+			while ((header->buf_rd_pos != header->buf_wr_pos) && nread < sizeof(buf))
+			{
+				uint8_t data = rd_buffer[header->buf_rd_pos++];
+				buf[nread++] = data;
+				
+				// PX4_INFO("buf_rd_pos %d, buf_wr_pos = %d", header->buf_rd_pos, header->buf_wr_pos);
+				if (header->buf_rd_pos == SRAM_MAVLINK_INTERCORE_RD_SIZE) {
+					header->buf_rd_pos = 0;
+				}
+			}
+
+			if (nread < (ssize_t)character_count) 
+			{
+				unsigned sleeptime = (1.0f / (_mavlink->get_baudrate() / 10)) * character_count * 1000000;
+				usleep(sleeptime);
+			}
+
+// #ifdef __PX4_POSIX
+// 			PX4_INFO("__PX4_POSIX");
+// 			if (_mavlink->get_protocol() == UDP) {
+// 				if (fds[0].revents & POLLIN) {
+// 					nread = recvfrom(_mavlink->get_socket_fd(), buf, sizeof(buf), 0, (struct sockaddr *)&srcaddr, &addrlen);
+// 				}
+
+// 			} else {
+// 				// could be TCP or other protocol
+// 			}
+
+// 			struct sockaddr_in *srcaddr_last = _mavlink->get_client_source_address();
+
+// 			int localhost = (127 << 24) + 1;
+
+// 			if (!_mavlink->get_client_source_initialized()) {
+
+// 				// set the address either if localhost or if 3 seconds have passed
+// 				// this ensures that a GCS running on localhost can get a hold of
+// 				// the system within the first N seconds
+// 				hrt_abstime stime = _mavlink->get_start_time();
+
+// 				if ((stime != 0 && (hrt_elapsed_time(&stime) > 3 * 1000 * 1000))
+// 				    || (srcaddr_last->sin_addr.s_addr == htonl(localhost))) {
+// 					srcaddr_last->sin_addr.s_addr = srcaddr.sin_addr.s_addr;
+// 					srcaddr_last->sin_port = srcaddr.sin_port;
+// 					_mavlink->set_client_source_initialized();
+// 					PX4_INFO("partner IP: %s", inet_ntoa(srcaddr.sin_addr));
+// 				}
+// 			}
+
+// #endif
+			// only start accepting messages once we're sure who we talk to
+			/* if read failed, this loop won't execute */
+				for (ssize_t i = 0; i < nread; i++) {
+					if (mavlink_parse_char(_mavlink->get_channel(), buf[i], &msg, &_status)) {
+						/* check if we received version 2 and request a switch. */
+						if (!(_mavlink->get_status()->flags & MAVLINK_STATUS_FLAG_IN_MAVLINK1)) {
+							/* this will only switch to proto version 2 if allowed in settings */
+
+							_mavlink->set_proto_version(2);
+						}
+
+						/* handle generic messages and commands */
+						handle_message(&msg);
+
+						/* handle packet with mission manager */
+						if (_mission_manager != nullptr) {
+							_mission_manager->handle_message(&msg);
+						}
+
+						/* handle packet with parameter component */
+						_parameters_manager.handle_message(&msg);
+
+						if (_mavlink->ftp_enabled()) {
+							/* handle packet with ftp component */
+							_mavlink_ftp.handle_message(&msg);
+						}
+
+						/* handle packet with log component */
+						_mavlink_log_handler.handle_message(&msg);
+
+						/* handle packet with timesync component */
+						_mavlink_timesync.handle_message(&msg);
+
+						/* handle packet with parent object */
+						_mavlink->handle_message(&msg);
+					}
+				}
+
+				/* count received bytes (nread will be -1 on read error) */
+				if (nread > 0) {
+					_mavlink->count_rxbytes(nread);
+				}
+
+		} else if (poll(&fds[0], 1, timeout) > 0) {
+
+			if (_mavlink->get_protocol() == SERIAL) {
+				
 				/*
 				 * to avoid reading very small chunks wait for data before reading
 				 * this is designed to target one message, so >20 bytes at a time
@@ -2579,7 +2686,7 @@ MavlinkReceiver::receive_thread(void *arg)
 							/* this will only switch to proto version 2 if allowed in settings */
 							_mavlink->set_proto_version(2);
 						}
-
+						
 						/* handle generic messages and commands */
 						handle_message(&msg);
 

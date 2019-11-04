@@ -49,20 +49,20 @@ public:
 
 	virtual ~FlightTaskManualStabilized() = default;
 
-	bool activate() override;
+	_EXT_ITCM bool activate() override;
 
-	bool update() override;
+	_EXT_ITCM bool update() override;
 
 protected:
-	virtual void _updateSetpoints(); /**< updates all setpoints*/
-	virtual void _scaleSticks(); /**< scales sticks to yaw and thrust */
-	void _rotateIntoHeadingFrame(matrix::Vector2f &vec); /**< rotates vector into local frame */
+	_EXT_ITCM virtual void _updateSetpoints(); /**< updates all setpoints*/
+	_EXT_ITCM virtual void _scaleSticks(); /**< scales sticks to yaw and thrust */
+	_EXT_ITCM void _rotateIntoHeadingFrame(matrix::Vector2f &vec); /**< rotates vector into local frame */
 
 private:
 
-	void _updateHeadingSetpoints(); /**< sets yaw or yaw speed */
-	void _updateThrustSetpoints(); /**< sets thrust setpoint */
-	float _throttleCurve(); /**< piecewise linear mapping from stick to throttle */
+	_EXT_ITCM void _updateHeadingSetpoints(); /**< sets yaw or yaw speed */
+	_EXT_ITCM void _updateThrustSetpoints(); /**< sets thrust setpoint */
+	_EXT_ITCM float _throttleCurve(); /**< piecewise linear mapping from stick to throttle */
 
 	float _throttle{}; /** mapped from stick z */
 

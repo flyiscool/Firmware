@@ -44,32 +44,32 @@
 #include <uORB/topics/battery_status.h>
 #include <drivers/drv_hrt.h>
 #include <px4_module_params.h>
-
+#include "chip.h"
 
 class Battery : public ModuleParams
 {
 public:
-	Battery();
+	_EXT_ITCM Battery();
 
 	/**
 	 * Reset all battery stats and report invalid/nothing.
 	 */
-	void reset(battery_status_s *battery_status);
+	_EXT_ITCM void reset(battery_status_s *battery_status);
 
 	/**
 	 * Get the battery cell count
 	 */
-	int cell_count() { return _n_cells.get(); }
+	_EXT_ITCM int cell_count() { return _n_cells.get(); }
 
 	/**
 	 * Get the empty voltage per cell
 	 */
-	float empty_cell_voltage() { return _v_empty.get(); }
+	_EXT_ITCM float empty_cell_voltage() { return _v_empty.get(); }
 
 	/**
 	 * Get the full voltage per cell
 	 */
-	float full_cell_voltage() { return _v_charged.get(); }
+	_EXT_ITCM float full_cell_voltage() { return _v_charged.get(); }
 
 	/**
 	 * Update current battery status message.
@@ -81,19 +81,19 @@ public:
 	 * @param priority: The brick number -1. The term priority refers to the Vn connection on the LTC4417
 	 * @param throttle_normalized: throttle from 0 to 1
 	 */
-	void updateBatteryStatus(hrt_abstime timestamp, float voltage_v, float current_a,
+	_EXT_ITCM void updateBatteryStatus(hrt_abstime timestamp, float voltage_v, float current_a,
 				 bool connected, bool selected_source, int priority,
 				 float throttle_normalized,
 				 bool armed, battery_status_s *status);
 
 private:
-	void filterVoltage(float voltage_v);
-	void filterThrottle(float throttle);
-	void filterCurrent(float current_a);
-	void sumDischarged(hrt_abstime timestamp, float current_a);
-	void estimateRemaining(float voltage_v, float current_a, float throttle, bool armed);
-	void determineWarning(bool connected);
-	void computeScale();
+	_EXT_ITCM void filterVoltage(float voltage_v);
+	_EXT_ITCM void filterThrottle(float throttle);
+	_EXT_ITCM void filterCurrent(float current_a);
+	_EXT_ITCM void sumDischarged(hrt_abstime timestamp, float current_a);
+	_EXT_ITCM void estimateRemaining(float voltage_v, float current_a, float throttle, bool armed);
+	_EXT_ITCM void determineWarning(bool connected);
+	_EXT_ITCM void computeScale();
 
 	DEFINE_PARAMETERS(
 		(ParamFloat<px4::params::BAT_V_EMPTY>) _v_empty,

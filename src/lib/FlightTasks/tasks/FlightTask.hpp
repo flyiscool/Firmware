@@ -64,13 +64,13 @@ public:
 	 * Initialize the uORB subscriptions using an array
 	 * @return true on success, false on error
 	 */
-	virtual bool initializeSubscriptions(SubscriptionArray &subscription_array);
+	_EXT_ITCM virtual bool initializeSubscriptions(SubscriptionArray &subscription_array);
 
 	/**
 	 * Call once on the event where you switch to the task
 	 * @return true on success, false on error
 	 */
-	virtual bool activate();
+	_EXT_ITCM virtual bool activate();
 
 	/**
 	 * To be called to adopt parameters from an arrived vehicle command
@@ -83,7 +83,7 @@ public:
 	 * to initialize time and input data
 	 * @return true on success, false on error
 	 */
-	virtual bool updateInitialize();
+	_EXT_ITCM virtual bool updateInitialize();
 
 	/**
 	 * To be called regularly in the control loop cycle to execute the task
@@ -101,7 +101,7 @@ public:
 	/**
 	 * Call this whenever a parameter update notification is received (parameter_update uORB message)
 	 */
-	void handleParameterUpdate()
+	_EXT_ITCM void handleParameterUpdate()
 	{
 		updateParams();
 	}
@@ -132,10 +132,10 @@ protected:
 	/**
 	 * Get the output data
 	 */
-	void _resetSetpoints();
+	_EXT_ITCM void _resetSetpoints();
 
 private:
 	uORB::Subscription<vehicle_local_position_s> *_sub_vehicle_local_position{nullptr};
 
-	bool _evaluateVehiclePosition();
+	_EXT_ITCM bool _evaluateVehiclePosition();
 };

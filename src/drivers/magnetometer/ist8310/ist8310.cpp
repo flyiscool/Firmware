@@ -191,17 +191,17 @@ class IST8310 : public device::I2C
 {
 public:
 	IST8310(int bus_number, int address, const char *path, enum Rotation rotation);
-	virtual ~IST8310();
+	virtual  ~IST8310();
 
-	virtual int     init();
+	virtual int init();
 
-	virtual ssize_t     read(struct file *filp, char *buffer, size_t buflen);
-	virtual int         ioctl(struct file *filp, int cmd, unsigned long arg);
+	virtual ssize_t read(struct file *filp, char *buffer, size_t buflen);
+	virtual int ioctl(struct file *filp, int cmd, unsigned long arg);
 
 	/**
 	 * Diagnostics - print some basic information about the driver.
 	 */
-	void            print_info();
+	void print_info();
 
 protected:
 	virtual int probe();
@@ -242,17 +242,17 @@ private:
 	 * @note This function is called at open and error time.  It might make sense
 	 *       to make it more aggressive about resetting the bus in case of errors.
 	 */
-	void		start();
+	void start();
 
 	/**
 	 * Stop the automatic measurement state machine.
 	 */
-	void        stop();
+	void stop();
 
 	/**
 	 * Reset the device
 	 */
-	int         reset();
+	int reset();
 
 	/**
 	 * Perform the on-sensor scale calibration routine.
@@ -263,7 +263,7 @@ private:
 	 *
 	 * @param enable set to 1 to enable self-test strap, 0 to disable
 	 */
-	int         calibrate(struct file *filp, unsigned enable);
+	int calibrate(struct file *filp, unsigned enable);
 
 	/**
 	 * check the sensor configuration.
@@ -272,7 +272,7 @@ private:
 	 * cope with communication errors causing the configuration to
 	 * change
 	 */
-	void            check_conf(void);
+	void check_conf(void);
 
 	/**
 	 * Perform a poll cycle; collect from the previous measurement
@@ -287,7 +287,7 @@ private:
 	 * and measurement to provide the most recent measurement possible
 	 * at the next interval.
 	 */
-	void            cycle();
+	void cycle();
 
 	/**
 	 * Static trampoline from the workq context; because we don't have a
@@ -295,7 +295,7 @@ private:
 	 *
 	 * @param arg       Instance pointer for the driver that is polling.
 	 */
-	static void     cycle_trampoline(void *arg);
+	static void cycle_trampoline(void *arg);
 
 	/**
 	 * Write a register.
@@ -304,7 +304,7 @@ private:
 	 * @param val       The value to write.
 	 * @return      OK on write success.
 	 */
-	int         write_reg(uint8_t reg, uint8_t val);
+	int  write_reg(uint8_t reg, uint8_t val);
 
 	/**
 	 * Write to a register block.
@@ -314,7 +314,7 @@ private:
 	 * @param count     The number of bytes to write.
 	 * @return      OK on write success.
 	 */
-	int     write(unsigned address, void *data, unsigned count);
+	int write(unsigned address, void *data, unsigned count);
 
 	/**
 	 * Read a register.
@@ -323,7 +323,7 @@ private:
 	 * @param val       The value read.
 	 * @return      OK on read success.
 	 */
-	int         read_reg(uint8_t reg, uint8_t &val);
+	int read_reg(uint8_t reg, uint8_t &val);
 
 	/**
 	 * read register block.
@@ -340,12 +340,12 @@ private:
 	 *
 	 * @return      OK if the measurement command was successful.
 	 */
-	int         measure();
+	int measure();
 
 	/**
 	 * Collect the result of the most recent measurement.
 	 */
-	int         collect();
+	int collect();
 
 	/**
 	 * Convert a big-endian signed 16-bit value to a float.
@@ -353,35 +353,35 @@ private:
 	 * @param in        A signed 16-bit big-endian value.
 	 * @return      The floating-point representation of the value.
 	 */
-	float       meas_to_float(uint8_t in[2]);
+	float meas_to_float(uint8_t in[2]);
 
 	/**
 	 * Check the current calibration and update device status
 	 *
 	 * @return 0 if calibration is ok, 1 else
 	 */
-	int         check_calibration();
+	int check_calibration();
 
 	/**
 	* Check the current scale calibration
 	*
 	* @return 0 if scale calibration is ok, 1 else
 	*/
-	int         check_scale();
+	int check_scale();
 
 	/**
 	* Check the current offset calibration
 	*
 	* @return 0 if offset calibration is ok, 1 else
 	*/
-	int         check_offset();
+	int check_offset();
 
 	/**
 	* Place the device in self test mode
 	*
 	* @return 0 if mode is set, 1 else
 	*/
-	int         set_selftest(unsigned enable);
+	int set_selftest(unsigned enable);
 
 	/* this class has pointer data members, do not allow copying it */
 	IST8310(const IST8310 &);
@@ -489,6 +489,8 @@ int
 IST8310::write(unsigned address, void *data, unsigned count)
 {
 	uint8_t buf[32];
+
+	// i2cinfo("IST8310::write ---- address: %d, data: %d, count: %d", address, &data, count);
 
 	if (sizeof(buf) < (count + 1)) {
 		return -EIO;
@@ -1273,7 +1275,9 @@ struct ist8310_bus_option {
 	uint8_t busnum;
 	IST8310 *dev;
 } bus_options[] = {
+#ifdef PX4_I2C_BUS_EXPANSION
 	{ IST8310_BUS_I2C_EXTERNAL, "/dev/ist8310_ext", PX4_I2C_BUS_EXPANSION, NULL },
+#endif
 #ifdef PX4_I2C_BUS_EXPANSION1
 	{ IST8310_BUS_I2C_EXTERNAL1, "/dev/ist8311_ext1", PX4_I2C_BUS_EXPANSION1, NULL },
 #endif
@@ -1338,8 +1342,7 @@ start_bus(struct ist8310_bus_option &bus, int address, enum Rotation rotation)
  * This function call only returns once the driver
  * is either successfully up and running or failed to start.
  */
-void
-start(enum IST8310_BUS busid, int address, enum Rotation rotation)
+void start(enum IST8310_BUS busid, int address, enum Rotation rotation)
 {
 	bool started = false;
 

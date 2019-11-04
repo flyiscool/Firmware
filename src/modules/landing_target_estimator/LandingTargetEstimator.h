@@ -66,36 +66,36 @@ class LandingTargetEstimator
 {
 public:
 
-	LandingTargetEstimator();
-	virtual ~LandingTargetEstimator();
+	_EXT_ITCM LandingTargetEstimator();
+	_EXT_ITCM virtual ~LandingTargetEstimator();
 
 	/*
 	 * Get new measurements and update the state estimate
 	 */
-	void update();
+	_EXT_ITCM void update();
 
 protected:
 	/*
 	 * Called once to initialize uORB topics.
 	 */
-	void _initialize_topics();
+	_EXT_ITCM void _initialize_topics();
 
 	/*
 	 * Update uORB topics.
 	 */
-	void _update_topics();
+	_EXT_ITCM void _update_topics();
 
 	/*
 	 * Update parameters.
 	 */
-	void _update_params();
+	_EXT_ITCM void _update_params();
 
 	/*
 	 * Convenience function for polling uORB subscriptions.
 	 *
 	 * @return true if there was new data and it was successfully copied
 	 */
-	static bool _orb_update(const struct orb_metadata *meta, int handle, void *buffer);
+	_EXT_ITCM static bool _orb_update(const struct orb_metadata *meta, int handle, void *buffer);
 
 	/* timeout after which filter is reset if target not seen */
 	static constexpr uint32_t landing_target_estimator_TIMEOUT_US = 2000000;
@@ -164,9 +164,9 @@ private:
 	hrt_abstime _last_predict; // timestamp of last filter prediction
 	hrt_abstime _last_update; // timestamp of last filter update (used to check timeout)
 
-	void _check_params(const bool force);
+	_EXT_ITCM void _check_params(const bool force);
 
-	void _update_state();
+	_EXT_ITCM void _update_state();
 };
 
 

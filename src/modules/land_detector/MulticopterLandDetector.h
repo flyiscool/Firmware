@@ -65,19 +65,19 @@ namespace land_detector
 class MulticopterLandDetector : public LandDetector
 {
 public:
-	MulticopterLandDetector();
+	_EXT_ITCM MulticopterLandDetector();
 
 protected:
-	void _initialize_topics() override;
-	void _update_params() override;
-	void _update_topics() override;
+	_EXT_ITCM void _initialize_topics() override;
+	_EXT_ITCM void _update_params() override;
+	_EXT_ITCM void _update_topics() override;
 
-	bool _get_landed_state() override;
-	bool _get_ground_contact_state() override;
-	bool _get_maybe_landed_state() override;
-	bool _get_freefall_state() override;
+	_EXT_ITCM bool _get_landed_state() override;
+	_EXT_ITCM bool _get_ground_contact_state() override;
+	_EXT_ITCM bool _get_maybe_landed_state() override;
+	_EXT_ITCM bool _get_freefall_state() override;
 
-	float _get_max_altitude() override;
+	_EXT_ITCM float _get_max_altitude() override;
 private:
 
 	/** Time in us that landing conditions have to hold before triggering a land. */
@@ -143,12 +143,12 @@ private:
 	hrt_abstime _landed_time{0};
 
 	/* get control mode dependent pilot throttle threshold with which we should quit landed state and take off */
-	float _get_takeoff_throttle();
-	bool _has_altitude_lock();
-	bool _has_position_lock();
-	bool _has_minimal_thrust();
-	bool _has_low_thrust();
-	bool _is_climb_rate_enabled();
+	_EXT_ITCM float _get_takeoff_throttle();
+	_EXT_ITCM bool _has_altitude_lock();
+	_EXT_ITCM bool _has_position_lock();
+	_EXT_ITCM bool _has_minimal_thrust();
+	_EXT_ITCM bool _has_low_thrust();
+	_EXT_ITCM bool _is_climb_rate_enabled();
 };
 
 

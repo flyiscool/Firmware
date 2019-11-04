@@ -46,5 +46,5 @@
 
 namespace ControlMath
 {
-vehicle_attitude_setpoint_s thrustToAttitude(const matrix::Vector3f &thr_sp, const float yaw_sp);
+_EXT_ITCM vehicle_attitude_setpoint_s thrustToAttitude(const matrix::Vector3f &thr_sp, const float yaw_sp);
 }

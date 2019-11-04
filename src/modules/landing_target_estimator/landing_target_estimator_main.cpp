@@ -80,7 +80,7 @@ int landing_target_estimator_thread_main(int argc, char *argv[]);
 /**
 * Main entry point for this module
 **/
-int landing_target_estimator_main(int argc, char *argv[])
+_EXT_ITCM int landing_target_estimator_main(int argc, char *argv[])
 {
 
 	if (argc < 2) {
@@ -130,7 +130,7 @@ exiterr:
 	return 1;
 }
 
-int landing_target_estimator_thread_main(int argc, char *argv[])
+_EXT_ITCM int landing_target_estimator_thread_main(int argc, char *argv[])
 {
 	PX4_DEBUG("starting");
 

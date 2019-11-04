@@ -68,7 +68,7 @@ static int	do_mag(int argc, char *argv[]);
 static int	do_device(int argc, char *argv[]);
 static void	print_usage(void);
 
-int
+_EXT_ITCM int
 config_main(int argc, char *argv[])
 {
 	bool is_device_cmd = argc >= 2 && (!strcmp(argv[1], "block") || !strcmp(argv[1], "unblock"));
@@ -91,7 +91,7 @@ config_main(int argc, char *argv[])
 	print_usage();
 	return 1;
 }
-static void
+_EXT_ITCM static void
 print_usage(void)
 {
 	PRINT_MODULE_DESCRIPTION("Configure a sensor driver (sampling & publication rate, range, etc.)");
@@ -114,7 +114,7 @@ print_usage(void)
 	PRINT_MODULE_USAGE_ARG("<file:dev>", "Sensor device file", false);
 }
 
-static int
+_EXT_ITCM static int
 do_device(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -163,7 +163,7 @@ do_device(int argc, char *argv[])
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_gyro(int argc, char *argv[])
 {
 	int	fd;
@@ -251,7 +251,7 @@ do_gyro(int argc, char *argv[])
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_mag(int argc, char *argv[])
 {
 	int fd;
@@ -339,7 +339,7 @@ do_mag(int argc, char *argv[])
 	return 0;
 }
 
-static int
+_EXT_ITCM static int
 do_accel(int argc, char *argv[])
 {
 	int	fd;

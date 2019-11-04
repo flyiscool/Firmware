@@ -338,5 +338,5 @@ bool RCTest::sumdTest()
 
 
 
-ut_declare_test_c(rc_tests_main, RCTest)
+_EXT_ITCM ut_declare_test_c(rc_tests_main, RCTest)
 

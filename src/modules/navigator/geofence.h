@@ -59,7 +59,7 @@ class Navigator;
 class Geofence : public ModuleParams
 {
 public:
-	Geofence(Navigator *navigator);
+	_EXT_ITCM Geofence(Navigator *navigator);
 	Geofence(const Geofence &) = delete;
 	Geofence &operator=(const Geofence &) = delete;
 	~Geofence();
@@ -80,14 +80,14 @@ public:
 	 * update the geofence from dataman.
 	 * It's generally not necessary to call this as it will automatically update when the data is changed.
 	 */
-	void updateFence();
+	_EXT_ITCM void updateFence();
 
 	/**
 	 * Return whether the system obeys the geofence.
 	 *
 	 * @return true: system is obeying fence, false: system is violating fence
 	 */
-	bool check(const vehicle_global_position_s &global_position,
+	_EXT_ITCM bool check(const vehicle_global_position_s &global_position,
 		   const vehicle_gps_position_s &gps_position, const home_position_s home_pos, bool home_position_set);
 
 	/**
@@ -95,11 +95,11 @@ public:
 	 *
 	 * @return true: system is obeying fence, false: system is violating fence
 	 */
-	bool check(const struct mission_item_s &mission_item);
+	_EXT_ITCM bool check(const struct mission_item_s &mission_item);
 
-	int clearDm();
+	_EXT_ITCM int clearDm();
 
-	bool valid();
+	_EXT_ITCM bool valid();
 
 	/**
 	 * Load a single inclusion polygon, replacing any already existing polygons.
@@ -120,20 +120,20 @@ public:
 	 *
 	 * Where the first line is min, max altitude in meters AMSL.
 	 */
-	int loadFromFile(const char *filename);
+	_EXT_ITCM int loadFromFile(const char *filename);
 
-	bool isEmpty() { return _num_polygons == 0; }
+	_EXT_ITCM bool isEmpty() { return _num_polygons == 0; }
 
-	int getAltitudeMode() { return _param_altitude_mode.get(); }
-	int getSource() { return _param_source.get(); }
-	int getGeofenceAction() { return _param_action.get(); }
+	_EXT_ITCM int getAltitudeMode() { return _param_altitude_mode.get(); }
+	_EXT_ITCM int getSource() { return _param_source.get(); }
+	_EXT_ITCM int getGeofenceAction() { return _param_action.get(); }
 
-	bool isHomeRequired();
+	_EXT_ITCM bool isHomeRequired();
 
 	/**
 	 * print Geofence status to the console
 	 */
-	void printStatus();
+	_EXT_ITCM void printStatus();
 
 private:
 	Navigator	*_navigator{nullptr};
@@ -174,7 +174,7 @@ private:
 	/**
 	 * implementation of updateFence(), but without locking
 	 */
-	void _updateFence();
+	_EXT_ITCM void _updateFence();
 
 	/**
 	 * Check if a point passes the Geofence test.
@@ -186,7 +186,7 @@ private:
 	 *                  or: no polygon configured
 	 * @return result of the check above (false for a geofence violation)
 	 */
-	bool checkPolygons(double lat, double lon, float altitude);
+	_EXT_ITCM bool checkPolygons(double lat, double lon, float altitude);
 
 	/**
 	 * Check if a point passes the Geofence test.
@@ -194,21 +194,21 @@ private:
 	 *
 	 * @return false for a geofence violation
 	 */
-	bool checkAll(double lat, double lon, float altitude);
+	_EXT_ITCM bool checkAll(double lat, double lon, float altitude);
 
-	bool checkAll(const vehicle_global_position_s &global_position);
-	bool checkAll(const vehicle_global_position_s &global_position, float baro_altitude_amsl);
+	_EXT_ITCM bool checkAll(const vehicle_global_position_s &global_position);
+	_EXT_ITCM bool checkAll(const vehicle_global_position_s &global_position, float baro_altitude_amsl);
 
 	/**
 	 * Check if a single point is within a polygon
 	 * @return true if within polygon
 	 */
-	bool insidePolygon(const PolygonInfo &polygon, double lat, double lon, float altitude);
+	_EXT_ITCM bool insidePolygon(const PolygonInfo &polygon, double lat, double lon, float altitude);
 
 	/**
 	 * Check if a single point is within a circle
 	 * @param polygon must be a circle!
 	 * @return true if within polygon the circle
 	 */
-	bool insideCircle(const PolygonInfo &polygon, double lat, double lon, float altitude);
+	_EXT_ITCM bool insideCircle(const PolygonInfo &polygon, double lat, double lon, float altitude);
 };

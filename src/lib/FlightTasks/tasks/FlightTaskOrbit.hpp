@@ -46,15 +46,15 @@
 class FlightTaskOrbit : public FlightTaskManual
 {
 public:
-	FlightTaskOrbit();
+	_EXT_ITCM FlightTaskOrbit();
 
 	virtual ~FlightTaskOrbit() = default;
 
-	bool applyCommandParameters(const vehicle_command_s &command) override;
+	_EXT_ITCM bool applyCommandParameters(const vehicle_command_s &command) override;
 
-	bool activate() override;
+	_EXT_ITCM bool activate() override;
 
-	bool update() override;
+	_EXT_ITCM bool update() override;
 
 private:
 	float _r = 0.f; /**< radius with which to orbit the target */

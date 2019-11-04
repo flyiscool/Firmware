@@ -62,7 +62,7 @@ static void usage(const char *reason);
 
 static orb_advert_t _test_motor_pub = NULL;
 
-void motor_test(unsigned channel, float value)
+_EXT_ITCM void motor_test(unsigned channel, float value)
 {
 	struct test_motor_s _test_motor;
 
@@ -82,7 +82,7 @@ void motor_test(unsigned channel, float value)
 	printf("motor %d set to %.2f\n", channel, (double)value);
 }
 
-static void usage(const char *reason)
+_EXT_ITCM static void usage(const char *reason)
 {
 	if (reason != NULL) {
 		PX4_WARN("%s", reason);
@@ -102,7 +102,7 @@ static void usage(const char *reason)
 
 }
 
-int motor_test_main(int argc, char *argv[])
+_EXT_ITCM int motor_test_main(int argc, char *argv[])
 {
 	int channel = -1; //default to all channels
 	unsigned long lval;

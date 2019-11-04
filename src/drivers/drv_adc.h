@@ -51,7 +51,7 @@
  * but no more than PX4_MAX_ADC_CHANNELS.
  *
  */
-#define PX4_MAX_ADC_CHANNELS 12
+#define PX4_MAX_ADC_CHANNELS 16
 typedef struct __attribute__((packed)) px4_adc_msg_t {
 	uint8_t      am_channel;               /* The 8-bit ADC Channel */
 	int32_t      am_data;                  /* ADC convert result (4 bytes) */

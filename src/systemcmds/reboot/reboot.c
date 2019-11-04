@@ -47,7 +47,7 @@
 
 __EXPORT int reboot_main(int argc, char *argv[]);
 
-static void print_usage(void)
+_EXT_ITCM static void print_usage(void)
 {
 	PRINT_MODULE_DESCRIPTION("Reboot the system");
 
@@ -57,7 +57,7 @@ static void print_usage(void)
 	PRINT_MODULE_USAGE_ARG("lock|unlock", "Take/release the shutdown lock (for testing)", true);
 }
 
-int reboot_main(int argc, char *argv[])
+_EXT_ITCM int reboot_main(int argc, char *argv[])
 {
 	int ch;
 	bool to_bootloader = false;

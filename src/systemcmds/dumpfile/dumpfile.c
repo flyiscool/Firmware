@@ -51,7 +51,7 @@
 
 __EXPORT int dumpfile_main(int argc, char *argv[]);
 
-static void print_usage(void)
+_EXT_ITCM static void print_usage(void)
 {
 	PRINT_MODULE_DESCRIPTION("Dump file utility. Prints file size and contents in binary mode (don't replace LF with CR LF) to stdout.");
 
@@ -60,7 +60,7 @@ static void print_usage(void)
 
 }
 
-int
+_EXT_ITCM int
 dumpfile_main(int argc, char *argv[])
 {
 	if (argc < 2) {

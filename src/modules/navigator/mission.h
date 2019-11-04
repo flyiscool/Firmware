@@ -67,13 +67,13 @@ class Navigator;
 class Mission : public MissionBlock, public ModuleParams
 {
 public:
-	Mission(Navigator *navigator);
+	_EXT_ITCM Mission(Navigator *navigator);
 	~Mission() override = default;
 
-	void on_inactive() override;
-	void on_inactivation() override;
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_inactive() override;
+	_EXT_ITCM void on_inactivation() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
 	enum mission_altitude_mode {
 		MISSION_ALTMODE_ZOH = 0,
@@ -88,91 +88,91 @@ public:
 		MISSION_YAWMODE_MAX = 4
 	};
 
-	bool set_current_offboard_mission_index(uint16_t index);
+	_EXT_ITCM bool set_current_offboard_mission_index(uint16_t index);
 
-	bool land_start();
-	bool landing();
+	_EXT_ITCM bool land_start();
+	_EXT_ITCM bool landing();
 
-	uint16_t get_land_start_index() const { return _land_start_index; }
-	bool get_land_start_available() const { return _land_start_available; }
-	bool get_mission_finished() const { return _mission_type == MISSION_TYPE_NONE; }
-	bool get_mission_changed() const { return _mission_changed ; }
-	bool get_mission_waypoints_changed() const { return _mission_waypoints_changed ; }
+	_EXT_ITCM uint16_t get_land_start_index() const { return _land_start_index; }
+	_EXT_ITCM bool get_land_start_available() const { return _land_start_available; }
+	_EXT_ITCM bool get_mission_finished() const { return _mission_type == MISSION_TYPE_NONE; }
+	_EXT_ITCM bool get_mission_changed() const { return _mission_changed ; }
+	_EXT_ITCM bool get_mission_waypoints_changed() const { return _mission_waypoints_changed ; }
 
-	void set_closest_item_as_current();
+	_EXT_ITCM void set_closest_item_as_current();
 
 	/**
 	 * Set a new mission mode and handle the switching between the different modes
 	 *
 	 * For a list of the different modes refer to mission_result.msg
 	 */
-	void set_execution_mode(const uint8_t mode);
+	_EXT_ITCM void set_execution_mode(const uint8_t mode);
 private:
 
 	/**
 	 * Update offboard mission topic
 	 */
-	void update_offboard_mission();
+	_EXT_ITCM void update_offboard_mission();
 
 	/**
 	 * Move on to next mission item or switch to loiter
 	 */
-	void advance_mission();
+	_EXT_ITCM void advance_mission();
 
 	/**
 	 * Set new mission items
 	 */
-	void set_mission_items();
+	_EXT_ITCM void set_mission_items();
 
 	/**
 	 * Returns true if we need to do a takeoff at the current state
 	 */
-	bool do_need_vertical_takeoff();
+	_EXT_ITCM bool do_need_vertical_takeoff();
 
 	/**
 	 * Returns true if we need to move to waypoint location before starting descent
 	 */
-	bool do_need_move_to_land();
+	_EXT_ITCM bool do_need_move_to_land();
 
 	/**
 	 * Returns true if we need to move to waypoint location after vtol takeoff
 	 */
-	bool do_need_move_to_takeoff();
+	_EXT_ITCM bool do_need_move_to_takeoff();
 
 	/**
 	 * Copies position from setpoint if valid, otherwise copies current position
 	 */
-	void copy_position_if_valid(struct mission_item_s *mission_item, struct position_setpoint_s *setpoint);
+	_EXT_ITCM void copy_position_if_valid(struct mission_item_s *mission_item, struct position_setpoint_s *setpoint);
 
 	/**
 	 * Create mission item to align towards next waypoint
 	 */
-	void set_align_mission_item(struct mission_item_s *mission_item, struct mission_item_s *mission_item_next);
+	_EXT_ITCM void set_align_mission_item(struct mission_item_s *mission_item, struct mission_item_s *mission_item_next);
 
 	/**
 	 * Calculate takeoff height for mission item considering ground clearance
 	 */
-	float calculate_takeoff_altitude(struct mission_item_s *mission_item);
+	_EXT_ITCM float calculate_takeoff_altitude(struct mission_item_s *mission_item);
 
 	/**
 	 * Updates the heading of the vehicle. Rotary wings only.
 	 */
-	void heading_sp_update();
+	_EXT_ITCM void heading_sp_update();
 
 	/**
 	 * Updates the altitude sp to follow a foh
 	 */
-	void altitude_sp_foh_update();
+	_EXT_ITCM void altitude_sp_foh_update();
 
 	/**
 	 * Update the cruising speed setpoint.
 	 */
-	void cruising_speed_sp_update();
+	_EXT_ITCM void cruising_speed_sp_update();
 
 	/**
 	 * Abort landing
 	 */
-	void do_abort_landing();
+	_EXT_ITCM void do_abort_landing();
 
 	/**
 	 * Read the current and the next mission item. The next mission item read is the
@@ -180,7 +180,7 @@ private:
 	 *
 	 * @return true if current mission item available
 	 */
-	bool prepare_mission_items(mission_item_s *mission_item,
+	_EXT_ITCM bool prepare_mission_items(mission_item_s *mission_item,
 				   mission_item_s *next_position_mission_item, bool *has_next_position_item);
 
 	/**
@@ -189,59 +189,59 @@ private:
 	 *
 	 * @return true if successful
 	 */
-	bool read_mission_item(int offset, struct mission_item_s *mission_item);
+	_EXT_ITCM bool read_mission_item(int offset, struct mission_item_s *mission_item);
 
 	/**
 	 * Save current offboard mission state to dataman
 	 */
-	void save_offboard_mission_state();
+	_EXT_ITCM void save_offboard_mission_state();
 
 	/**
 	 * Inform about a changed mission item after a DO_JUMP
 	 */
-	void report_do_jump_mission_changed(int index, int do_jumps_remaining);
+	_EXT_ITCM void report_do_jump_mission_changed(int index, int do_jumps_remaining);
 
 	/**
 	 * Set a mission item as reached
 	 */
-	void set_mission_item_reached();
+	_EXT_ITCM void set_mission_item_reached();
 
 	/**
 	 * Set the current offboard mission item
 	 */
-	void set_current_offboard_mission_item();
+	_EXT_ITCM void set_current_offboard_mission_item();
 
 	/**
 	 * Check whether a mission is ready to go
 	 */
-	void check_mission_valid(bool force);
+	_EXT_ITCM void check_mission_valid(bool force);
 
 	/**
 	 * Reset offboard mission
 	 */
-	void reset_offboard_mission(struct mission_s &mission);
+	_EXT_ITCM void reset_offboard_mission(struct mission_s &mission);
 
 	/**
 	 * Returns true if we need to reset the mission
 	 */
-	bool need_to_reset_mission(bool active);
+	_EXT_ITCM bool need_to_reset_mission(bool active);
 
 	/**
 	 * Project current location with heading to far away location and fill setpoint.
 	 */
-	void generate_waypoint_from_heading(struct position_setpoint_s *setpoint, float yaw);
+	_EXT_ITCM void generate_waypoint_from_heading(struct position_setpoint_s *setpoint, float yaw);
 
 	/**
 	 * Find and store the index of the landing sequence (DO_LAND_START)
 	 */
-	bool find_offboard_land_start();
+	_EXT_ITCM bool find_offboard_land_start();
 
 	/**
 	 * Return the index of the closest offboard mission item to the current global position.
 	 */
-	int32_t index_closest_mission_item() const;
+	_EXT_ITCM int32_t index_closest_mission_item() const;
 
-	bool position_setpoint_equal(const position_setpoint_s *p1, const position_setpoint_s *p2) const;
+	_EXT_ITCM bool position_setpoint_equal(const position_setpoint_s *p1, const position_setpoint_s *p2) const;
 
 	DEFINE_PARAMETERS(
 		(ParamFloat<px4::params::MIS_DIST_1WP>) _param_dist_1wp,

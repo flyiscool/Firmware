@@ -79,28 +79,28 @@ protected:
 private:
 	ms5611::prom_u	&_prom;
 
-	int		_probe_address(uint8_t address);
+	int _probe_address(uint8_t address);
 
 	/**
 	 * Send a reset command to the MS5611.
 	 *
 	 * This is required after any bus reset.
 	 */
-	int		_reset();
+	int _reset();
 
 	/**
 	 * Send a measure command to the MS5611.
 	 *
 	 * @param addr		Which address to use for the measure operation.
 	 */
-	int		_measure(unsigned addr);
+	int _measure(unsigned addr);
 
 	/**
 	 * Read the MS5611 PROM
 	 *
 	 * @return		PX4_OK if the PROM reads successfully.
 	 */
-	int		_read_prom();
+	int _read_prom();
 
 };
 

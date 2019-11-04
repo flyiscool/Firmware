@@ -53,12 +53,12 @@ class FollowTarget : public MissionBlock, public ModuleParams
 {
 
 public:
-	FollowTarget(Navigator *navigator);
+	_EXT_ITCM FollowTarget(Navigator *navigator);
 	~FollowTarget() = default;
 
-	void on_inactive() override;
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_inactive() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
 private:
 
@@ -131,17 +131,17 @@ private:
 
 	matrix::Dcmf _rot_matrix;
 
-	void track_target_position();
-	void track_target_velocity();
-	bool target_velocity_valid();
-	bool target_position_valid();
-	void reset_target_validity();
-	void update_position_sp(bool velocity_valid, bool position_valid, float yaw_rate);
-	void update_target_motion();
-	void update_target_velocity();
+	_EXT_ITCM void track_target_position();
+	_EXT_ITCM void track_target_velocity();
+	_EXT_ITCM bool target_velocity_valid();
+	_EXT_ITCM bool target_position_valid();
+	_EXT_ITCM void reset_target_validity();
+	_EXT_ITCM void update_position_sp(bool velocity_valid, bool position_valid, float yaw_rate);
+	_EXT_ITCM void update_target_motion();
+	_EXT_ITCM void update_target_velocity();
 
 	/**
 	 * Set follow_target item
 	 */
-	void set_follow_target_item(struct mission_item_s *item, float min_clearance, follow_target_s &target, float yaw);
+	_EXT_ITCM void set_follow_target_item(struct mission_item_s *item, float min_clearance, follow_target_s &target, float yaw);
 };

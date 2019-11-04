@@ -117,13 +117,13 @@ static volatile enum {
 	Stopping = 3
 } gpio_led_state = Stopped;
 
-__EXPORT int gpio_led_main(int argc, char *argv[]);
+_EXT_ITCM int gpio_led_main(int argc, char *argv[]);
 
-void gpio_led_start(FAR void *arg);
+_EXT_ITCM void gpio_led_start(FAR void *arg);
 
-void gpio_led_cycle(FAR void *arg);
+_EXT_ITCM void gpio_led_cycle(FAR void *arg);
 
-static void print_usage(const char *reason)
+_EXT_ITCM static void print_usage(const char *reason)
 {
 	if (reason) {
 		PX4_WARN("%s\n", reason);
@@ -155,7 +155,7 @@ To drive an LED connected AUX5 pin.
 	PRINT_MODULE_USAGE_COMMAND("stop");
 }
 
-int gpio_led_main(int argc, char *argv[])
+_EXT_ITCM int gpio_led_main(int argc, char *argv[])
 {
 	if (argc < 2) {
 		print_usage(NULL);
@@ -239,7 +239,7 @@ out:
 	exit(1);
 }
 
-void gpio_led_start(FAR void *arg)
+_EXT_ITCM void gpio_led_start(FAR void *arg)
 {
 	FAR struct gpio_led_s *priv = (FAR struct gpio_led_s *)arg;
 
@@ -282,7 +282,7 @@ void gpio_led_start(FAR void *arg)
 	gpio_led_state = Running;
 }
 
-void gpio_led_cycle(FAR void *arg)
+_EXT_ITCM void gpio_led_cycle(FAR void *arg)
 {
 	FAR struct gpio_led_s *priv = (FAR struct gpio_led_s *)arg;
 

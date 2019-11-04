@@ -50,11 +50,11 @@ public:
 
 	virtual ~FlightTaskManual() = default;
 
-	bool initializeSubscriptions(SubscriptionArray &subscription_array) override;
+	_EXT_ITCM bool initializeSubscriptions(SubscriptionArray &subscription_array) override;
 
 	bool applyCommandParameters(const vehicle_command_s &command) override { return FlightTask::applyCommandParameters(command); };
 
-	bool updateInitialize() override;
+	_EXT_ITCM bool updateInitialize() override;
 
 protected:
 
@@ -65,7 +65,7 @@ protected:
 	float stickDeadzone() const { return _stick_dz.get(); }
 private:
 
-	bool _evaluateSticks(); /**< checks and sets stick inputs */
+	_EXT_ITCM bool _evaluateSticks(); /**< checks and sets stick inputs */
 
 	uORB::Subscription<manual_control_setpoint_s> *_sub_manual_control_setpoint{nullptr};
 

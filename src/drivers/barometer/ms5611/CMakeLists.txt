@@ -39,7 +39,7 @@ set(srcs
 px4_add_module(
 	MODULE drivers__ms5611
 	MAIN ms5611
-	STACK_MAIN 1200
+	STACK_MAIN 2400
 	COMPILE_FLAGS
 	SRCS ${srcs}
 	DEPENDS

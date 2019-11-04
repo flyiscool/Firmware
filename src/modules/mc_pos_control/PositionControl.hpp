@@ -60,20 +60,20 @@ struct Constraints {
 class PositionControl
 {
 public:
-	PositionControl();
+	_EXT_ITCM PositionControl();
 
 	~PositionControl() {};
 
-	void updateState(const vehicle_local_position_s &state, const matrix::Vector3f &vel_dot);
-	void updateSetpoint(const vehicle_local_position_setpoint_s &setpoint);
-	void updateConstraints(const Controller::Constraints &constraints);
-	void generateThrustYawSetpoint(const float &dt);
+	_EXT_ITCM void updateState(const vehicle_local_position_s &state, const matrix::Vector3f &vel_dot);
+	_EXT_ITCM void updateSetpoint(const vehicle_local_position_setpoint_s &setpoint);
+	_EXT_ITCM void updateConstraints(const Controller::Constraints &constraints);
+	_EXT_ITCM void generateThrustYawSetpoint(const float &dt);
 
-	matrix::Vector3f getThrustSetpoint() {return _thr_sp;}
-	float getYawSetpoint() { return _yaw_sp;}
-	float getYawspeedSetpoint() {return _yawspeed_sp;}
-	matrix::Vector3f getVelSp() {return _vel_sp;}
-	matrix::Vector3f getPosSp() {return _pos_sp;}
+	_EXT_ITCM matrix::Vector3f getThrustSetpoint() {return _thr_sp;}
+	_EXT_ITCM float getYawSetpoint() { return _yaw_sp;}
+	_EXT_ITCM float getYawspeedSetpoint() {return _yawspeed_sp;}
+	_EXT_ITCM matrix::Vector3f getVelSp() {return _vel_sp;}
+	_EXT_ITCM matrix::Vector3f getPosSp() {return _pos_sp;}
 
 private:
 
@@ -130,9 +130,9 @@ private:
 	bool _skipController{false};
 
 	/* Helper methods */
-	void _interfaceMapping();
-	void _positionController();
-	void _velocityController(const float &dt);
-	void _updateParams();
-	void _setParams();
+	_EXT_ITCM void _interfaceMapping();
+	_EXT_ITCM void _positionController();
+	_EXT_ITCM void _velocityController(const float &dt);
+	_EXT_ITCM void _updateParams();
+	_EXT_ITCM void _setParams();
 };

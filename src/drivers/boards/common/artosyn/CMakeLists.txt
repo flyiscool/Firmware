@@ -1,6 +1,6 @@
 ############################################################################
 #
-#   Copyright (c) 2015 PX4 Development Team. All rights reserved.
+#   Copyright (c) 2017 PX4 Development Team. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -30,13 +30,19 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 ############################################################################
-px4_add_module(
-	MODULE systemcmds__bl_update
-	MAIN bl_update
-	STACK_MAIN 4096
-	COMPILE_FLAGS
-	SRCS
-		bl_update.c
-	DEPENDS
-	)
 
+set(SRCS
+	board_identity.c
+)
+
+if (NOT ${LABEL} STREQUAL "bootloader")
+	list(APPEND SRCS
+		board_mcu_version.c
+		board_reset.c
+		board_hw_rev_ver.c
+		)
+endif()
+
+add_library(drivers_boards_common_arch ${SRCS})
+add_dependencies(drivers_boards_common_arch prebuild_targets)
+target_link_libraries(drivers_boards_common_arch PRIVATE nuttx_arch)

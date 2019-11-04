@@ -52,7 +52,7 @@ extern "C" {
 	__EXPORT int led_control_main(int argc, char *argv[]);
 }
 
-static void
+_EXT_ITCM static void
 usage()
 {
 	PRINT_MODULE_DESCRIPTION(
@@ -90,7 +90,7 @@ $ led_control blink -c blue -l 0 -n 5
 	PRINT_MODULE_USAGE_PARAM_INT('p', 2, 0, 2, "Priority", true);
 }
 
-static void publish_led_control(led_control_s &led_control)
+_EXT_ITCM static void publish_led_control(led_control_s &led_control)
 {
 	led_control.timestamp = hrt_absolute_time();
 
@@ -102,7 +102,7 @@ static void publish_led_control(led_control_s &led_control)
 	}
 }
 
-static void run_led_test1()
+_EXT_ITCM static void run_led_test1()
 {
 	PX4_INFO("generating LED pattern...");
 
@@ -149,7 +149,7 @@ static void run_led_test1()
 	PX4_INFO("Done");
 }
 
-int
+_EXT_ITCM int
 led_control_main(int argc, char *argv[])
 {
 	int myoptind = 1;

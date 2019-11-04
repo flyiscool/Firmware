@@ -54,7 +54,7 @@
 
 #define RC_INPUT_MAP_UNMAPPED 0
 
-int rc_calibration_check(orb_advert_t *mavlink_log_pub, bool report_fail, bool isVTOL)
+_EXT_ITCM int rc_calibration_check(orb_advert_t *mavlink_log_pub, bool report_fail, bool isVTOL)
 {
 	char nbuf[20];
 	param_t _parameter_handles_min, _parameter_handles_trim, _parameter_handles_max,

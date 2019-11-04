@@ -117,10 +117,15 @@ endif()
 # create px4 file (combined firmware and metadata)
 # for historical reasons we name the final output binary without nuttx_
 set(fw_name_short)
+
 string(REPLACE "nuttx_" "" fw_name_short ${FW_NAME})
 
 set(fw_file ${PX4_BINARY_DIR}/${fw_name_short})
+
 string(REPLACE ".elf" ".px4" fw_file ${fw_file})
+
+# all app bin(cpu0 + cpu1 + cpu2)
+set(BOARD_APP coolfly-f1_app)
 
 add_custom_command(OUTPUT ${PX4_BINARY_DIR_REL}/${BOARD}.bin
 	COMMAND ${OBJCOPY} -O binary ${PX4_BINARY_DIR_REL}/${FW_NAME} ${PX4_BINARY_DIR_REL}/${BOARD}.bin
@@ -131,6 +136,12 @@ if (NOT FW_PROTOTYPE)
 	set(FW_PROTOTYPE ${BOARD})
 endif()
 
+add_custom_command(OUTPUT ${PX4_BINARY_DIR}/${BOARD_APP}.bin
+	COMMAND bash ${PX4_SOURCE_DIR}/joint2flash_cf.sh ${PX4_BINARY_DIR}/${BOARD}.bin
+	DEPENDS ${PX4_BINARY_DIR}/${BOARD}.bin
+	COMMENT "Updating ${BOARD_APP}.bin"
+	)
+
 if (TARGET parameters_xml AND TARGET airframes_xml)
 	add_custom_command(OUTPUT ${fw_file}
 		COMMAND ${PYTHON_EXECUTABLE} ${PX4_SOURCE_DIR}/Tools/px_mkfw.py
@@ -138,8 +149,8 @@ if (TARGET parameters_xml AND TARGET airframes_xml)
 			--git_identity ${PX4_SOURCE_DIR}
 			--parameter_xml ${PX4_BINARY_DIR}/parameters.xml
 			--airframe_xml ${PX4_BINARY_DIR}/airframes.xml
-			--image ${PX4_BINARY_DIR}/${BOARD}.bin > ${fw_file}
-		DEPENDS ${PX4_BINARY_DIR}/${BOARD}.bin parameters_xml airframes_xml
+			--image ${PX4_BINARY_DIR}/${BOARD_APP}.bin > ${fw_file}
+		DEPENDS ${PX4_BINARY_DIR}/${BOARD_APP}.bin parameters_xml airframes_xml
 		COMMENT "Creating ${fw_file}"
 		)
 
@@ -147,7 +158,6 @@ if (TARGET parameters_xml AND TARGET airframes_xml)
 
 	# upload helper
 	if (${BOARD} STREQUAL "aerofc-v1")
-		
 		add_custom_target(upload
 			COMMAND ${PX4_SOURCE_DIR}/Tools/aero_upload.sh ${fw_file}
 			DEPENDS ${fw_file}
@@ -157,6 +167,7 @@ if (TARGET parameters_xml AND TARGET airframes_xml)
 	else()
 		set(serial_ports)
 		if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
+			# add device info
 			list(APPEND serial_ports
 				/dev/serial/by-id/*_PX4_*
 				/dev/serial/by-id/usb-3D_Robotics*
@@ -180,6 +191,7 @@ if (TARGET parameters_xml AND TARGET airframes_xml)
 					"COM${port}")
 			endforeach()
 		endif()
+		# move device info to serial_ports
 		px4_join(OUT serial_ports LIST "${serial_ports}" GLUE ",")
 		add_custom_target(upload
 			COMMAND ${PYTHON_EXECUTABLE}

@@ -58,13 +58,13 @@
 
 static const char *sensor_name = "airspeed";
 
-static void feedback_calibration_failed(orb_advert_t *mavlink_log_pub)
+_EXT_ITCM static void feedback_calibration_failed(orb_advert_t *mavlink_log_pub)
 {
 	sleep(5);
 	calibration_log_critical(mavlink_log_pub, CAL_QGC_FAILED_MSG, sensor_name);
 }
 
-int do_airspeed_calibration(orb_advert_t *mavlink_log_pub)
+_EXT_ITCM int do_airspeed_calibration(orb_advert_t *mavlink_log_pub)
 {
 	int result = PX4_OK;
 	unsigned calibration_counter = 0;

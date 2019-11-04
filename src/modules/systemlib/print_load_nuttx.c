@@ -50,7 +50,7 @@ extern struct system_load_s system_load;
 
 #define CL "\033[K" // clear line
 
-void init_print_load_s(uint64_t t, struct print_load_s *s)
+_EXT_ITCM void init_print_load_s(uint64_t t, struct print_load_s *s)
 {
 
 	s->total_user_time = 0;
@@ -68,7 +68,7 @@ void init_print_load_s(uint64_t t, struct print_load_s *s)
 	s->interval_time_ms_inv = 0.f;
 }
 
-static const char *
+_EXT_ITCM static const char *
 tstate_name(const tstate_t s)
 {
 	switch (s) {
@@ -113,7 +113,7 @@ tstate_name(const tstate_t s)
 	}
 }
 
-void print_load_buffer(uint64_t t, char *buffer, int buffer_length, print_load_callback_f cb, void *user,
+_EXT_ITCM void print_load_buffer(uint64_t t, char *buffer, int buffer_length, print_load_callback_f cb, void *user,
 		       struct print_load_s *print_state)
 {
 #pragma GCC diagnostic push
@@ -355,7 +355,7 @@ struct print_load_callback_data_s {
 	char buffer[140];
 };
 
-static void print_load_callback(void *user)
+_EXT_ITCM static void print_load_callback(void *user)
 {
 	char *clear_line = "";
 	struct print_load_callback_data_s *data = (struct print_load_callback_data_s *)user;
@@ -367,7 +367,7 @@ static void print_load_callback(void *user)
 	dprintf(data->fd, "%s%s\n", clear_line, data->buffer);
 }
 
-void print_load(uint64_t t, int fd, struct print_load_s *print_state)
+_EXT_ITCM void print_load(uint64_t t, int fd, struct print_load_s *print_state)
 {
 	/* print system information */
 	if (fd == 1) {

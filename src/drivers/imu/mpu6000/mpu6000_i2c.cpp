@@ -66,17 +66,17 @@ device::Device *MPU6000_I2C_interface(int bus, int device_type, bool external_bu
 class MPU6000_I2C : public device::I2C
 {
 public:
-	MPU6000_I2C(int bus, int device_type);
-	virtual ~MPU6000_I2C();
+	_EXT_ITCM MPU6000_I2C(int bus, int device_type);
+	_EXT_ITCM virtual ~MPU6000_I2C();
 
-	virtual int	init();
-	virtual int	read(unsigned address, void *data, unsigned count);
-	virtual int	write(unsigned address, void *data, unsigned count);
+	_EXT_ITCM virtual int	init();
+	_EXT_ITCM virtual int	read(unsigned address, void *data, unsigned count);
+	_EXT_ITCM virtual int	write(unsigned address, void *data, unsigned count);
 
-	virtual int	ioctl(unsigned operation, unsigned &arg);
+	_EXT_ITCM virtual int	ioctl(unsigned operation, unsigned &arg);
 
 protected:
-	virtual int	probe();
+	_EXT_ITCM virtual int	probe();
 
 private:
 	int _device_type;

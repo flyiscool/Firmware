@@ -90,8 +90,8 @@
 class BATT_SMBUS : public device::I2C
 {
 public:
-	BATT_SMBUS(int bus = PX4_I2C_BUS_EXPANSION, uint16_t batt_smbus_addr = BATT_SMBUS_ADDR);
-	virtual ~BATT_SMBUS();
+	_EXT_ITCM BATT_SMBUS(int bus = PX4_I2C_BUS_EXPANSION, uint16_t batt_smbus_addr = BATT_SMBUS_ADDR);
+	_EXT_ITCM virtual ~BATT_SMBUS();
 
 	/**
 	 * Initialize device
@@ -100,19 +100,19 @@ public:
 	 *
 	 * @return 0 on success, error code on failure
 	 */
-	virtual int		init();
+	_EXT_ITCM virtual int		init();
 
 	/**
 	 * Test device
 	 *
 	 * @return 0 on success, error code on failure
 	 */
-	virtual int		test();
+	_EXT_ITCM virtual int		test();
 
 	/**
 	 * Search all possible slave addresses for a smart battery
 	 */
-	int			search();
+	_EXT_ITCM int			search();
 
 	/**
 	 * Get the SBS manufacturer name of the battery device
@@ -122,7 +122,7 @@ public:
 	 *
 	 * @return the number of bytes read
 	 */
-	uint8_t     manufacturer_name(uint8_t *man_name, uint8_t max_length);
+	_EXT_ITCM uint8_t     manufacturer_name(uint8_t *man_name, uint8_t max_length);
 
 	/**
 	 * Return the SBS manufacture date of the battery device
@@ -138,80 +138,80 @@ public:
 	 *  | Year    9-15   7-bit binary value   0-127 (corresponds to year biased by 1980) |
 	 *  otherwise, return 0 on failure
 	 */
-	uint16_t  manufacture_date();
+	_EXT_ITCM uint16_t  manufacture_date();
 
 	/**
 	 * Return the SBS serial number of the battery device
 	 */
-	uint16_t     serial_number();
+	_EXT_ITCM uint16_t     serial_number();
 
 protected:
 	/**
 	 * Check if the device can be contacted
 	 */
-	virtual int		probe();
+	_EXT_ITCM virtual int		probe();
 
 private:
 
 	/**
 	 * Start periodic reads from the battery
 	 */
-	void			start();
+	_EXT_ITCM void			start();
 
 	/**
 	 * Stop periodic reads from the battery
 	 */
-	void			stop();
+	_EXT_ITCM void			stop();
 
 	/**
 	 * static function that is called by worker queue
 	 */
-	static void		cycle_trampoline(void *arg);
+	_EXT_ITCM static void		cycle_trampoline(void *arg);
 
 	/**
 	 * perform a read from the battery
 	 */
-	void			cycle();
+	_EXT_ITCM void			cycle();
 
 	/**
 	 * Read a word from specified register
 	 */
-	int			read_reg(uint8_t reg, uint16_t &val);
+	_EXT_ITCM int			read_reg(uint8_t reg, uint16_t &val);
 
 	/**
 	 * Write a word to specified register
 	 */
-	int			write_reg(uint8_t reg, uint16_t val);
+	_EXT_ITCM int			write_reg(uint8_t reg, uint16_t val);
 
 	/**
 	 * Convert from 2's compliment to decimal
 	 * @return the absolute value of the input in decimal
 	 */
-	uint16_t	convert_twos_comp(uint16_t val);
+	_EXT_ITCM uint16_t	convert_twos_comp(uint16_t val);
 
 	/**
 	 * Read block from bus
 	 * @return returns number of characters read if successful, zero if unsuccessful
 	 */
-	uint8_t			read_block(uint8_t reg, uint8_t *data, uint8_t max_len, bool append_zero);
+	_EXT_ITCM uint8_t			read_block(uint8_t reg, uint8_t *data, uint8_t max_len, bool append_zero);
 
 	/**
 	 * Write block to the bus
 	 * @return the number of characters sent if successful, zero if unsuccessful
 	 */
-	uint8_t			write_block(uint8_t reg, uint8_t *data, uint8_t len);
+	_EXT_ITCM uint8_t			write_block(uint8_t reg, uint8_t *data, uint8_t len);
 
 	/**
 	 * Calculate PEC for a read or write from the battery
 	 * @param buff is the data that was read or will be written
 	 */
-	uint8_t	get_PEC(uint8_t cmd, bool reading, const uint8_t buff[], uint8_t len);
+	_EXT_ITCM uint8_t	get_PEC(uint8_t cmd, bool reading, const uint8_t buff[], uint8_t len);
 
 	/**
 	 * Write a word to Manufacturer Access register (0x00)
 	 * @param cmd the word to be written to Manufacturer Access
 	 */
-	uint8_t	ManufacturerAccess(uint16_t cmd);
+	_EXT_ITCM uint8_t	ManufacturerAccess(uint16_t cmd);
 
 	// internal variables
 	bool			_enabled;	///< true if we have successfully connected to battery
@@ -814,7 +814,7 @@ BATT_SMBUS::ManufacturerAccess(uint16_t cmd)
 
 ///////////////////////// shell functions ///////////////////////
 
-void
+_EXT_ITCM void
 batt_smbus_usage()
 {
 	PX4_INFO("missing command: try 'start', 'test', 'stop', 'search', 'man_name', 'man_date', 'dev_name', 'serial_num', 'dev_chem',  'sbs_info'");
@@ -823,7 +823,7 @@ batt_smbus_usage()
 	PX4_INFO("    -a addr (0x%x)", BATT_SMBUS_ADDR);
 }
 
-int
+_EXT_ITCM int
 manufacturer_name()
 {
 	uint8_t man_name[21];
@@ -840,7 +840,7 @@ manufacturer_name()
 	return -1;
 }
 
-int
+_EXT_ITCM int
 manufacture_date()
 {
 	uint16_t man_date = g_batt_smbus->manufacture_date();
@@ -860,7 +860,7 @@ manufacture_date()
 	return -1;
 }
 
-int
+_EXT_ITCM int
 serial_number()
 {
 	uint16_t serial_num = g_batt_smbus->serial_number();
@@ -869,7 +869,7 @@ serial_number()
 	return OK;
 }
 
-int
+_EXT_ITCM int
 batt_smbus_main(int argc, char *argv[])
 {
 	int i2cdevice = BATT_SMBUS_I2C_BUS;

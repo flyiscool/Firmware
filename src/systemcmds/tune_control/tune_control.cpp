@@ -59,7 +59,7 @@ extern "C" {
 	__EXPORT int tune_control_main(int argc, char *argv[]);
 }
 
-static void
+_EXT_ITCM static void
 usage()
 {
 	PX4_INFO(
@@ -76,7 +76,7 @@ usage()
 	);
 }
 
-static void publish_tune_control(tune_control_s &tune_control)
+_EXT_ITCM static void publish_tune_control(tune_control_s &tune_control)
 {
 	tune_control.timestamp = hrt_absolute_time();
 
@@ -88,7 +88,7 @@ static void publish_tune_control(tune_control_s &tune_control)
 	}
 }
 
-int
+_EXT_ITCM int
 tune_control_main(int argc, char *argv[])
 {
 	Tunes tunes;

@@ -283,8 +283,8 @@ protected:
 	* @param       The register to read.
 	* @return      The value that was read.
 	*/
-	uint8_t         read_reg(unsigned reg);
-	uint16_t        read_reg16(unsigned reg);
+	_EXT_ITCM uint8_t         read_reg(unsigned reg);
+	_EXT_ITCM uint16_t        read_reg16(unsigned reg);
 
 	/**
 	* Write a register in the BMI055
@@ -292,17 +292,17 @@ protected:
 	* @param reg       The register to write.
 	* @param value     The new value to write.
 	*/
-	void            write_reg(unsigned reg, uint8_t value);
+	_EXT_ITCM void            write_reg(unsigned reg, uint8_t value);
 
 	/* do not allow to copy this class due to pointer data members */
-	BMI055(const BMI055 &);
-	BMI055 operator=(const BMI055 &);
+	_EXT_ITCM BMI055(const BMI055 &);
+	_EXT_ITCM BMI055 operator=(const BMI055 &);
 
 public:
 
-	BMI055(const char *name, const char *devname, int bus, uint32_t device, enum spi_mode_e mode, uint32_t frequency,
+	_EXT_ITCM BMI055(const char *name, const char *devname, int bus, uint32_t device, enum spi_mode_e mode, uint32_t frequency,
 	       enum Rotation rotation);
-	virtual ~BMI055();
+	_EXT_ITCM virtual ~BMI055();
 
 
 };
@@ -312,26 +312,26 @@ public:
 class BMI055_accel : public BMI055
 {
 public:
-	BMI055_accel(int bus, const char *path_accel, uint32_t device, enum Rotation rotation);
-	virtual ~BMI055_accel();
+	_EXT_ITCM BMI055_accel(int bus, const char *path_accel, uint32_t device, enum Rotation rotation);
+	_EXT_ITCM virtual ~BMI055_accel();
 
-	virtual int     init();
+	_EXT_ITCM virtual int     init();
 
-	virtual ssize_t     read(struct file *filp, char *buffer, size_t buflen);
-	virtual int     ioctl(struct file *filp, int cmd, unsigned long arg);
+	_EXT_ITCM virtual ssize_t     read(struct file *filp, char *buffer, size_t buflen);
+	_EXT_ITCM virtual int     ioctl(struct file *filp, int cmd, unsigned long arg);
 
 	/**
 	* Diagnostics - print some basic information about the driver.
 	*/
-	void            print_info();
+	_EXT_ITCM void            print_info();
 
-	void            print_registers();
+	_EXT_ITCM void            print_registers();
 
 	// deliberately cause a sensor error
-	void            test_error();
+	_EXT_ITCM void            test_error();
 
 protected:
-	virtual int     probe();
+	_EXT_ITCM virtual int     probe();
 
 
 private:
@@ -374,19 +374,19 @@ private:
 	/**
 	* Start automatic measurement.
 	*/
-	void            start();
+	_EXT_ITCM void            start();
 
 	/**
 	* Stop automatic measurement.
 	*/
-	void            stop();
+	_EXT_ITCM void            stop();
 
 	/**
 	* Reset chip.
 	*
 	* Resets the chip and measurements ranges, but not scale and offset.
 	*/
-	int         reset();
+	_EXT_ITCM int         reset();
 
 	/**
 	* Static trampoline from the hrt_call context; because we don't have a
@@ -397,12 +397,12 @@ private:
 	*
 	* @param arg       Instance pointer for the driver that is polling.
 	*/
-	static void     measure_trampoline(void *arg);
+	_EXT_ITCM static void     measure_trampoline(void *arg);
 
 	/**
 	* Fetch measurements from the sensor and update the report buffers.
 	*/
-	void            measure();
+	_EXT_ITCM void            measure();
 
 
 	/**
@@ -414,7 +414,7 @@ private:
 	* @param clearbits Bits in the register to clear.
 	* @param setbits   Bits in the register to set.
 	*/
-	void            modify_reg(unsigned reg, uint8_t clearbits, uint8_t setbits);
+	_EXT_ITCM void            modify_reg(unsigned reg, uint8_t clearbits, uint8_t setbits);
 
 	/**
 	* Write a register in the BMI055_accel, updating _checked_values
@@ -422,7 +422,7 @@ private:
 	* @param reg       The register to write.
 	* @param value     The new value to write.
 	*/
-	void            write_checked_reg(unsigned reg, uint8_t value);
+	_EXT_ITCM void            write_checked_reg(unsigned reg, uint8_t value);
 
 	/**
 	* Set the BMI055_accel measurement range.
@@ -430,35 +430,35 @@ private:
 	* @param max_g     The maximum G value the range must support.
 	* @return      OK if the value can be supported, -EINVAL otherwise.
 	*/
-	int         set_accel_range(unsigned max_g);
+	_EXT_ITCM int         set_accel_range(unsigned max_g);
 
 	/**
 	* Measurement self test
 	*
 	* @return 0 on success, 1 on failure
 	*/
-	int             self_test();
+	_EXT_ITCM int             self_test();
 
 	/**
 	* Accel self test
 	*
 	* @return 0 on success, 1 on failure
 	*/
-	int             accel_self_test();
+	_EXT_ITCM int             accel_self_test();
 
 	/*
 	set accel sample rate
 	*/
-	int accel_set_sample_rate(float desired_sample_rate_hz);
+	_EXT_ITCM int accel_set_sample_rate(float desired_sample_rate_hz);
 
 	/*
 	check that key registers still have the right value
 	*/
-	void check_registers(void);
+	_EXT_ITCM void check_registers(void);
 
 	/* do not allow to copy this class due to pointer data members */
-	BMI055_accel(const BMI055_accel &);
-	BMI055_accel operator=(const BMI055_accel &);
+	_EXT_ITCM BMI055_accel(const BMI055_accel &);
+	_EXT_ITCM BMI055_accel operator=(const BMI055_accel &);
 
 };
 
@@ -467,26 +467,26 @@ private:
 class BMI055_gyro : public BMI055
 {
 public:
-	BMI055_gyro(int bus, const char *path_gyro, uint32_t device, enum Rotation rotation);
-	virtual ~BMI055_gyro();
+	_EXT_ITCM BMI055_gyro(int bus, const char *path_gyro, uint32_t device, enum Rotation rotation);
+	_EXT_ITCM virtual ~BMI055_gyro();
 
-	virtual int     init();
+	_EXT_ITCM virtual int     init();
 
-	virtual ssize_t     read(struct file *filp, char *buffer, size_t buflen);
-	virtual int     ioctl(struct file *filp, int cmd, unsigned long arg);
+	_EXT_ITCM virtual ssize_t     read(struct file *filp, char *buffer, size_t buflen);
+	_EXT_ITCM virtual int     ioctl(struct file *filp, int cmd, unsigned long arg);
 
 	/**
 	* Diagnostics - print some basic information about the driver.
 	*/
-	void            print_info();
+	_EXT_ITCM void            print_info();
 
-	void            print_registers();
+	_EXT_ITCM void            print_registers();
 
 	// deliberately cause a sensor error
-	void            test_error();
+	_EXT_ITCM void            test_error();
 
 protected:
-	virtual int     probe();
+	_EXT_ITCM virtual int     probe();
 private:
 
 	ringbuffer::RingBuffer  *_gyro_reports;
@@ -527,19 +527,19 @@ private:
 	/**
 	 * Start automatic measurement.
 	 */
-	void            start();
+	_EXT_ITCM void            start();
 
 	/**
 	 * Stop automatic measurement.
 	 */
-	void            stop();
+	_EXT_ITCM void            stop();
 
 	/**
 	 * Reset chip.
 	 *
 	 * Resets the chip and measurements ranges, but not scale and offset.
 	 */
-	int         reset();
+	_EXT_ITCM int         reset();
 
 	/**
 	 * Static trampoline from the hrt_call context; because we don't have a
@@ -550,12 +550,12 @@ private:
 	 *
 	 * @param arg       Instance pointer for the driver that is polling.
 	 */
-	static void     measure_trampoline(void *arg);
+	_EXT_ITCM static void     measure_trampoline(void *arg);
 
 	/**
 	 * Fetch measurements from the sensor and update the report buffers.
 	 */
-	void            measure();
+	_EXT_ITCM void            measure();
 
 
 	/**
@@ -567,7 +567,7 @@ private:
 	 * @param clearbits Bits in the register to clear.
 	 * @param setbits   Bits in the register to set.
 	 */
-	void            modify_reg(unsigned reg, uint8_t clearbits, uint8_t setbits);
+	_EXT_ITCM void            modify_reg(unsigned reg, uint8_t clearbits, uint8_t setbits);
 
 	/**
 	 * Write a register in the BMI055_gyro, updating _checked_values
@@ -575,7 +575,7 @@ private:
 	 * @param reg       The register to write.
 	 * @param value     The new value to write.
 	 */
-	void            write_checked_reg(unsigned reg, uint8_t value);
+	_EXT_ITCM void            write_checked_reg(unsigned reg, uint8_t value);
 
 	/**
 	 * Set the BMI055_gyro measurement range.
@@ -583,14 +583,14 @@ private:
 	 * @param max_dps   The maximum DPS value the range must support.
 	 * @return      OK if the value can be supported, -EINVAL otherwise.
 	 */
-	int         set_gyro_range(unsigned max_dps);
+	_EXT_ITCM int         set_gyro_range(unsigned max_dps);
 
 	/**
 	 * Measurement self test
 	 *
 	 * @return 0 on success, 1 on failure
 	 */
-	int             self_test();
+	_EXT_ITCM int             self_test();
 
 
 	/**
@@ -598,22 +598,22 @@ private:
 	 *
 	 * @return 0 on success, 1 on failure
 	 */
-	int             gyro_self_test();
+	_EXT_ITCM int             gyro_self_test();
 
 
 	/*
 	 * set gyro sample rate
 	 */
-	int gyro_set_sample_rate(float desired_sample_rate_hz);
+	_EXT_ITCM int gyro_set_sample_rate(float desired_sample_rate_hz);
 
 	/*
 	 * check that key registers still have the right value
 	 */
-	void check_registers(void);
+	_EXT_ITCM void check_registers(void);
 
 	/* do not allow to copy this class due to pointer data members */
-	BMI055_gyro(const BMI055_gyro &);
-	BMI055_gyro operator=(const BMI055_gyro &);
+	_EXT_ITCM BMI055_gyro(const BMI055_gyro &);
+	_EXT_ITCM BMI055_gyro operator=(const BMI055_gyro &);
 
 #pragma pack(push, 1)
 	/**

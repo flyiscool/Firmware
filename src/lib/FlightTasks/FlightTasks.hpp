@@ -83,44 +83,44 @@ public:
 	 * Call regularly in the control loop cycle to execute the task
 	 * @return true on success, false on error
 	 */
-	bool update();
+	_EXT_ITCM bool update();
 
 	/**
 	 * Get the output data from the current task
 	 * @return output setpoint, to be executed by position control
 	 */
-	const vehicle_local_position_setpoint_s getPositionSetpoint();
+	_EXT_ITCM const vehicle_local_position_setpoint_s getPositionSetpoint();
 
 	/**
 	 * Switch to the next task in the available list (for testing)
 	 * @return true on success, false on error
 	 */
-	int switchTask() { return switchTask(static_cast<int>(_current_task_index) + 1); }
+	_EXT_ITCM int switchTask() { return switchTask(static_cast<int>(_current_task_index) + 1); }
 
 	/**
 	 * Switch to a specific task (for normal usage)
 	 * @param task index to switch to
 	 * @return 1 on success, 0 on no change, <0 on error
 	 */
-	int switchTask(FlightTaskIndex new_task_index);
-	int switchTask(int new_task_index);
+	_EXT_ITCM int switchTask(FlightTaskIndex new_task_index);
+	_EXT_ITCM int switchTask(int new_task_index);
 
 	/**
 	 * Get the number of the active task
 	 * @return number of active task, -1 if there is none
 	 */
-	int getActiveTask() const { return static_cast<int>(_current_task_index); }
+	_EXT_ITCM int getActiveTask() const { return static_cast<int>(_current_task_index); }
 
 	/**
 	 * Check if any task is active
 	 * @return true if a task is active, false if not
 	 */
-	bool isAnyTaskActive() const { return _current_task; }
+	_EXT_ITCM bool isAnyTaskActive() const { return _current_task; }
 
 	/**
 	 * Call this whenever a parameter update notification is received (parameter_update uORB message)
 	 */
-	void handleParameterUpdate();
+	_EXT_ITCM void handleParameterUpdate();
 
 private:
 
@@ -149,7 +149,7 @@ private:
 	/**
 	 * Check for vehicle commands (received via MAVLink), evaluate and acknowledge them
 	 */
-	void _updateCommand();
+	_EXT_ITCM void _updateCommand();
 //	int _sub_vehicle_command = -1; /**< topic handle on which commands are received */
 //	orb_advert_t _pub_vehicle_command_ack = nullptr; /**< topic handle to which commands get acknowledged */
 };

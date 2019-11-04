@@ -135,12 +135,12 @@ const rot_lookup_t rot_lookup[] = {
  * Get the rotation matrix
  */
 
-__EXPORT matrix::Dcmf get_rot_matrix(enum Rotation rot);
+_EXT_DTCM_EKF2 __EXPORT matrix::Dcmf get_rot_matrix(enum Rotation rot);
 
 /**
  * rotate a 3 element float vector in-place
  */
-__EXPORT void
+_EXT_DTCM_EKF2 __EXPORT void
 rotate_3f(enum Rotation rot, float &x, float &y, float &z);
 
 

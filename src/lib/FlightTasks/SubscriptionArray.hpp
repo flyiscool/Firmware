@@ -62,17 +62,17 @@ public:
 	/**
 	 * update all subscriptions (if new data is available)
 	 */
-	void update();
+	_EXT_ITCM void update();
 
 	/**
 	 * update all subscriptions
 	 */
-	void forcedUpdate();
+	_EXT_ITCM void forcedUpdate();
 
 private:
-	void cleanup();
+	_EXT_ITCM void cleanup();
 
-	bool resizeSubscriptions();
+	_EXT_ITCM bool resizeSubscriptions();
 
 	uORB::SubscriptionNode **_subscriptions{nullptr};
 	int _subscriptions_count{0}; ///< number of valid subscriptions

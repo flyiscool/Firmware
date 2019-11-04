@@ -1,0 +1,51 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "/home/liuwei/coolfly/Bootloader"
+        },
+        {
+            "path": "/home/liuwei/coolfly/ar8020_sdk"
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "ar_otg.h": "c",
+            "ar_uart.h": "c",
+            "crc32.h": "c",
+            "*.tcc": "cpp",
+            "ostream": "cpp",
+            "ratio": "c",
+            "system_error": "c",
+            "type_traits": "c",
+            "ar_config.h": "c",
+            "ar_tim.h": "c",
+            "stdint.h": "c",
+            "string.h": "c",
+            "drv_pwm_servo.h": "c",
+            "drv_pwm_trigger.h": "c",
+            "drv_io_timer.h": "c",
+            "board.h": "c",
+            "drv_pwm_output.h": "c",
+            "hash_map": "c",
+            "hash_set": "c",
+            "initializer_list": "c",
+            "hardfault_log.h": "c",
+            "array": "c",
+            "atomic": "cpp",
+            "chrono": "cpp",
+            "string": "cpp",
+            "vector": "cpp",
+            "istream": "cpp",
+            "sstream": "cpp",
+            "streambuf": "cpp",
+            "thread": "cpp",
+            "*.ipp": "cpp",
+            "typeindex": "cpp",
+            "typeinfo": "cpp",
+            "random": "c"
+        }
+    }
+}

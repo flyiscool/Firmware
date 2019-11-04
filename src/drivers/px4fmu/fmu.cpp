@@ -197,16 +197,18 @@ private:
 		RC_SCAN_SBUS,
 		RC_SCAN_DSM,
 		RC_SCAN_SUMD,
-		RC_SCAN_ST24
+		RC_SCAN_ST24,
+		RC_SCAN_COOLFLY_SBUS
 	};
-	enum RC_SCAN _rc_scan_state = RC_SCAN_SBUS;
+	enum RC_SCAN _rc_scan_state = RC_SCAN_COOLFLY_SBUS;
 
-	char const *RC_SCAN_STRING[5] = {
+	char const *RC_SCAN_STRING[6] = {
 		"PPM",
 		"SBUS",
 		"DSM",
 		"SUMD",
-		"ST24"
+		"ST24",
+		"COOLFLY_SBUS"
 	};
 
 	enum class MotorOrdering : int32_t {
@@ -515,23 +517,26 @@ PX4FMU::init()
 	/* initialize PWM limit lib */
 	pwm_limit_init(&_pwm_limit);
 
-#ifdef RC_SERIAL_PORT
+	#ifdef RC_SERIAL_PORT
 
-#  ifdef RF_RADIO_POWER_CONTROL
-	// power radio on
-	RF_RADIO_POWER_CONTROL(true);
-#  endif
-	_vehicle_cmd_sub = orb_subscribe(ORB_ID(vehicle_command));
-	// dsm_init sets some file static variables and returns a file descriptor
-	_rcs_fd = dsm_init(RC_SERIAL_PORT);
-	// assume SBUS input
-	sbus_config(_rcs_fd, false);
-#  ifdef GPIO_PPM_IN
-	// disable CPPM input by mapping it away from the timer capture input
-	px4_arch_unconfiggpio(GPIO_PPM_IN);
-#  endif
-#endif
+		#ifdef RF_RADIO_POWER_CONTROL
+			// power radio on
+			RF_RADIO_POWER_CONTROL(true);
+		#endif
+			_vehicle_cmd_sub = orb_subscribe(ORB_ID(vehicle_command));
 
+		#ifndef COOLFLY_F1
+			// dsm_init sets some file static variables and returns a file descriptor
+			_rcs_fd = dsm_init(RC_SERIAL_PORT);
+			// assume SBUS input
+			sbus_config(_rcs_fd, false);
+		#endif
+
+		#ifdef GPIO_PPM_IN
+			// disable CPPM input by mapping it away from the timer capture input
+			px4_arch_unconfiggpio(GPIO_PPM_IN);
+		#endif
+	#endif
 	// Getting initial parameter values
 	update_params();
 
@@ -804,7 +809,7 @@ PX4FMU::set_mode(Mode mode)
 int
 PX4FMU::set_pwm_rate(uint32_t rate_map, unsigned default_rate, unsigned alt_rate)
 {
-	PX4_DEBUG("set_pwm_rate %x %u %u", rate_map, default_rate, alt_rate);
+    // PX4_INFO("set_pwm_rate %x %u %u --------------------------\r\n", rate_map, default_rate, alt_rate);
 
 	for (unsigned pass = 0; pass < 2; pass++) {
 
@@ -826,6 +831,7 @@ PX4FMU::set_pwm_rate(uint32_t rate_map, unsigned default_rate, unsigned alt_rate
 
 			// get the channel mask for this rate group
 			uint32_t mask = up_pwm_servo_get_rate_group(group);
+		    // PX4_INFO("mask = 0x%08x-------------------\r\n",mask);
 
 			if (mask == 0) {
 				continue;
@@ -833,6 +839,7 @@ PX4FMU::set_pwm_rate(uint32_t rate_map, unsigned default_rate, unsigned alt_rate
 
 			// all channels in the group must be either default or alt-rate
 			uint32_t alt = rate_map & mask;
+			// PX4_INFO("alt = 0x%08x\r\n",alt);
 
 			if (pass == 0) {
 				// preflight
@@ -844,6 +851,7 @@ PX4FMU::set_pwm_rate(uint32_t rate_map, unsigned default_rate, unsigned alt_rate
 
 			} else {
 				// set it - errors here are unexpected
+				// PX4_INFO("alt = %d, group = %d, alt_rate = %d, default_rate = %d\r\n",alt,group,alt_rate,default_rate);
 				if (alt != 0) {
 					if (up_pwm_servo_set_rate_group_update(group, alt_rate) != OK) {
 						PX4_WARN("rate group set alt failed");
@@ -1039,7 +1047,7 @@ PX4FMU::task_spawn(int argc, char *argv[])
 		_task_id = px4_task_spawn_cmd("fmu",
 					      SCHED_DEFAULT,
 					      SCHED_PRIORITY_ACTUATOR_OUTPUTS,
-					      1340,
+					      1800,
 					      (px4_main_t)&run_trampoline,
 					      nullptr);
 
@@ -1203,6 +1211,63 @@ PX4FMU::run()
 
 	cycle();
 }
+
+#ifdef COOLFLY_F1
+
+#include <chip/ar_config.h>
+
+static void retrieveRcMavlinkMsgFromSram(uint8_t *buffer, int *length) 
+{	
+	char *wr_pos;
+	char *rd_pos;
+	char *tail;
+	char *head;
+	STRU_SramBuffer *msgBuffer;
+
+	// uint8_t buffer[SRAM_MAVLINK_RC_MSG_SIZE] = {0};
+
+	// uint16_t length;
+
+	msgBuffer = (STRU_SramBuffer*)SRAM_MAVLINK_RC_MSG_ST_ADDR;
+
+	wr_pos = (char *)msgBuffer->header.buf_wr_pos;
+	rd_pos = (char *)msgBuffer->header.buf_rd_pos;
+	head = (char *)msgBuffer->buf;
+    tail = (char *)SRAM_MAVLINK_RC_MSG_END_ADDR;
+
+	// length = 0;
+
+	if (wr_pos >= rd_pos) 	
+	{
+		*length = wr_pos - rd_pos;
+	} 
+	else 
+	{
+		*length = wr_pos + (tail - head) - rd_pos;
+	}
+
+	for (uint16_t i = 0; i < *length; i++)
+	{
+		buffer[i] = *rd_pos;
+
+		if (rd_pos >= tail)
+        {
+            rd_pos = head;
+        } 
+        else
+        {
+            rd_pos++;
+        } 
+	}	
+
+	msgBuffer->header.buf_rd_pos = (uint32_t)rd_pos;
+
+
+	// parseRcMavlinkMsg(buffer, rcLength+10+2);
+	// parseRcMavlinkMsg(buffer, length);
+}
+
+#endif
 
 void
 PX4FMU::cycle()
@@ -1579,7 +1644,8 @@ PX4FMU::cycle()
 
 			} else if (_rc_scan_locked
 				   || _cycle_timestamp - _rc_scan_begin < rc_scan_max) {
-
+					
+				PX4_INFO("RC_SCAN_SBUS Bytes = %d", newBytes);
 				// parse new data
 				if (newBytes > 0) {
 					rc_updated = sbus_parse(_cycle_timestamp, &_rcs_buf[0], newBytes, &raw_rc_values[0], &raw_rc_count, &sbus_failsafe,
@@ -1589,7 +1655,7 @@ PX4FMU::cycle()
 						// we have a new SBUS frame. Publish it.
 						_rc_in.input_source = input_rc_s::RC_INPUT_SOURCE_PX4FMU_SBUS;
 						fill_rc_in(raw_rc_count, raw_rc_values, _cycle_timestamp,
-							   sbus_frame_drop, sbus_failsafe, frame_drops);
+ 							   sbus_frame_drop, sbus_failsafe, frame_drops, 100);
 						_rc_scan_locked = true;
 					}
 				}
@@ -1746,15 +1812,51 @@ PX4FMU::cycle()
 				// disable CPPM input by mapping it away from the timer capture input
 				px4_arch_unconfiggpio(GPIO_PPM_IN);
 				// Scan the next protocol
-				set_rc_scan_state(RC_SCAN_SBUS);
+				set_rc_scan_state(RC_SCAN_COOLFLY_SBUS);
 			}
 
 #else   // skip PPM if it's not supported
-			set_rc_scan_state(RC_SCAN_SBUS);
+			set_rc_scan_state(RC_SCAN_COOLFLY_SBUS);
 
 #endif  // HRT_PPM_CHANNEL
 
+			break;	
+		case RC_SCAN_COOLFLY_SBUS:
+#ifdef COOLFLY_F1
+			if (_rc_scan_begin == 0) {
+				_rc_scan_begin = _cycle_timestamp;
+				rc_io_invert(true);
+
+			} else if (_rc_scan_locked
+				|| _cycle_timestamp - _rc_scan_begin < rc_scan_max) {
+					
+				retrieveRcMavlinkMsgFromSram(&_rcs_buf[0], &newBytes);
+
+				// parse new data
+				if (newBytes > 0) {
+					rc_updated = sbus_parse(_cycle_timestamp, &_rcs_buf[0], newBytes, &raw_rc_values[0], &raw_rc_count, &sbus_failsafe,
+								&sbus_frame_drop, &frame_drops, input_rc_s::RC_INPUT_MAX_CHANNELS);
+
+					if (rc_updated) {
+						// we have a new SBUS frame. Publish it.
+						_rc_in.input_source = input_rc_s::RC_INPUT_SOURCE_PX4FMU_SBUS;
+						fill_rc_in(raw_rc_count, raw_rc_values, _cycle_timestamp,
+							sbus_frame_drop, sbus_failsafe, frame_drops, 100);
+						_rc_scan_locked = true;
+					}
+				}
+
+			} else {
+				set_rc_scan_state(RC_SCAN_COOLFLY_SBUS);
+			}
+#else
+			set_rc_scan_state(RC_SCAN_SBUS);
+	
+
+#endif
+
 			break;
+
 		}
 
 #else  // RC_SERIAL_PORT not defined
@@ -1794,7 +1896,7 @@ PX4FMU::cycle()
 		} else {
 			if (should_exit()) {
 				exit_and_cleanup();
-
+ 
 			} else {
 				/* schedule next cycle */
 				work_queue(HPWORK, &_work, (worker_t)&PX4FMU::cycle_trampoline, this, USEC2TICK(SCHEDULE_INTERVAL));

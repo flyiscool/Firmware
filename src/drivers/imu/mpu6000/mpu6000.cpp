@@ -95,7 +95,7 @@
 #include <lib/conversion/rotation.h>
 
 #include "mpu6000.h"
-
+#include "ar_uart.h"
 /*
   we set the timer interrupt to run a bit faster than the desired
   sample rate and then throw away duplicates by comparing
@@ -131,41 +131,41 @@ class MPU6000_gyro;
 class MPU6000 : public device::CDev
 {
 public:
-	MPU6000(device::Device *interface, const char *path_accel, const char *path_gyro, enum Rotation rotation,
+	_EXT_ITCM MPU6000(device::Device *interface, const char *path_accel, const char *path_gyro, enum Rotation rotation,
 		int device_type);
-	virtual ~MPU6000();
+	_EXT_ITCM virtual ~MPU6000();
 
-	virtual int		init();
+	_EXT_ITCM virtual int		init();
 
-	virtual ssize_t		read(struct file *filp, char *buffer, size_t buflen);
-	virtual int		ioctl(struct file *filp, int cmd, unsigned long arg);
+	_EXT_ITCM virtual ssize_t		read(struct file *filp, char *buffer, size_t buflen);
+	_EXT_ITCM virtual int		ioctl(struct file *filp, int cmd, unsigned long arg);
 
 	/**
 	 * Diagnostics - print some basic information about the driver.
 	 */
-	void			print_info();
+	_EXT_ITCM void			print_info();
 
-	void			print_registers();
+	_EXT_ITCM void			print_registers();
 
 	/**
 	 * Test behaviour against factory offsets
 	 *
 	 * @return 0 on success, 1 on failure
 	 */
-	int 			factory_self_test();
+	_EXT_ITCM int 			factory_self_test();
 
 	// deliberately cause a sensor error
-	void 			test_error();
+	_EXT_ITCM void 			test_error();
 
 protected:
 	Device			*_interface;
 
-	virtual int		probe();
+	_EXT_ITCM virtual int		probe();
 
 	friend class MPU6000_gyro;
 
-	virtual ssize_t		gyro_read(struct file *filp, char *buffer, size_t buflen);
-	virtual int		gyro_ioctl(struct file *filp, int cmd, unsigned long arg);
+	_EXT_ITCM virtual ssize_t		gyro_read(struct file *filp, char *buffer, size_t buflen);
+	_EXT_ITCM virtual int		gyro_ioctl(struct file *filp, int cmd, unsigned long arg);
 
 private:
 	int 			_device_type;
@@ -247,28 +247,28 @@ private:
 	/**
 	 * Start automatic measurement.
 	 */
-	void			start();
+	_EXT_ITCM void			start();
 
 	/**
 	 * Stop automatic measurement.
 	 */
-	void			stop();
+	_EXT_ITCM void			stop();
 
 	/**
 	 * Reset chip.
 	 *
 	 * Resets the chip and measurements ranges, but not scale and offset.
 	 */
-	int			reset();
+	_EXT_ITCM int			reset();
 
 	/**
 	 * is_icm_device
 	 */
-	bool 		is_icm_device() { return !is_mpu_device(); }
+	_EXT_ITCM bool 		is_icm_device() { return !is_mpu_device(); }
 	/**
 	 * is_mpu_device
 	 */
-	bool 		is_mpu_device() { return _device_type == MPU_DEVICE_TYPE_MPU6000; }
+	_EXT_ITCM bool 		is_mpu_device() { return _device_type == MPU_DEVICE_TYPE_MPU6000; }
 
 
 #if defined(USE_I2C)
@@ -286,7 +286,7 @@ private:
 	 * and measurement to provide the most recent measurement possible
 	 * at the next interval.
 	 */
-	void			cycle();
+	_EXT_ITCM void			cycle();
 
 	/**
 	 * Static trampoline from the workq context; because we don't have a
@@ -294,13 +294,13 @@ private:
 	 *
 	 * @param arg		Instance pointer for the driver that is polling.
 	 */
-	static void		cycle_trampoline(void *arg);
+	_EXT_ITCM static void		cycle_trampoline(void *arg);
 
-	void use_i2c(bool on_true) { _use_hrt = !on_true; }
+	_EXT_ITCM void use_i2c(bool on_true) { _use_hrt = !on_true; }
 
 #endif
 
-	bool is_i2c(void) { return !_use_hrt; }
+	_EXT_ITCM bool is_i2c(void) { return !_use_hrt; }
 
 
 	/**
@@ -312,12 +312,12 @@ private:
 	 *
 	 * @param arg		Instance pointer for the driver that is polling.
 	 */
-	static void		measure_trampoline(void *arg);
+	_EXT_ITCM static void		measure_trampoline(void *arg);
 
 	/**
 	 * Fetch measurements from the sensor and update the report buffers.
 	 */
-	int			measure();
+	_EXT_ITCM int			measure();
 
 	/**
 	 * Read a register from the MPU6000
@@ -325,8 +325,8 @@ private:
 	 * @param		The register to read.
 	 * @return		The value that was read.
 	 */
-	uint8_t			read_reg(unsigned reg, uint32_t speed = MPU6000_LOW_BUS_SPEED);
-	uint16_t		read_reg16(unsigned reg);
+	_EXT_ITCM uint8_t			read_reg(unsigned reg, uint32_t speed = MPU6000_LOW_BUS_SPEED);
+	_EXT_ITCM uint16_t		read_reg16(unsigned reg);
 
 
 	/**
@@ -335,7 +335,7 @@ private:
 	 * @param reg		The register to write.
 	 * @param value		The new value to write.
 	 */
-	int				write_reg(unsigned reg, uint8_t value);
+	_EXT_ITCM int				write_reg(unsigned reg, uint8_t value);
 
 	/**
 	 * Modify a register in the MPU6000
@@ -346,7 +346,7 @@ private:
 	 * @param clearbits	Bits in the register to clear.
 	 * @param setbits	Bits in the register to set.
 	 */
-	void			modify_reg(unsigned reg, uint8_t clearbits, uint8_t setbits);
+	_EXT_ITCM void			modify_reg(unsigned reg, uint8_t clearbits, uint8_t setbits);
 
 	/**
 	 * Write a register in the MPU6000, updating _checked_values
@@ -354,7 +354,7 @@ private:
 	 * @param reg		The register to write.
 	 * @param value		The new value to write.
 	 */
-	void			write_checked_reg(unsigned reg, uint8_t value);
+	_EXT_ITCM void			write_checked_reg(unsigned reg, uint8_t value);
 
 	/**
 	 * Set the MPU6000 measurement range.
@@ -362,12 +362,12 @@ private:
 	 * @param max_g		The maximum G value the range must support.
 	 * @return		OK if the value can be supported, -ERANGE otherwise.
 	 */
-	int				set_accel_range(unsigned max_g);
+	_EXT_ITCM int				set_accel_range(unsigned max_g);
 
 	/**
 	 * Swap a 16-bit value read from the MPU6000 to native byte order.
 	 */
-	uint16_t		swap16(uint16_t val) { return (val >> 8) | (val << 8);	}
+	_EXT_ITCM uint16_t		swap16(uint16_t val) { return (val >> 8) | (val << 8);	}
 
 	/**
 	 * Get the internal / external state
@@ -385,41 +385,41 @@ private:
 	 *
 	 * @return 0 on success, 1 on failure
 	 */
-	int 			self_test();
+	_EXT_ITCM int 			self_test();
 
 	/**
 	 * Accel self test
 	 *
 	 * @return 0 on success, 1 on failure
 	 */
-	int				accel_self_test();
+	_EXT_ITCM int				accel_self_test();
 
 	/**
 	 * Gyro self test
 	 *
 	 * @return 0 on success, 1 on failure
 	 */
-	int				gyro_self_test();
+	_EXT_ITCM int				gyro_self_test();
 
 	/*
 	  set low pass filter frequency
 	 */
-	void 			_set_dlpf_filter(uint16_t frequency_hz);
-	void 			_set_icm_acc_dlpf_filter(uint16_t frequency_hz);
+	_EXT_ITCM void 			_set_dlpf_filter(uint16_t frequency_hz);
+	_EXT_ITCM void 			_set_icm_acc_dlpf_filter(uint16_t frequency_hz);
 
 	/*
 	  set sample rate (approximate) - 1kHz to 5Hz
 	*/
-	void			_set_sample_rate(unsigned desired_sample_rate_hz);
+	_EXT_ITCM void			_set_sample_rate(unsigned desired_sample_rate_hz);
 
 	/*
 	  check that key registers still have the right value
 	 */
-	void			check_registers(void);
+	_EXT_ITCM void			check_registers(void);
 
 	/* do not allow to copy this class due to pointer data members */
-	MPU6000(const MPU6000 &);
-	MPU6000 operator=(const MPU6000 &);
+	_EXT_ITCM MPU6000(const MPU6000 &);
+	_EXT_ITCM MPU6000 operator=(const MPU6000 &);
 
 };
 
@@ -447,18 +447,18 @@ const uint8_t MPU6000::_checked_registers[MPU6000_NUM_CHECKED_REGISTERS] = { MPU
 class MPU6000_gyro : public device::CDev
 {
 public:
-	MPU6000_gyro(MPU6000 *parent, const char *path);
-	~MPU6000_gyro();
+	_EXT_ITCM MPU6000_gyro(MPU6000 *parent, const char *path);
+	_EXT_ITCM ~MPU6000_gyro();
 
-	virtual ssize_t		read(struct file *filp, char *buffer, size_t buflen);
-	virtual int		ioctl(struct file *filp, int cmd, unsigned long arg);
+	_EXT_ITCM virtual ssize_t		read(struct file *filp, char *buffer, size_t buflen);
+	_EXT_ITCM virtual int		ioctl(struct file *filp, int cmd, unsigned long arg);
 
-	virtual int		init();
+	_EXT_ITCM virtual int		init();
 
 protected:
 	friend class MPU6000;
 
-	void			parent_poll_notify();
+	_EXT_ITCM void			parent_poll_notify();
 
 private:
 	MPU6000			*_parent;
@@ -467,8 +467,8 @@ private:
 	int			_gyro_class_instance;
 
 	/* do not allow to copy this class due to pointer data members */
-	MPU6000_gyro(const MPU6000_gyro &);
-	MPU6000_gyro operator=(const MPU6000_gyro &);
+	_EXT_ITCM MPU6000_gyro(const MPU6000_gyro &);
+	_EXT_ITCM MPU6000_gyro operator=(const MPU6000_gyro &);
 };
 
 /** driver 'main' command */
@@ -2220,39 +2220,39 @@ struct mpu6000_bus_option {
 	bool external;
 	MPU6000	*dev;
 } bus_options[] = {
-#if defined (USE_I2C)
-#	if defined(PX4_I2C_BUS_ONBOARD)
-	{ MPU6000_BUS_I2C_INTERNAL, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL, MPU_DEVICE_PATH_GYRO,  &MPU6000_I2C_interface, PX4_I2C_BUS_ONBOARD, false, NULL },
-#	endif
-#	if defined(PX4_I2C_BUS_EXPANSION)
-	{ MPU6000_BUS_I2C_EXTERNAL, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT, MPU_DEVICE_PATH_GYRO_EXT, &MPU6000_I2C_interface, PX4_I2C_BUS_EXPANSION,  true, NULL },
-#	endif
-#	if defined(PX4_I2C_BUS_EXPANSION1)
-	{ MPU6000_BUS_I2C_EXTERNAL, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT1, MPU_DEVICE_PATH_GYRO_EXT1, &MPU6000_I2C_interface, PX4_I2C_BUS_EXPANSION1,  true, NULL },
-#	endif
-#	if defined(PX4_I2C_BUS_EXPANSION2)
-	{ MPU6000_BUS_I2C_EXTERNAL, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT2, MPU_DEVICE_PATH_GYRO_EXT2, &MPU6000_I2C_interface, PX4_I2C_BUS_EXPANSION2,  true, NULL },
-#	endif
-#endif
-#ifdef PX4_SPIDEV_MPU
-	{ MPU6000_BUS_SPI_INTERNAL1, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL, MPU_DEVICE_PATH_GYRO, &MPU6000_SPI_interface, PX4_SPI_BUS_SENSORS,  false, NULL },
-#endif
-#if defined(PX4_SPI_BUS_EXT)
-	{ MPU6000_BUS_SPI_EXTERNAL1, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT, MPU_DEVICE_PATH_GYRO_EXT, &MPU6000_SPI_interface, PX4_SPI_BUS_EXT,  true, NULL },
-#endif
-#ifdef PX4_SPIDEV_ICM_20602
+// #if defined (USE_I2C)
+// #	if defined(PX4_I2C_BUS_ONBOARD)
+// 	{ MPU6000_BUS_I2C_INTERNAL, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL, MPU_DEVICE_PATH_GYRO,  &MPU6000_I2C_interface, PX4_I2C_BUS_ONBOARD, false, NULL },
+// #	endif
+// #	if defined(PX4_I2C_BUS_EXPANSION)
+// 	{ MPU6000_BUS_I2C_EXTERNAL, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT, MPU_DEVICE_PATH_GYRO_EXT, &MPU6000_I2C_interface, PX4_I2C_BUS_EXPANSION,  true, NULL },
+// #	endif
+// #	if defined(PX4_I2C_BUS_EXPANSION1)
+// 	{ MPU6000_BUS_I2C_EXTERNAL, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT1, MPU_DEVICE_PATH_GYRO_EXT1, &MPU6000_I2C_interface, PX4_I2C_BUS_EXPANSION1,  true, NULL },
+// #	endif
+// #	if defined(PX4_I2C_BUS_EXPANSION2)
+// 	{ MPU6000_BUS_I2C_EXTERNAL, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT2, MPU_DEVICE_PATH_GYRO_EXT2, &MPU6000_I2C_interface, PX4_I2C_BUS_EXPANSION2,  true, NULL },
+// #	endif
+// #endif
+// #ifdef PX4_SPIDEV_MPU
+// 	{ MPU6000_BUS_SPI_INTERNAL1, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL, MPU_DEVICE_PATH_GYRO, &MPU6000_SPI_interface, PX4_SPI_BUS_SENSORS,  false, NULL },
+// #endif
+// #if defined(PX4_SPI_BUS_EXT)
+// 	{ MPU6000_BUS_SPI_EXTERNAL1, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT, MPU_DEVICE_PATH_GYRO_EXT, &MPU6000_SPI_interface, PX4_SPI_BUS_EXT,  true, NULL },
+// #endif
+// #ifdef PX4_SPIDEV_ICM_20602
 	{ MPU6000_BUS_SPI_INTERNAL1, MPU_DEVICE_TYPE_ICM20602, ICM20602_DEVICE_PATH_ACCEL, ICM20602_DEVICE_PATH_GYRO, &MPU6000_SPI_interface, PX4_SPI_BUS_SENSORS,  false, NULL },
-#endif
-#ifdef PX4_SPIDEV_ICM_20608
-	{ MPU6000_BUS_SPI_INTERNAL1, MPU_DEVICE_TYPE_ICM20608, ICM20608_DEVICE_PATH_ACCEL, ICM20608_DEVICE_PATH_GYRO, &MPU6000_SPI_interface, PX4_SPI_BUS_SENSORS,  false, NULL },
-#endif
-#ifdef PX4_SPIDEV_ICM_20689
+// #endif
+// #ifdef PX4_SPIDEV_ICM_20608
+// 	{ MPU6000_BUS_SPI_INTERNAL1, MPU_DEVICE_TYPE_ICM20608, ICM20608_DEVICE_PATH_ACCEL, ICM20608_DEVICE_PATH_GYRO, &MPU6000_SPI_interface, PX4_SPI_BUS_SENSORS,  false, NULL },
+// #endif
+// #ifdef PX4_SPIDEV_ICM_20689
 	{ MPU6000_BUS_SPI_INTERNAL2, MPU_DEVICE_TYPE_ICM20689, ICM20689_DEVICE_PATH_ACCEL, ICM20689_DEVICE_PATH_GYRO, &MPU6000_SPI_interface, PX4_SPI_BUS_SENSORS,  false, NULL },
-#endif
-#if defined(PX4_SPI_BUS_EXTERNAL)
-	{ MPU6000_BUS_SPI_EXTERNAL1, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT, MPU_DEVICE_PATH_GYRO_EXT, &MPU6000_SPI_interface, PX4_SPI_BUS_EXTERNAL, true,  NULL },
-	{ MPU6000_BUS_SPI_EXTERNAL2, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT1, MPU_DEVICE_PATH_GYRO_EXT1, &MPU6000_SPI_interface, PX4_SPI_BUS_EXTERNAL, true,  NULL },
-#endif
+// #endif
+// #if defined(PX4_SPI_BUS_EXTERNAL)
+// 	{ MPU6000_BUS_SPI_EXTERNAL1, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT, MPU_DEVICE_PATH_GYRO_EXT, &MPU6000_SPI_interface, PX4_SPI_BUS_EXTERNAL, true,  NULL },
+// 	{ MPU6000_BUS_SPI_EXTERNAL2, MPU_DEVICE_TYPE_MPU6000, MPU_DEVICE_PATH_ACCEL_EXT1, MPU_DEVICE_PATH_GYRO_EXT1, &MPU6000_SPI_interface, PX4_SPI_BUS_EXTERNAL, true,  NULL },
+// #endif
 };
 
 #define NUM_BUS_OPTIONS (sizeof(bus_options)/sizeof(bus_options[0]))
@@ -2273,7 +2273,7 @@ void	usage();
 /**
  * find a bus structure for a busid
  */
-struct mpu6000_bus_option &find_bus(enum MPU6000_BUS busid)
+_EXT_ITCM struct mpu6000_bus_option &find_bus(enum MPU6000_BUS busid)
 {
 	for (uint8_t i = 0; i < NUM_BUS_OPTIONS; i++) {
 		if ((busid == MPU6000_BUS_ALL ||
@@ -2288,7 +2288,7 @@ struct mpu6000_bus_option &find_bus(enum MPU6000_BUS busid)
 /**
  * start driver for a specific bus option
  */
-bool
+_EXT_ITCM bool
 start_bus(struct mpu6000_bus_option &bus, enum Rotation rotation, int range, int device_type)
 {
 	int fd = -1;
@@ -2304,6 +2304,7 @@ start_bus(struct mpu6000_bus_option &bus, enum Rotation rotation, int range, int
 		warnx("failed creating interface for bus #%u (SPI%u)", (unsigned)bus.busid, (unsigned)bus.busnum);
 		return false;
 	}
+
 
 	if (interface->init() != OK) {
 		delete interface;
@@ -2340,6 +2341,7 @@ start_bus(struct mpu6000_bus_option &bus, enum Rotation rotation, int range, int
 
 	close(fd);
 
+
 	return true;
 
 fail:
@@ -2362,7 +2364,7 @@ fail:
  * This function only returns if the driver is up and running
  * or failed to detect the sensor.
  */
-void
+_EXT_ITCM void
 start(enum MPU6000_BUS busid, enum Rotation rotation, int range, int device_type)
 {
 
@@ -2385,13 +2387,15 @@ start(enum MPU6000_BUS busid, enum Rotation rotation, int range, int device_type
 		}
 
 		started |= start_bus(bus_options[i], rotation, range, device_type);
+
 	}
+
 
 	exit(started ? 0 : 1);
 
 }
 
-void
+_EXT_ITCM void
 stop(enum MPU6000_BUS busid)
 {
 	struct mpu6000_bus_option &bus = find_bus(busid);
@@ -2414,7 +2418,7 @@ stop(enum MPU6000_BUS busid)
  * make sure we can collect data from the sensor in polled
  * and automatic modes.
  */
-void
+_EXT_ITCM void
 test(enum MPU6000_BUS busid)
 {
 	struct mpu6000_bus_option &bus = find_bus(busid);
@@ -2478,7 +2482,7 @@ test(enum MPU6000_BUS busid)
 /**
  * Reset the driver.
  */
-void
+_EXT_ITCM void
 reset(enum MPU6000_BUS busid)
 {
 	struct mpu6000_bus_option &bus = find_bus(busid);
@@ -2504,7 +2508,7 @@ reset(enum MPU6000_BUS busid)
 /**
  * Print a little info about the driver.
  */
-void
+_EXT_ITCM void
 info(enum MPU6000_BUS busid)
 {
 	struct mpu6000_bus_option &bus = find_bus(busid);
@@ -2523,7 +2527,7 @@ info(enum MPU6000_BUS busid)
 /**
  * Dump the register information
  */
-void
+_EXT_ITCM void
 regdump(enum MPU6000_BUS busid)
 {
 	struct mpu6000_bus_option &bus = find_bus(busid);
@@ -2542,7 +2546,7 @@ regdump(enum MPU6000_BUS busid)
 /**
  * deliberately produce an error to test recovery
  */
-void
+_EXT_ITCM void
 testerror(enum MPU6000_BUS busid)
 {
 	struct mpu6000_bus_option &bus = find_bus(busid);
@@ -2560,7 +2564,7 @@ testerror(enum MPU6000_BUS busid)
 /**
  * Dump the register information
  */
-void
+_EXT_ITCM void
 factorytest(enum MPU6000_BUS busid)
 {
 	struct mpu6000_bus_option &bus = find_bus(busid);
@@ -2575,7 +2579,7 @@ factorytest(enum MPU6000_BUS busid)
 	exit(0);
 }
 
-void
+_EXT_ITCM void
 usage()
 {
 	warnx("missing command: try 'start', 'info', 'test', 'stop',\n'reset', 'regdump', 'factorytest', 'testerror'");
@@ -2593,7 +2597,7 @@ usage()
 
 } // namespace
 
-int
+_EXT_ITCM int
 mpu6000_main(int argc, char *argv[])
 {
 	int myoptind = 1;

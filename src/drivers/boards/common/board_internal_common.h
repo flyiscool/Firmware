@@ -116,4 +116,4 @@ __EXPORT void board_gpio_init(const uint32_t list[], int count);
  *
  ************************************************************************************/
 
-__EXPORT int board_determine_hw_info(void);
+__EXPORT  int board_determine_hw_info(void);

@@ -100,12 +100,12 @@ int position_estimator_inav_thread_main(int argc, char *argv[]);
 
 static void usage(const char *reason);
 
-static inline int min(int val1, int val2)
+_EXT_ITCM static inline int min(int val1, int val2)
 {
 	return (val1 < val2) ? val1 : val2;
 }
 
-static inline int max(int val1, int val2)
+_EXT_ITCM static inline int max(int val1, int val2)
 {
 	return (val1 > val2) ? val1 : val2;
 }
@@ -113,7 +113,7 @@ static inline int max(int val1, int val2)
 /**
  * Print the correct usage.
  */
-static void usage(const char *reason)
+_EXT_ITCM static void usage(const char *reason)
 {
 	if (reason && *reason) {
 		PX4_INFO("%s", reason);
@@ -130,7 +130,7 @@ static void usage(const char *reason)
  * The actual stack size should be set in the call
  * to task_create().
  */
-int position_estimator_inav_main(int argc, char *argv[])
+_EXT_ITCM int position_estimator_inav_main(int argc, char *argv[])
 {
 	if (argc < 2) {
 		usage("missing command");
@@ -186,7 +186,7 @@ int position_estimator_inav_main(int argc, char *argv[])
 }
 
 #ifdef INAV_DEBUG
-static void write_debug_log(const char *msg, float dt, float x_est[2], float y_est[2], float z_est[2],
+_EXT_ITCM static void write_debug_log(const char *msg, float dt, float x_est[2], float y_est[2], float z_est[2],
 			    float x_est_prev[2], float y_est_prev[2], float z_est_prev[2],
 			    float acc[3], float corr_gps[3][2], float w_xy_gps_p, float w_xy_gps_v, float corr_mocap[3][1], float w_mocap_p,
 			    float corr_vision[3][2], float w_xy_vision_p, float w_z_vision_p, float w_xy_vision_v)
@@ -229,7 +229,7 @@ static void write_debug_log(const char *msg, float dt, float x_est[2], float y_e
 /****************************************************************************
  * main
  ****************************************************************************/
-int position_estimator_inav_thread_main(int argc, char *argv[])
+_EXT_ITCM int position_estimator_inav_thread_main(int argc, char *argv[])
 {
 	orb_advert_t mavlink_log_pub = nullptr;
 
@@ -1437,7 +1437,7 @@ int position_estimator_inav_thread_main(int argc, char *argv[])
 }
 
 
-int inav_parameters_init(struct position_estimator_inav_param_handles *h)
+_EXT_ITCM int inav_parameters_init(struct position_estimator_inav_param_handles *h)
 {
 	h->w_z_baro = param_find("INAV_W_Z_BARO");
 	h->w_z_gps_p = param_find("INAV_W_Z_GPS_P");
@@ -1471,7 +1471,7 @@ int inav_parameters_init(struct position_estimator_inav_param_handles *h)
 	return 0;
 }
 
-int inav_parameters_update(const struct position_estimator_inav_param_handles *h,
+_EXT_ITCM int inav_parameters_update(const struct position_estimator_inav_param_handles *h,
 			   struct position_estimator_inav_params *p)
 {
 	param_get(h->w_z_baro, &(p->w_z_baro));

@@ -46,13 +46,13 @@
 class Takeoff : public MissionBlock
 {
 public:
-	Takeoff(Navigator *navigator);
+	_EXT_ITCM Takeoff(Navigator *navigator);
 	~Takeoff() = default;
 
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
 private:
 
-	void set_takeoff_position();
+	_EXT_ITCM void set_takeoff_position();
 };

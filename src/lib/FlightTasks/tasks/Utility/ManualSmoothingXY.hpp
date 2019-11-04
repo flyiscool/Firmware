@@ -45,7 +45,7 @@
 class ManualSmoothingXY : public ModuleParams
 {
 public:
-	ManualSmoothingXY(ModuleParams *parent, const matrix::Vector2f &vel);
+	_EXT_ITCM ManualSmoothingXY(ModuleParams *parent, const matrix::Vector2f &vel);
 	~ManualSmoothingXY() = default;
 
 	/**
@@ -54,7 +54,7 @@ public:
 	 * @param vel_sp: velocity setpoint in xy
 	 * @param dt: time delta in seconds
 	 */
-	void smoothVelocity(matrix::Vector2f &vel_sp, const matrix::Vector2f &vel,  const float &yaw,
+	_EXT_ITCM void smoothVelocity(matrix::Vector2f &vel_sp, const matrix::Vector2f &vel,  const float &yaw,
 			    const float &yawrate_sp, const float dt);
 
 	/* User intention: brake or acceleration */
@@ -71,22 +71,22 @@ public:
 	/* Overwrite methods:
 	 * Needed if different parameter values than default required.
 	 */
-	void overwriteHoverAcceleration(float acc) { _acc_hover.set(acc); }
-	void overwriteMaxAcceleration(float acc) { _acc_xy_max.set(acc); }
-	void overwriteDecelerationMin(float dec) { _dec_xy_min.set(dec); }
-	void overwriteJerkMax(float jerk) { _jerk_max.set(jerk); }
-	void overwriteJerkMin(float jerk) { _jerk_min.set(jerk); }
+	_EXT_ITCM void overwriteHoverAcceleration(float acc) { _acc_hover.set(acc); }
+	_EXT_ITCM void overwriteMaxAcceleration(float acc) { _acc_xy_max.set(acc); }
+	_EXT_ITCM void overwriteDecelerationMin(float dec) { _dec_xy_min.set(dec); }
+	_EXT_ITCM void overwriteJerkMax(float jerk) { _jerk_max.set(jerk); }
+	_EXT_ITCM void overwriteJerkMin(float jerk) { _jerk_min.set(jerk); }
 
 private:
-	void _updateAcceleration(matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const float &yaw,
+	_EXT_ITCM void _updateAcceleration(matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const float &yaw,
 				 const float &yawrate_sp, const float dt);
-	Intention _getIntention(const matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const float &yaw,
+	_EXT_ITCM Intention _getIntention(const matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const float &yaw,
 				const float &yawrate_sp);
-	void _getStateAcceleration(const matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const Intention &intention,
+	_EXT_ITCM void _getStateAcceleration(const matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const Intention &intention,
 				   const float dt);
-	void _velocitySlewRate(matrix::Vector2f &vel_sp, const float dt);
-	matrix::Vector2f _getWorldToHeadingFrame(const matrix::Vector2f &vec, const float &yaw);
-	matrix::Vector2f _getHeadingToWorldFrame(const matrix::Vector2f &vec, const float &yaw);
+	_EXT_ITCM void _velocitySlewRate(matrix::Vector2f &vel_sp, const float dt);
+	_EXT_ITCM matrix::Vector2f _getWorldToHeadingFrame(const matrix::Vector2f &vec, const float &yaw);
+	_EXT_ITCM matrix::Vector2f _getHeadingToWorldFrame(const matrix::Vector2f &vec, const float &yaw);
 
 	/* User intention: brake or acceleration */
 	Intention _intention{Intention::acceleration};

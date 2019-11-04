@@ -53,7 +53,7 @@
 
 #define SIGMA 0.000001f
 
-__EXPORT void pid_init(PID_t *pid, pid_mode_t mode, float dt_min)
+_EXT_DTCM_EKF2 __EXPORT void pid_init(PID_t *pid, pid_mode_t mode, float dt_min)
 {
 	pid->mode = mode;
 	pid->dt_min = dt_min;
@@ -67,7 +67,7 @@ __EXPORT void pid_init(PID_t *pid, pid_mode_t mode, float dt_min)
 	pid->last_output = 0.0f;
 }
 
-__EXPORT int pid_set_parameters(PID_t *pid, float kp, float ki, float kd, float integral_limit, float output_limit)
+_EXT_DTCM_EKF2 __EXPORT int pid_set_parameters(PID_t *pid, float kp, float ki, float kd, float integral_limit, float output_limit)
 {
 	int ret = 0;
 
@@ -109,7 +109,7 @@ __EXPORT int pid_set_parameters(PID_t *pid, float kp, float ki, float kd, float 
 	return ret;
 }
 
-__EXPORT float pid_calculate(PID_t *pid, float sp, float val, float val_dot, float dt)
+_EXT_DTCM_EKF2 __EXPORT float pid_calculate(PID_t *pid, float sp, float val, float val_dot, float dt)
 {
 	if (!isfinite(sp) || !isfinite(val) || !isfinite(val_dot) || !isfinite(dt)) {
 		return pid->last_output;
@@ -178,7 +178,7 @@ __EXPORT float pid_calculate(PID_t *pid, float sp, float val, float val_dot, flo
 }
 
 
-__EXPORT void pid_reset_integral(PID_t *pid)
+_EXT_DTCM_EKF2 __EXPORT void pid_reset_integral(PID_t *pid)
 {
 	pid->integral = 0.0f;
 }

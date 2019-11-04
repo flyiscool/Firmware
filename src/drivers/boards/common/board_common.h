@@ -478,7 +478,7 @@ __EXPORT int board_get_dma_usage(uint16_t *dma_total, uint16_t *dma_used, uint16
  ************************************************************************************/
 #if defined(INVERT_RC_INPUT)
 #  if !defined(GPIO_SBUS_INV)
-__EXPORT void board_rc_input(bool invert_on);
+__EXPORT  void board_rc_input(bool invert_on);
 #  endif
 #endif
 
@@ -510,7 +510,7 @@ __EXPORT void board_rc_input(bool invert_on);
 #if defined(BOARD_HAS_NO_RESET) || !defined(BOARD_HAS_ON_RESET)
 #  define board_on_reset(status)
 #else
-__EXPORT void board_on_reset(int status);
+__EXPORT  void board_on_reset(int status);
 #endif
 
 /************************************************************************************
@@ -531,7 +531,7 @@ __EXPORT void board_on_reset(int status);
 #if defined(BOARD_HAS_NO_RESET)
 #  define board_system_reset(status)
 #else
-__EXPORT void board_system_reset(int status) noreturn_function;
+__EXPORT  void board_system_reset(int status) noreturn_function;
 #endif
 
 /************************************************************************************

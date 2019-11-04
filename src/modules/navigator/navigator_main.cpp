@@ -1175,7 +1175,7 @@ int Navigator::custom_command(int argc, char *argv[])
 	return print_usage("unknown command");
 }
 
-int navigator_main(int argc, char *argv[])
+_EXT_ITCM int navigator_main(int argc, char *argv[])
 {
 	return Navigator::main(argc, argv);
 }

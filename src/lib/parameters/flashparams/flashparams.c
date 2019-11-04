@@ -72,7 +72,7 @@ struct param_wbuf_s {
 	bool                    unsaved;
 };
 
-static int
+_EXT_ITCM static int
 param_export_internal(bool only_unsaved)
 {
 	struct param_wbuf_s *s = NULL;
@@ -208,7 +208,7 @@ struct param_import_state {
 	bool mark_saved;
 };
 
-static int
+_EXT_ITCM static int
 param_import_callback(bson_decoder_t decoder, void *private, bson_node_t node)
 {
 	float f;
@@ -321,7 +321,7 @@ out:
 	return result;
 }
 
-static int
+_EXT_ITCM static int
 param_import_internal(bool mark_saved)
 {
 	struct bson_decoder_s decoder;
@@ -353,18 +353,18 @@ out:
 	return result;
 }
 
-int flash_param_save(void)
+_EXT_ITCM int flash_param_save(void)
 {
 	return param_export_internal(false);
 }
 
-int flash_param_load(void)
+_EXT_ITCM int flash_param_load(void)
 {
 	param_reset_all();
 	return param_import_internal(true);
 }
 
-int flash_param_import(void)
+_EXT_ITCM int flash_param_import(void)
 {
 	return -1;
 }

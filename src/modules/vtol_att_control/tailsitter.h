@@ -51,15 +51,15 @@ class Tailsitter : public VtolType
 {
 
 public:
-	Tailsitter(VtolAttitudeControl *_att_controller);
-	~Tailsitter();
+	_EXT_ITCM Tailsitter(VtolAttitudeControl *_att_controller);
+	_EXT_ITCM ~Tailsitter();
 
-	virtual void update_vtol_state();
-	virtual void update_transition_state();
-	virtual void update_mc_state();
-	virtual void update_fw_state();
-	virtual void fill_actuator_outputs();
-	virtual void waiting_on_tecs();
+	_EXT_ITCM virtual void update_vtol_state();
+	_EXT_ITCM virtual void update_transition_state();
+	_EXT_ITCM virtual void update_mc_state();
+	_EXT_ITCM virtual void update_fw_state();
+	_EXT_ITCM virtual void fill_actuator_outputs();
+	_EXT_ITCM virtual void waiting_on_tecs();
 
 private:
 
@@ -90,7 +90,7 @@ private:
 	/**
 	 * Update parameters.
 	 */
-	virtual void parameters_update();
+	_EXT_ITCM virtual void parameters_update();
 
 };
 #endif

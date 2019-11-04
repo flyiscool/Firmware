@@ -54,6 +54,7 @@
 #include "ms5611.h"
 #include "board_config.h"
 
+
 /* SPI protocol address bits */
 #define DIR_READ			(1<<7)
 #define DIR_WRITE			(0<<7)
@@ -69,9 +70,9 @@ public:
 	MS5611_SPI(uint8_t bus, uint32_t device, ms5611::prom_u &prom_buf);
 	virtual ~MS5611_SPI();
 
-	virtual int	init();
-	virtual int	read(unsigned offset, void *data, unsigned count);
-	virtual int	ioctl(unsigned operation, unsigned &arg);
+	virtual int init();
+	virtual int read(unsigned offset, void *data, unsigned count);
+	virtual int ioctl(unsigned operation, unsigned &arg);
 
 private:
 	ms5611::prom_u	&_prom;
@@ -81,28 +82,28 @@ private:
 	 *
 	 * This is required after any bus reset.
 	 */
-	int		_reset();
+	int _reset();
 
 	/**
 	 * Send a measure command to the MS5611.
 	 *
 	 * @param addr		Which address to use for the measure operation.
 	 */
-	int		_measure(unsigned addr);
+	int _measure(unsigned addr);
 
 	/**
 	 * Read the MS5611 PROM
 	 *
 	 * @return		OK if the PROM reads successfully.
 	 */
-	int		_read_prom();
+	int _read_prom();
 
 	/**
 	 * Read a 16-bit register value.
 	 *
 	 * @param reg		The register to read.
 	 */
-	uint16_t	_reg16(unsigned reg);
+	uint16_t _reg16(unsigned reg);
 
 	/**
 	 * Wrapper around transfer() that prevents interrupt-context transfers
@@ -110,7 +111,7 @@ private:
 	 * that are polled from interrupt context (or we may be pre-empted)
 	 * so we need to guarantee that transfers complete without interruption.
 	 */
-	int		_transfer(uint8_t *send, uint8_t *recv, unsigned len);
+	int	_transfer(uint8_t *send, uint8_t *recv, unsigned len);
 };
 
 device::Device *
@@ -157,6 +158,7 @@ MS5611_SPI::init()
 		goto out;
 	}
 
+
 	/* send reset command */
 	ret = _reset();
 
@@ -172,6 +174,7 @@ MS5611_SPI::init()
 		DEVICE_DEBUG("prom readout failed");
 		goto out;
 	}
+
 
 out:
 	return ret;
@@ -264,7 +267,6 @@ MS5611_SPI::_read_prom()
 		if (_prom.c[i] != 0) {
 			all_zero = false;
 		}
-
 		//DEVICE_DEBUG("prom[%u]=0x%x", (unsigned)i, (unsigned)_prom.c[i]);
 	}
 

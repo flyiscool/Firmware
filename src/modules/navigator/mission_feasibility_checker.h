@@ -44,7 +44,7 @@
 #include <dataman/dataman.h>
 #include <uORB/topics/mission.h>
 #include <uORB/topics/fw_pos_ctrl_status.h>
-
+#include "chip.h"
 class Geofence;
 class Navigator;
 
@@ -54,22 +54,22 @@ private:
 	Navigator *_navigator{nullptr};
 
 	/* Checks for all airframes */
-	bool checkGeofence(const mission_s &mission, float home_alt, bool home_valid);
+	_EXT_ITCM bool checkGeofence(const mission_s &mission, float home_alt, bool home_valid);
 
-	bool checkHomePositionAltitude(const mission_s &mission, float home_alt, bool home_alt_valid, bool throw_error);
+	_EXT_ITCM bool checkHomePositionAltitude(const mission_s &mission, float home_alt, bool home_alt_valid, bool throw_error);
 
-	bool checkMissionItemValidity(const mission_s &mission);
+	_EXT_ITCM bool checkMissionItemValidity(const mission_s &mission);
 
-	bool checkDistanceToFirstWaypoint(const mission_s &mission, float max_distance);
-	bool checkDistancesBetweenWaypoints(const mission_s &mission, float max_distance);
+	_EXT_ITCM bool checkDistanceToFirstWaypoint(const mission_s &mission, float max_distance);
+	_EXT_ITCM bool checkDistancesBetweenWaypoints(const mission_s &mission, float max_distance);
 
 	/* Checks specific to fixedwing airframes */
-	bool checkFixedwing(const mission_s &mission, float home_alt, bool home_alt_valid, bool land_start_req);
-	bool checkFixedWingTakeoff(const mission_s &mission, float home_alt, bool home_alt_valid);
-	bool checkFixedWingLanding(const mission_s &mission, bool land_start_req);
+	_EXT_ITCM bool checkFixedwing(const mission_s &mission, float home_alt, bool home_alt_valid, bool land_start_req);
+	_EXT_ITCM bool checkFixedWingTakeoff(const mission_s &mission, float home_alt, bool home_alt_valid);
+	_EXT_ITCM bool checkFixedWingLanding(const mission_s &mission, bool land_start_req);
 
 	/* Checks specific to rotarywing airframes */
-	bool checkRotarywing(const mission_s &mission, float home_alt, bool home_alt_valid);
+	_EXT_ITCM bool checkRotarywing(const mission_s &mission, float home_alt, bool home_alt_valid);
 
 public:
 	MissionFeasibilityChecker(Navigator *navigator) : _navigator(navigator) {}
@@ -81,7 +81,7 @@ public:
 	/*
 	 * Returns true if mission is feasible and false otherwise
 	 */
-	bool checkMissionFeasible(const mission_s &mission,
+	_EXT_ITCM bool checkMissionFeasible(const mission_s &mission,
 				  float max_distance_to_1st_waypoint, float max_distance_between_waypoints,
 				  bool land_start_req);
 

@@ -61,7 +61,7 @@
 #include <drivers/drv_hrt.h>
 #include <systemlib/mavlink_log.h>
 
-int check_if_batt_disconnected(orb_advert_t *mavlink_log_pub) {
+_EXT_ITCM int check_if_batt_disconnected(orb_advert_t *mavlink_log_pub) {
 	struct battery_status_s battery;
 	memset(&battery,0,sizeof(battery));
 	int batt_sub = orb_subscribe(ORB_ID(battery_status));
@@ -74,7 +74,7 @@ int check_if_batt_disconnected(orb_advert_t *mavlink_log_pub) {
 	return PX4_OK;
 }
 
-int do_esc_calibration(orb_advert_t *mavlink_log_pub, struct actuator_armed_s* armed)
+_EXT_ITCM int do_esc_calibration(orb_advert_t *mavlink_log_pub, struct actuator_armed_s* armed)
 {
 	int	return_code = PX4_OK;
 	

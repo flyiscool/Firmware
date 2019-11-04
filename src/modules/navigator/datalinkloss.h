@@ -49,13 +49,13 @@ class Navigator;
 class DataLinkLoss : public MissionBlock, public ModuleParams
 {
 public:
-	DataLinkLoss(Navigator *navigator);
+	_EXT_ITCM DataLinkLoss(Navigator *navigator);
 
 	~DataLinkLoss() = default;
 
-	void on_inactive() override;
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_inactive() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
 private:
 	DEFINE_PARAMETERS(
@@ -82,11 +82,11 @@ private:
 	/**
 	 * Set the DLL item
 	 */
-	void		set_dll_item();
+	_EXT_ITCM void		set_dll_item();
 
 	/**
 	 * Move to next DLL item
 	 */
-	void		advance_dll();
+	_EXT_ITCM void		advance_dll();
 
 };

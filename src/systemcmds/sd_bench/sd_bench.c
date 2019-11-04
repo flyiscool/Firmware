@@ -70,7 +70,7 @@ static int num_runs; ///< number of runs
 static int run_duration; ///< duration of a single run [ms]
 static bool synchronized; ///< call fsync after each block?
 
-static void
+_EXT_ITCM static void
 usage()
 {
 	PRINT_MODULE_DESCRIPTION("Test the speed of an SD Card");
@@ -82,7 +82,7 @@ usage()
 	PRINT_MODULE_USAGE_PARAM_FLAG('s', "Call fsync after each block (default=at end of each run)", true);
 }
 
-int
+_EXT_ITCM int
 sd_bench_main(int argc, char *argv[])
 {
 	int block_size = 4096;
@@ -153,14 +153,14 @@ sd_bench_main(int argc, char *argv[])
 	return 0;
 }
 
-unsigned int time_fsync(int fd)
+_EXT_ITCM unsigned int time_fsync(int fd)
 {
 	hrt_abstime fsync_start = hrt_absolute_time();
 	fsync(fd);
 	return hrt_elapsed_time(&fsync_start) / 1000;
 }
 
-void write_test(int fd, uint8_t *block, int block_size)
+_EXT_ITCM void write_test(int fd, uint8_t *block, int block_size)
 {
 	PX4_INFO("");
 	PX4_INFO("Testing Sequential Write Speed...");

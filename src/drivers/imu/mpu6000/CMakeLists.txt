@@ -33,7 +33,7 @@
 px4_add_module(
 	MODULE drivers__mpu6000
 	MAIN mpu6000
-	STACK_MAIN 1400
+	STACK_MAIN 3500
 	COMPILE_FLAGS
 	SRCS
 		mpu6000.cpp

@@ -48,7 +48,7 @@
 #include <systemlib/mavlink_log.h>
 #include <parameters/param.h>
 
-int do_baro_calibration(orb_advert_t *mavlink_log_pub)
+_EXT_ITCM int do_baro_calibration(orb_advert_t *mavlink_log_pub)
 {
 	// TODO implement this
 	return PX4_ERROR;

@@ -91,29 +91,29 @@ class VtolAttitudeControl
 {
 public:
 
-	VtolAttitudeControl();
-	~VtolAttitudeControl();
+	_EXT_ITCM VtolAttitudeControl();
+	_EXT_ITCM ~VtolAttitudeControl();
 
-	int start();	/* start the task and return OK on success */
-	bool is_fixed_wing_requested();
-	void abort_front_transition(const char *reason);
+	_EXT_ITCM int start();	/* start the task and return OK on success */
+	_EXT_ITCM bool is_fixed_wing_requested();
+	_EXT_ITCM void abort_front_transition(const char *reason);
 
-	struct actuator_controls_s 			*get_actuators_fw_in() {return &_actuators_fw_in;}
-	struct actuator_controls_s 			*get_actuators_mc_in() {return &_actuators_mc_in;}
-	struct actuator_controls_s 			*get_actuators_out0() {return &_actuators_out_0;}
-	struct actuator_controls_s 			*get_actuators_out1() {return &_actuators_out_1;}
-	struct airspeed_s 				*get_airspeed() {return &_airspeed;}
-	struct position_setpoint_triplet_s		*get_pos_sp_triplet() {return &_pos_sp_triplet;}
-	struct tecs_status_s 				*get_tecs_status() {return &_tecs_status;}
-	struct vehicle_attitude_s 			*get_att() {return &_v_att;}
-	struct vehicle_attitude_setpoint_s		*get_att_sp() {return &_v_att_sp;}
-	struct vehicle_attitude_setpoint_s 		*get_fw_virtual_att_sp() {return &_fw_virtual_att_sp;}
-	struct vehicle_attitude_setpoint_s 		*get_mc_virtual_att_sp() {return &_mc_virtual_att_sp;}
-	struct vehicle_control_mode_s 			*get_control_mode() {return &_v_control_mode;}
-	struct vehicle_land_detected_s			*get_land_detected() {return &_land_detected;}
-	struct vehicle_local_position_s 		*get_local_pos() {return &_local_pos;}
-	struct vehicle_local_position_setpoint_s	*get_local_pos_sp() {return &_local_pos_sp;}
-	struct vtol_vehicle_status_s			*get_vtol_vehicle_status() {return &_vtol_vehicle_status;}
+	_EXT_ITCM struct actuator_controls_s 			*get_actuators_fw_in() {return &_actuators_fw_in;}
+	_EXT_ITCM struct actuator_controls_s 			*get_actuators_mc_in() {return &_actuators_mc_in;}
+	_EXT_ITCM struct actuator_controls_s 			*get_actuators_out0() {return &_actuators_out_0;}
+	_EXT_ITCM struct actuator_controls_s 			*get_actuators_out1() {return &_actuators_out_1;}
+	_EXT_ITCM struct airspeed_s 				*get_airspeed() {return &_airspeed;}
+	_EXT_ITCM struct position_setpoint_triplet_s		*get_pos_sp_triplet() {return &_pos_sp_triplet;}
+	_EXT_ITCM struct tecs_status_s 				*get_tecs_status() {return &_tecs_status;}
+	_EXT_ITCM struct vehicle_attitude_s 			*get_att() {return &_v_att;}
+	_EXT_ITCM struct vehicle_attitude_setpoint_s		*get_att_sp() {return &_v_att_sp;}
+	_EXT_ITCM struct vehicle_attitude_setpoint_s 		*get_fw_virtual_att_sp() {return &_fw_virtual_att_sp;}
+	_EXT_ITCM struct vehicle_attitude_setpoint_s 		*get_mc_virtual_att_sp() {return &_mc_virtual_att_sp;}
+	_EXT_ITCM struct vehicle_control_mode_s 			*get_control_mode() {return &_v_control_mode;}
+	_EXT_ITCM struct vehicle_land_detected_s			*get_land_detected() {return &_land_detected;}
+	_EXT_ITCM struct vehicle_local_position_s 		*get_local_pos() {return &_local_pos;}
+	_EXT_ITCM struct vehicle_local_position_setpoint_s	*get_local_pos_sp() {return &_local_pos_sp;}
+	_EXT_ITCM struct vtol_vehicle_status_s			*get_vtol_vehicle_status() {return &_vtol_vehicle_status;}
 
 	struct Params 					*get_params() {return &_params;}
 
@@ -214,30 +214,30 @@ private:
 
 //*****************Member functions***********************************************************************
 
-	void 		task_main();	//main task
-	static int	task_main_trampoline(int argc, char *argv[]);	//Shim for calling task_main from task_create.
+	_EXT_ITCM void 		task_main();	//main task
+	_EXT_ITCM static int	task_main_trampoline(int argc, char *argv[]);	//Shim for calling task_main from task_create.
 
-	void		land_detected_poll();
-	void		tecs_status_poll();
-	void		vehicle_attitude_poll();  //Check for attitude updates.
-	void		vehicle_cmd_poll();
-	void		vehicle_control_mode_poll();	//Check for changes in vehicle control mode.
-	void		vehicle_manual_poll();			//Check for changes in manual inputs.
-	void 		actuator_controls_fw_poll();	//Check for changes in fw_attitude_control output
-	void 		actuator_controls_mc_poll();	//Check for changes in mc_attitude_control output
-	void 		fw_virtual_att_sp_poll();
-	void 		mc_virtual_att_sp_poll();
-	void 		pos_sp_triplet_poll();		// Check for changes in position setpoint values
-	void 		vehicle_airspeed_poll();		// Check for changes in airspeed
-	void 		vehicle_local_pos_poll();		// Check for changes in sensor values
-	void 		vehicle_local_pos_sp_poll();		// Check for changes in setpoint values
+	_EXT_ITCM void		land_detected_poll();
+	_EXT_ITCM void		tecs_status_poll();
+	_EXT_ITCM void		vehicle_attitude_poll();  //Check for attitude updates.
+	_EXT_ITCM void		vehicle_cmd_poll();
+	_EXT_ITCM void		vehicle_control_mode_poll();	//Check for changes in vehicle control mode.
+	_EXT_ITCM void		vehicle_manual_poll();			//Check for changes in manual inputs.
+	_EXT_ITCM void 		actuator_controls_fw_poll();	//Check for changes in fw_attitude_control output
+	_EXT_ITCM void 		actuator_controls_mc_poll();	//Check for changes in mc_attitude_control output
+	_EXT_ITCM void 		fw_virtual_att_sp_poll();
+	_EXT_ITCM void 		mc_virtual_att_sp_poll();
+	_EXT_ITCM void 		pos_sp_triplet_poll();		// Check for changes in position setpoint values
+	_EXT_ITCM void 		vehicle_airspeed_poll();		// Check for changes in airspeed
+	_EXT_ITCM void 		vehicle_local_pos_poll();		// Check for changes in sensor values
+	_EXT_ITCM void 		vehicle_local_pos_sp_poll();		// Check for changes in setpoint values
 
-	int 		parameters_update();			//Update local paraemter cache
+	_EXT_ITCM int 		parameters_update();			//Update local paraemter cache
 
-	void 		fill_mc_att_rates_sp();
-	void 		fill_fw_att_rates_sp();
+	_EXT_ITCM void 		fill_mc_att_rates_sp();
+	_EXT_ITCM void 		fill_fw_att_rates_sp();
 
-	void		handle_command();
+	_EXT_ITCM void		handle_command();
 };
 
 #endif

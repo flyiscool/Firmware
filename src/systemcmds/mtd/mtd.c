@@ -71,7 +71,7 @@ __EXPORT int mtd_main(int argc, char *argv[]);
 #ifndef CONFIG_MTD
 
 /* create a fake command with decent warning to not confuse users */
-int mtd_main(int argc, char *argv[])
+_EXT_ITCM int mtd_main(int argc, char *argv[])
 {
 	PX4_WARN("MTD not enabled, skipping.");
 	return 1;
@@ -118,7 +118,7 @@ static unsigned n_partitions_current = 0;
 static char *partition_names_default[] = MTD_PARTITION_TABLE;
 static const int n_partitions_default = arraySize(partition_names_default);
 
-static int
+_EXT_ITCM static int
 mtd_status(void)
 {
 	if (!attached) {
@@ -129,7 +129,7 @@ mtd_status(void)
 	return mtd_print_info();
 }
 
-static void	print_usage(void)
+_EXT_ITCM static void	print_usage(void)
 {
 	PRINT_MODULE_DESCRIPTION("Utility to mount and test partitions (based on FRAM/EEPROM storage as defined by the board)");
 
@@ -146,7 +146,7 @@ static void	print_usage(void)
 			       "Partition names (eg. /fs/mtd_params), use system default if not provided", true);
 }
 
-int mtd_main(int argc, char *argv[])
+_EXT_ITCM int mtd_main(int argc, char *argv[])
 {
 	if (argc >= 2) {
 		if (!strcmp(argv[1], "start")) {
@@ -201,7 +201,7 @@ struct mtd_dev_s *mtd_partition(FAR struct mtd_dev_s *mtd,
 				off_t firstblock, off_t nblocks);
 
 #ifdef CONFIG_MTD_RAMTRON
-static int
+_EXT_ITCM static int
 ramtron_attach(void)
 {
 	/* initialize the right spi */
@@ -214,9 +214,13 @@ ramtron_attach(void)
 
 	/* this resets the spi bus, set correct bus speed again */
 	SPI_SETFREQUENCY(spi, 10 * 1000 * 1000);
+	// PX4_WARN("SPI_SETFREQUENCY over");
 	SPI_SETBITS(spi, 8);
+	// PX4_WARN("SPI_SETBITS");
 	SPI_SETMODE(spi, SPIDEV_MODE3);
+	// PX4_WARN("SPI_SETMODE");
 	SPI_SELECT(spi, SPIDEV_FLASH(0), false);
+	// PX4_WARN("SPI_SELECT");
 
 	/* start the RAMTRON driver, attempt 5 times */
 
@@ -253,7 +257,7 @@ ramtron_attach(void)
 }
 #else
 
-static int
+_EXT_ITCM static int
 at24xxx_attach(void)
 {
 	/* find the right I2C */
@@ -289,7 +293,7 @@ at24xxx_attach(void)
 }
 #endif
 
-static int
+_EXT_ITCM static int
 mtd_start(char *partition_names[], unsigned n_partitions)
 {
 	int ret;
@@ -372,7 +376,7 @@ mtd_start(char *partition_names[], unsigned n_partitions)
 	return 0;
 }
 
-int mtd_get_geometry(unsigned long *blocksize, unsigned long *erasesize, unsigned long *neraseblocks,
+_EXT_ITCM int mtd_get_geometry(unsigned long *blocksize, unsigned long *erasesize, unsigned long *neraseblocks,
 		     unsigned *blkpererase, unsigned *nblocks, unsigned *partsize, unsigned n_partitions)
 {
 	/* Get the geometry of the FLASH device */
@@ -405,7 +409,7 @@ int mtd_get_geometry(unsigned long *blocksize, unsigned long *erasesize, unsigne
 /*
   get partition size in bytes
  */
-static ssize_t mtd_get_partition_size(void)
+_EXT_ITCM static ssize_t mtd_get_partition_size(void)
 {
 	unsigned long blocksize, erasesize, neraseblocks;
 	unsigned blkpererase, nblocks, partsize = 0;
@@ -421,7 +425,7 @@ static ssize_t mtd_get_partition_size(void)
 	return partsize;
 }
 
-int mtd_print_info(void)
+_EXT_ITCM int mtd_print_info(void)
 {
 	if (!attached) {
 		return 1;
@@ -449,7 +453,7 @@ int mtd_print_info(void)
 	return 0;
 }
 
-int
+_EXT_ITCM int
 mtd_erase(char *partition_names[], unsigned n_partitions)
 {
 	uint8_t v[64];
@@ -481,7 +485,7 @@ mtd_erase(char *partition_names[], unsigned n_partitions)
   responding on the bus. It relies on the driver returning an error on
   bad reads (the ramtron driver does return an error)
  */
-int
+_EXT_ITCM int
 mtd_readtest(char *partition_names[], unsigned n_partitions)
 {
 	ssize_t expected_size = mtd_get_partition_size();
@@ -524,7 +528,7 @@ mtd_readtest(char *partition_names[], unsigned n_partitions)
   blocks and writes the data back, then reads it again, failing if the
   data isn't the same
  */
-int
+_EXT_ITCM int
 mtd_rwtest(char *partition_names[], unsigned n_partitions)
 {
 	ssize_t expected_size = mtd_get_partition_size();

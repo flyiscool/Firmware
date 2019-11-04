@@ -36,7 +36,7 @@
 #include <stdint.h>
 #include <uORB/topics/ulog_stream.h>
 #include <uORB/topics/ulog_stream_ack.h>
-
+#include "chip.h"
 namespace px4
 {
 namespace logger
@@ -49,23 +49,23 @@ namespace logger
 class LogWriterMavlink
 {
 public:
-	LogWriterMavlink(unsigned int queue_size);
-	~LogWriterMavlink();
+	_EXT_ITCM LogWriterMavlink(unsigned int queue_size);
+	_EXT_ITCM ~LogWriterMavlink();
 
-	bool init();
+	_EXT_ITCM bool init();
 
-	void start_log();
+	_EXT_ITCM void start_log();
 
-	void stop_log();
+	_EXT_ITCM void stop_log();
 
-	bool is_started() const { return _is_started; }
+	_EXT_ITCM bool is_started() const { return _is_started; }
 
 	/** @see LogWriter::write_message() */
-	int write_message(void *ptr, size_t size);
+	_EXT_ITCM int write_message(void *ptr, size_t size);
 
-	void set_need_reliable_transfer(bool need_reliable);
+	_EXT_ITCM void set_need_reliable_transfer(bool need_reliable);
 
-	bool need_reliable_transfer() const
+	_EXT_ITCM bool need_reliable_transfer() const
 	{
 		return _need_reliable_transfer;
 	}
@@ -73,7 +73,7 @@ public:
 private:
 
 	/** publish message, wait for ack if needed & reset message */
-	int publish_message();
+	_EXT_ITCM int publish_message();
 
 	ulog_stream_s _ulog_stream_data;
 	orb_advert_t _ulog_stream_pub = nullptr;

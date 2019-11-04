@@ -61,7 +61,7 @@ extern "C" __EXPORT int mixer_main(int argc, char *argv[]);
 static void	usage(const char *reason);
 static int	load(const char *devname, const char *fname, bool append);
 
-int
+_EXT_ITCM int
 mixer_main(int argc, char *argv[])
 {
 	if (argc < 2) {
@@ -103,7 +103,7 @@ mixer_main(int argc, char *argv[])
 	return 0;
 }
 
-static void
+_EXT_ITCM static void
 usage(const char *reason)
 {
 	if (reason && *reason) {
@@ -127,7 +127,7 @@ Note that the driver must support the used ioctl's, which is the case on NuttX, 
 	PRINT_MODULE_USAGE_ARG("<file:dev> <file>", "Output device (eg. /dev/pwm_output0) and mixer file", false);
 }
 
-static int
+_EXT_ITCM static int
 load(const char *devname, const char *fname, bool append)
 {
 	// sleep a while to ensure device has been set up

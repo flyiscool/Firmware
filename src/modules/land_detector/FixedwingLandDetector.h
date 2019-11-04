@@ -57,15 +57,15 @@ namespace land_detector
 class FixedwingLandDetector final : public LandDetector
 {
 public:
-	FixedwingLandDetector();
+	_EXT_ITCM FixedwingLandDetector();
 
 protected:
-	void _initialize_topics() override;
-	void _update_params() override;
-	void _update_topics() override;
+	_EXT_ITCM void _initialize_topics() override;
+	_EXT_ITCM void _update_params() override;
+	_EXT_ITCM void _update_topics() override;
 
-	bool _get_landed_state() override;
-	float _get_max_altitude() override;
+	_EXT_ITCM bool _get_landed_state() override;
+	_EXT_ITCM float _get_max_altitude() override;
 
 private:
 

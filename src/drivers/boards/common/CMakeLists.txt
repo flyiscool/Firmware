@@ -46,6 +46,8 @@ if (${OS} MATCHES "nuttx" AND NOT ${BOARD} MATCHES "io")
 		add_subdirectory(samv7)
 	elseif (${CONFIG_ARCH_CHIP} MATCHES "stm32")
 		add_subdirectory(stm32)
+	elseif (${CONFIG_ARCH_CHIP} MATCHES "artosyn")
+		add_subdirectory(artosyn)	
 	endif()
 
 	target_link_libraries(drivers_boards_common

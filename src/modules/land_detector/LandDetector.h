@@ -66,27 +66,27 @@ public:
 		MAYBE_LANDED = 4
 	};
 
-	LandDetector();
-	virtual ~LandDetector();
+	_EXT_ITCM LandDetector();
+	_EXT_ITCM virtual ~LandDetector();
 
-	static int task_spawn(int argc, char *argv[]);
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int custom_command(int argc, char *argv[])
+	_EXT_ITCM static int custom_command(int argc, char *argv[])
 	{
 		return print_usage("unknown command");
 	}
 
 	/** @see ModuleBase */
-	static int print_usage(const char *reason = nullptr);
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
 	/** @see ModuleBase::print_status() */
-	int print_status() override;
+	_EXT_ITCM int print_status() override;
 
 	/**
 	 * @return current state.
 	 */
-	LandDetectionState get_state() const
+	_EXT_ITCM LandDetectionState get_state() const
 	{
 		return _state;
 	}
@@ -94,7 +94,7 @@ public:
 	/**
 	 * Get the work queue going.
 	 */
-	int start();
+	_EXT_ITCM int start();
 
 protected:
 	/**
@@ -142,7 +142,7 @@ protected:
 	 *
 	 * @return true if there was new data and it was successfully copied
 	 */
-	static bool _orb_update(const struct orb_metadata *meta, int handle, void *buffer);
+	_EXT_ITCM static bool _orb_update(const struct orb_metadata *meta, int handle, void *buffer);
 
 	/** Run main land detector loop at this rate in Hz. */
 	static constexpr uint32_t LAND_DETECTOR_UPDATE_RATE_HZ = 50;
@@ -163,13 +163,13 @@ protected:
 	struct actuator_armed_s	_arming {};
 
 private:
-	static void _cycle_trampoline(void *arg);
+	_EXT_ITCM static void _cycle_trampoline(void *arg);
 
-	void _cycle();
+	_EXT_ITCM void _cycle();
 
-	void _check_params(bool force = false);
+	_EXT_ITCM void _check_params(bool force = false);
 
-	void _update_state();
+	_EXT_ITCM void _update_state();
 
 	param_t _p_total_flight_time_high{PARAM_INVALID};
 	param_t _p_total_flight_time_low{PARAM_INVALID};

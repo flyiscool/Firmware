@@ -85,6 +85,7 @@
 #include "mavlink_rate_limiter.h"
 #include "mavlink_command_sender.h"
 
+
 // Guard against MAVLink misconfiguration
 #ifndef MAVLINK_CRC_EXTRA
 #error MAVLINK_CRC_EXTRA has to be defined on PX4 systems
@@ -887,9 +888,26 @@ Mavlink::set_hil_enabled(bool hil_enabled)
 	return ret;
 }
 
+bool Mavlink::isUserCustomUart()
+{
+	if (std::strcmp(_device_name, MAVLINK_SERIAL_NAME) == 0)
+	{
+		return true;
+	}
+	else 
+	{
+		return false; 
+	}
+}
+
+
 unsigned
 Mavlink::get_free_tx_buf()
 {
+	if (isUserCustomUart())
+	{
+		return 1500;
+	}
 	/*
 	 * Check if the OS buffer is full and disable HW
 	 * flow control if it continues to be full
@@ -995,49 +1013,73 @@ Mavlink::send_packet()
 void
 Mavlink::send_bytes(const uint8_t *buf, unsigned packet_len)
 {
-	/* If the wait until transmit flag is on, only transmit after we've received messages.
-	   Otherwise, transmit all the time. */
-	if (!should_transmit()) {
-		return;
-	}
+	size_t ret = -1;
+	/* send message to UART */
+	if (isUserCustomUart())
+	{
+		volatile STRU_MavlinkInterCoreHeader *header = (STRU_MavlinkInterCoreHeader *)SRAM_MAVLINK_INTERCORE_WR_HEADER_ST_ADDR;
+		volatile uint8_t *wr_buffer = (uint8_t *)SRAM_MAVLINK_INTERCORE_WR_BUFFER;
 
-	_last_write_try_time = hrt_absolute_time();
+		for (unsigned i = 0; i < packet_len; i++)
+		{
+			wr_buffer[header->buf_wr_pos++] = buf[i];
 
-	if (_mavlink_start_time == 0) {
-		_mavlink_start_time = _last_write_try_time;
-	}
+			if (header->buf_wr_pos == SRAM_MAVLINK_INTERCORE_WR_SIZE) {
+				header->buf_wr_pos = 0;
+			}
 
-	if (get_protocol() == SERIAL) {
-		/* check if there is space in the buffer, let it overflow else */
-		unsigned buf_free = get_free_tx_buf();
+			if (header->buf_rd_pos == header->buf_wr_pos) {
+				// PX4_ERR("mavlink rd_pos ==  wr_pos");
+			}	
+		}
 
-		if (buf_free < packet_len) {
-			/* not enough space in buffer to send */
-			count_txerr();
-			count_txerrbytes(packet_len);
+		ret = packet_len;
+
+	} else {
+		/* If the wait until transmit flag is on, only transmit after we've received messages.
+		Otherwise, transmit all the time. */
+		if (!should_transmit()) {
 			return;
 		}
-	}
 
-	size_t ret = -1;
+		_last_write_try_time = hrt_absolute_time();
 
-	/* send message to UART */
-	if (get_protocol() == SERIAL) {
-		ret = ::write(_uart_fd, buf, packet_len);
-	}
-
-#ifdef __PX4_POSIX
-
-	else {
-		if (_network_buf_len + packet_len < sizeof(_network_buf) / sizeof(_network_buf[0])) {
-			memcpy(&_network_buf[_network_buf_len], buf, packet_len);
-			_network_buf_len += packet_len;
-
-			ret = packet_len;
+		if (_mavlink_start_time == 0) {
+			_mavlink_start_time = _last_write_try_time;
 		}
-	}
 
-#endif
+		if (get_protocol() == SERIAL) {
+			/* check if there is space in the buffer, let it overflow else */
+			unsigned buf_free = get_free_tx_buf();
+
+			if (buf_free < packet_len) {
+				/* not enough space in buffer to send */
+				count_txerr();
+				count_txerrbytes(packet_len);
+				return;
+			}
+		}
+
+		/* send message to UART */
+		if (get_protocol() == SERIAL) 
+		{
+			ret = ::write(_uart_fd, buf, packet_len);
+		}
+
+	#ifdef __PX4_POSIX
+
+		else {
+			if (_network_buf_len + packet_len < sizeof(_network_buf) / sizeof(_network_buf[0])) {
+				memcpy(&_network_buf[_network_buf_len], buf, packet_len);
+				_network_buf_len += packet_len;
+
+				ret = packet_len;
+			}
+		}
+
+	#endif
+
+	}
 
 	if (ret != (size_t) packet_len) {
 		count_txerr();
@@ -1790,6 +1832,12 @@ Mavlink::task_main(int argc, char *argv[])
 		case 'd':
 			_device_name = myoptarg;
 			set_protocol(SERIAL);
+
+			if (isUserCustomUart()) {
+				memset((void *)SRAM_MAVLINK_INTERCORE_WR_HEADER_ST_ADDR, 0, SRAM_MAVLINK_INTERCORE_WR_HEADER_SIZE);
+				memset((void *)SRAM_MAVLINK_INTERCORE_RD_HEADER_ST_ADDR, 0, SRAM_MAVLINK_INTERCORE_RD_HEADER_SIZE);
+			}
+
 			break;
 
 #ifdef __PX4_POSIX
@@ -1926,16 +1974,23 @@ Mavlink::task_main(int argc, char *argv[])
 		/* flush stdout in case MAVLink is about to take it over */
 		fflush(stdout);
 
-		/* default values for arguments */
-		_uart_fd = mavlink_open_uart(_baudrate, _device_name, _force_flow_control);
+		if (isUserCustomUart()) 
+		{
+			_flow_control_mode = FLOW_CONTROL_AUTO;
+		}
+		else 
+		{
+			/* default values for arguments */
+			_uart_fd = mavlink_open_uart(_baudrate, _device_name, _force_flow_control);
 
-		if (_uart_fd < 0 && _mode != MAVLINK_MODE_CONFIG) {
-			PX4_ERR("could not open %s", _device_name);
-			return PX4_ERROR;
+			if (_uart_fd < 0 && _mode != MAVLINK_MODE_CONFIG) {
+				PX4_ERR("could not open %s", _device_name);
+				return PX4_ERROR;
 
-		} else if (_uart_fd < 0 && _mode == MAVLINK_MODE_CONFIG) {
-			/* the config link is optional */
-			return OK;
+			} else if (_uart_fd < 0 && _mode == MAVLINK_MODE_CONFIG) {
+				/* the config link is optional */
+				return OK;
+			}
 		}
 
 	} else if (get_protocol() == UDP) {

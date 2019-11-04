@@ -74,7 +74,7 @@ typedef struct  {
 	struct gyro_report	gyro_report_0;
 } gyro_worker_data_t;
 
-static calibrate_return gyro_calibration_worker(int cancel_sub, void* data)
+_EXT_ITCM static calibrate_return gyro_calibration_worker(int cancel_sub, void* data)
 {
 	gyro_worker_data_t*	worker_data = (gyro_worker_data_t*)(data);
 	unsigned		calibration_counter[max_gyros] = { 0 }, slow_count = 0;
@@ -205,7 +205,7 @@ static calibrate_return gyro_calibration_worker(int cancel_sub, void* data)
 	return calibrate_return_ok;
 }
 
-int do_gyro_calibration(orb_advert_t *mavlink_log_pub)
+_EXT_ITCM int do_gyro_calibration(orb_advert_t *mavlink_log_pub)
 {
 	int			res = PX4_OK;
 	gyro_worker_data_t	worker_data = {};

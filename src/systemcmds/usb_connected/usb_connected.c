@@ -48,7 +48,7 @@
 
 __EXPORT int usb_connected_main(int argc, char *argv[]);
 
-static void print_usage(void)
+_EXT_ITCM static void print_usage(void)
 {
 
 	PRINT_MODULE_DESCRIPTION("Utility to check if USB is connected. Was previously used in startup scripts.\n"
@@ -58,7 +58,7 @@ static void print_usage(void)
 	PRINT_MODULE_USAGE_NAME_SIMPLE("usb_connected", "command");
 }
 
-int
+_EXT_ITCM int
 usb_connected_main(int argc, char *argv[])
 {
 	if (argc > 1) {

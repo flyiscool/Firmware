@@ -92,7 +92,7 @@ void set_link_loss_nav_state(vehicle_status_s *status, actuator_armed_s *armed,
 
 void reset_link_loss_globals(actuator_armed_s *armed, const bool old_failsafe, const link_loss_actions_t link_loss_act);
 
-transition_result_t arming_state_transition(vehicle_status_s *status, const battery_status_s &battery,
+_EXT_ITCM transition_result_t arming_state_transition(vehicle_status_s *status, const battery_status_s &battery,
 		const safety_s &safety, const arming_state_t new_arming_state, actuator_armed_s *armed, const bool fRunPreArmChecks,
 		orb_advert_t *mavlink_log_pub, vehicle_status_flags_s *status_flags, const uint8_t arm_requirements,
 		const hrt_abstime &time_since_boot)
@@ -228,7 +228,7 @@ transition_result_t arming_state_transition(vehicle_status_s *status, const batt
 	return ret;
 }
 
-bool is_safe(const safety_s &safety, const actuator_armed_s &armed)
+_EXT_ITCM bool is_safe(const safety_s &safety, const actuator_armed_s &armed)
 {
 	// System is safe if:
 	// 1) Not armed
@@ -239,7 +239,7 @@ bool is_safe(const safety_s &safety, const actuator_armed_s &armed)
 	return !armed.armed || (armed.armed && lockdown) || (safety.safety_switch_available && !safety.safety_off);
 }
 
-transition_result_t
+_EXT_ITCM transition_result_t
 main_state_transition(const vehicle_status_s &status, const main_state_t new_main_state,
 		      const vehicle_status_flags_s &status_flags, commander_state_s *internal_state)
 {
@@ -370,7 +370,7 @@ main_state_transition(const vehicle_status_s &status, const main_state_t new_mai
 /**
  * Transition from one hil state to another
  */
-transition_result_t hil_state_transition(hil_state_t new_state, orb_advert_t status_pub,
+_EXT_ITCM transition_result_t hil_state_transition(hil_state_t new_state, orb_advert_t status_pub,
 		vehicle_status_s *current_status, orb_advert_t *mavlink_log_pub)
 {
 	transition_result_t ret = TRANSITION_DENIED;
@@ -429,7 +429,7 @@ transition_result_t hil_state_transition(hil_state_t new_state, orb_advert_t sta
 /**
  * Enable failsafe and report to user
  */
-void enable_failsafe(vehicle_status_s *status, bool old_failsafe, orb_advert_t *mavlink_log_pub, const char *reason)
+_EXT_ITCM void enable_failsafe(vehicle_status_s *status, bool old_failsafe, orb_advert_t *mavlink_log_pub, const char *reason)
 {
 	if (!old_failsafe && status->arming_state == vehicle_status_s::ARMING_STATE_ARMED) {
 		mavlink_log_critical(mavlink_log_pub, "Failsafe enabled: %s", reason);
@@ -441,7 +441,7 @@ void enable_failsafe(vehicle_status_s *status, bool old_failsafe, orb_advert_t *
 /**
  * Check failsafe and main status and set navigation status for navigator accordingly
  */
-bool set_nav_state(vehicle_status_s *status, actuator_armed_s *armed, commander_state_s *internal_state,
+_EXT_ITCM bool set_nav_state(vehicle_status_s *status, actuator_armed_s *armed, commander_state_s *internal_state,
 		   orb_advert_t *mavlink_log_pub, const link_loss_actions_t data_link_loss_act, const bool mission_finished,
 		   const bool stay_in_failsafe, const vehicle_status_flags_s &status_flags, bool landed,
 		   const link_loss_actions_t rc_loss_act, const int offb_loss_act, const int offb_loss_rc_act,
@@ -795,7 +795,7 @@ bool set_nav_state(vehicle_status_s *status, actuator_armed_s *armed, commander_
 	return status->nav_state != nav_state_old;
 }
 
-bool check_invalid_pos_nav_state(vehicle_status_s *status, bool old_failsafe, orb_advert_t *mavlink_log_pub,
+_EXT_ITCM bool check_invalid_pos_nav_state(vehicle_status_s *status, bool old_failsafe, orb_advert_t *mavlink_log_pub,
 				 const vehicle_status_flags_s &status_flags, const bool use_rc, const bool using_global_pos)
 {
 	bool fallback_required = false;
@@ -854,7 +854,7 @@ bool check_invalid_pos_nav_state(vehicle_status_s *status, bool old_failsafe, or
 
 }
 
-void set_link_loss_nav_state(vehicle_status_s *status, actuator_armed_s *armed,
+_EXT_ITCM void set_link_loss_nav_state(vehicle_status_s *status, actuator_armed_s *armed,
 			     const vehicle_status_flags_s &status_flags, commander_state_s *internal_state, const link_loss_actions_t link_loss_act,
 			     uint8_t auto_recovery_nav_state)
 {
@@ -904,7 +904,7 @@ void set_link_loss_nav_state(vehicle_status_s *status, actuator_armed_s *armed,
 	}
 }
 
-void reset_link_loss_globals(actuator_armed_s *armed, const bool old_failsafe, const link_loss_actions_t link_loss_act)
+_EXT_ITCM void reset_link_loss_globals(actuator_armed_s *armed, const bool old_failsafe, const link_loss_actions_t link_loss_act)
 {
 	if (old_failsafe) {
 		if (link_loss_act == link_loss_actions_t::TERMINATE) {
@@ -916,7 +916,7 @@ void reset_link_loss_globals(actuator_armed_s *armed, const bool old_failsafe, c
 	}
 }
 
-bool prearm_check(orb_advert_t *mavlink_log_pub, const vehicle_status_flags_s &status_flags,
+_EXT_ITCM bool prearm_check(orb_advert_t *mavlink_log_pub, const vehicle_status_flags_s &status_flags,
 		  const battery_status_s &battery, const safety_s &safety, const uint8_t arm_requirements,
 		  const hrt_abstime &time_since_boot)
 {

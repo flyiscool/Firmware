@@ -95,7 +95,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	MulticopterPositionControl();
+	_EXT_ITCM MulticopterPositionControl();
 
 	/**
 	 * Destructor, also kills task.
@@ -107,9 +107,9 @@ public:
 	 *
 	 * @return		OK on success.
 	 */
-	int		start();
+	_EXT_ITCM int		start();
 
-	bool		cross_sphere_line(const matrix::Vector3f &sphere_c, const float sphere_r,
+	_EXT_ITCM bool		cross_sphere_line(const matrix::Vector3f &sphere_c, const float sphere_r,
 					  const matrix::Vector3f &line_a, const matrix::Vector3f &line_b, matrix::Vector3f &res);
 
 private:
@@ -312,19 +312,19 @@ private:
 	/**
 	 * Update our local parameter cache.
 	 */
-	int		parameters_update(bool force);
+	_EXT_ITCM int		parameters_update(bool force);
 
 	/**
 	 * Check for changes in subscribed topics.
 	 */
-	void		poll_subscriptions();
+	_EXT_ITCM void		poll_subscriptions();
 
-	float		throttle_curve(float ctl, float ctr);
+	_EXT_ITCM float		throttle_curve(float ctl, float ctr);
 
 	/**
 	 * Update reference for local position projection
 	 */
-	void		update_ref();
+	_EXT_ITCM void		update_ref();
 
 	/**
 	 * Reset position setpoint to current position.
@@ -335,7 +335,7 @@ private:
 	 * very last position. Once switching to a position control mode
 	 * the last position is stored once.
 	 */
-	void		reset_pos_sp();
+	_EXT_ITCM void		reset_pos_sp();
 
 	/**
 	 * Reset altitude setpoint to current altitude.
@@ -343,83 +343,83 @@ private:
 	 * This reset will only occur if the _reset_alt_sp flag has been set.
 	 * The general logic follows the reset_pos_sp() architecture.
 	 */
-	void		reset_alt_sp();
+	_EXT_ITCM void		reset_alt_sp();
 
 	/**
 	 * Set position setpoint using manual control
 	 */
-	void		control_manual();
+	_EXT_ITCM void		control_manual();
 
-	void		control_non_manual();
+	_EXT_ITCM void		control_non_manual();
 
 	/**
 	 * Set position setpoint using offboard control
 	 */
-	void		control_offboard();
+	_EXT_ITCM void		control_offboard();
 
 	/**
 	 * Set position setpoint for AUTO
 	 */
-	void		control_auto();
+	_EXT_ITCM void		control_auto();
 
-	void control_position();
-	void calculate_velocity_setpoint();
-	void calculate_thrust_setpoint();
+	_EXT_ITCM void control_position();
+	_EXT_ITCM void calculate_velocity_setpoint();
+	_EXT_ITCM void calculate_thrust_setpoint();
 
-	void vel_sp_slewrate();
+	_EXT_ITCM void vel_sp_slewrate();
 
-	void update_velocity_derivative();
+	_EXT_ITCM void update_velocity_derivative();
 
-	void do_control();
+	_EXT_ITCM void do_control();
 
-	void generate_attitude_setpoint();
+	_EXT_ITCM void generate_attitude_setpoint();
 
-	float get_cruising_speed_xy();
+	_EXT_ITCM float get_cruising_speed_xy();
 
-	bool in_auto_takeoff();
+	_EXT_ITCM bool in_auto_takeoff();
 
-	float get_vel_close(const matrix::Vector2f &unit_prev_to_current, const matrix::Vector2f &unit_current_to_next);
+	_EXT_ITCM float get_vel_close(const matrix::Vector2f &unit_prev_to_current, const matrix::Vector2f &unit_current_to_next);
 
-	void set_manual_acceleration_xy(matrix::Vector2f &stick_input_xy_NED);
+	_EXT_ITCM void set_manual_acceleration_xy(matrix::Vector2f &stick_input_xy_NED);
 
-	void set_manual_acceleration_z(float &max_acc_z, const float stick_input_z_NED);
+	_EXT_ITCM void set_manual_acceleration_z(float &max_acc_z, const float stick_input_z_NED);
 
 
 	/**
 	 * limit altitude based on several conditions
 	 */
-	void limit_altitude();
+	_EXT_ITCM void limit_altitude();
 
-	void warn_rate_limited(const char *str);
+	_EXT_ITCM void warn_rate_limited(const char *str);
 
-	bool manual_wants_takeoff();
+	_EXT_ITCM bool manual_wants_takeoff();
 
-	bool manual_wants_landing();
+	_EXT_ITCM bool manual_wants_landing();
 
-	void set_takeoff_velocity(float &vel_sp_z);
+	_EXT_ITCM void set_takeoff_velocity(float &vel_sp_z);
 
-	void landdetection_thrust_limit(matrix::Vector3f &thrust_sp);
+	_EXT_ITCM void landdetection_thrust_limit(matrix::Vector3f &thrust_sp);
 
-	void set_idle_state();
+	_EXT_ITCM void set_idle_state();
 
 	/**
 	 * Temporary method for flight control compuation
 	 */
-	void updateConstraints(Controller::Constraints &constrains);
+	_EXT_ITCM void updateConstraints(Controller::Constraints &constrains);
 
-	void publish_attitude();
+	_EXT_ITCM void publish_attitude();
 
-	void publish_local_pos_sp();
+	_EXT_ITCM void publish_local_pos_sp();
 
 	/**
 	 * Shim for calling task_main from task_create.
 	 */
-	static int	task_main_trampoline(int argc, char *argv[]);
+	_EXT_ITCM static int	task_main_trampoline(int argc, char *argv[]);
 
 	/**
 	 * Main sensor collection task.
 	 */
-	void		task_main();
+	_EXT_ITCM void		task_main();
 };
 
 namespace pos_control
@@ -3402,7 +3402,7 @@ MulticopterPositionControl::start()
 	return OK;
 }
 
-int mc_pos_control_main(int argc, char *argv[])
+_EXT_ITCM int mc_pos_control_main(int argc, char *argv[])
 {
 	if (argc < 2) {
 		warnx("usage: mc_pos_control {start|stop|status}");

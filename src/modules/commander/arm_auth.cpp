@@ -76,7 +76,7 @@ static uint8_t (*arm_check_method[ARM_AUTH_METHOD_LAST])() = {
 	_auth_method_two_arm_check,
 };
 
-static void arm_auth_request_msg_send()
+_EXT_ITCM static void arm_auth_request_msg_send()
 {
 	struct vehicle_command_s cmd = {
 		.timestamp = 0,
@@ -98,7 +98,7 @@ static void arm_auth_request_msg_send()
 	}
 }
 
-static uint8_t _auth_method_arm_req_check()
+_EXT_ITCM static uint8_t _auth_method_arm_req_check()
 {
 	switch (state) {
 	case ARM_AUTH_IDLE:
@@ -143,7 +143,7 @@ static uint8_t _auth_method_arm_req_check()
 			vehicle_command_ack_s::VEHICLE_RESULT_ACCEPTED : vehicle_command_ack_s::VEHICLE_RESULT_DENIED;
 }
 
-static uint8_t _auth_method_two_arm_check()
+_EXT_ITCM static uint8_t _auth_method_two_arm_check()
 {
 	switch (state) {
 	case ARM_AUTH_IDLE:
@@ -170,7 +170,7 @@ static uint8_t _auth_method_two_arm_check()
 	return vehicle_command_ack_s::VEHICLE_RESULT_TEMPORARILY_REJECTED;
 }
 
-uint8_t arm_auth_check()
+_EXT_ITCM uint8_t arm_auth_check()
 {
 	if (arm_parameters.authentication_method < ARM_AUTH_METHOD_LAST) {
 		return arm_check_method[arm_parameters.authentication_method]();
@@ -179,7 +179,7 @@ uint8_t arm_auth_check()
 	return vehicle_command_ack_s::VEHICLE_RESULT_DENIED;
 }
 
-void arm_auth_update(hrt_abstime now, bool param_update)
+_EXT_ITCM void arm_auth_update(hrt_abstime now, bool param_update)
 {
 	if (param_update) {
 		param_get(param_arm_parameters, (int32_t*)&arm_parameters);
@@ -262,7 +262,7 @@ void arm_auth_update(hrt_abstime now, bool param_update)
 	}
 }
 
-void arm_auth_init(orb_advert_t *mav_log_pub, uint8_t *sys_id)
+_EXT_ITCM void arm_auth_init(orb_advert_t *mav_log_pub, uint8_t *sys_id)
 {
 	system_id = sys_id;
 	param_arm_parameters = param_find("COM_ARM_AUTH");
@@ -270,7 +270,7 @@ void arm_auth_init(orb_advert_t *mav_log_pub, uint8_t *sys_id)
 	mavlink_log_pub = mav_log_pub;
 }
 
-enum arm_auth_methods arm_auth_method_get()
+_EXT_ITCM enum arm_auth_methods arm_auth_method_get()
 {
 	return (enum arm_auth_methods) arm_parameters.authentication_method;
 }

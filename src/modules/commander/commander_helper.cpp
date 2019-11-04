@@ -83,7 +83,7 @@ using namespace DriverFramework;
 
 #define BLINK_MSG_TIME	700000	// 3 fast blinks (in us)
 
-bool is_multirotor(const struct vehicle_status_s *current_status)
+_EXT_ITCM bool is_multirotor(const struct vehicle_status_s *current_status)
 {
 	return ((current_status->system_type == VEHICLE_TYPE_QUADROTOR) ||
 		(current_status->system_type == VEHICLE_TYPE_HEXAROTOR) ||
@@ -91,13 +91,13 @@ bool is_multirotor(const struct vehicle_status_s *current_status)
 		(current_status->system_type == VEHICLE_TYPE_TRICOPTER));
 }
 
-bool is_rotary_wing(const struct vehicle_status_s *current_status)
+_EXT_ITCM bool is_rotary_wing(const struct vehicle_status_s *current_status)
 {
 	return is_multirotor(current_status) || (current_status->system_type == VEHICLE_TYPE_HELICOPTER)
 		   || (current_status->system_type == VEHICLE_TYPE_COAXIAL);
 }
 
-bool is_vtol(const struct vehicle_status_s * current_status) {
+_EXT_ITCM bool is_vtol(const struct vehicle_status_s * current_status) {
 	return (current_status->system_type == VEHICLE_TYPE_VTOL_DUOROTOR ||
 		current_status->system_type == VEHICLE_TYPE_VTOL_QUADROTOR ||
 		current_status->system_type == VEHICLE_TYPE_VTOL_TILTROTOR ||
@@ -119,7 +119,7 @@ static orb_advert_t led_control_pub = nullptr;
 static tune_control_s tune_control = {};
 static orb_advert_t tune_control_pub = nullptr;
 
-int buzzer_init()
+_EXT_ITCM int buzzer_init()
 {
 	tune_end = 0;
 	tune_current = 0;
@@ -136,12 +136,12 @@ int buzzer_init()
 	return PX4_OK;
 }
 
-void buzzer_deinit()
+_EXT_ITCM void buzzer_deinit()
 {
 	orb_unadvertise(tune_control_pub);
 }
 
-void set_tune_override(int tune)
+_EXT_ITCM void set_tune_override(int tune)
 {
 	tune_control.tune_id = tune;
 	tune_control.strength = tune_control_s::STRENGTH_NORMAL;
@@ -150,7 +150,7 @@ void set_tune_override(int tune)
 	orb_publish(ORB_ID(tune_control), tune_control_pub, &tune_control);
 }
 
-void set_tune(int tune)
+_EXT_ITCM void set_tune(int tune)
 {
 	unsigned int new_tune_duration = tune_durations[tune];
 
@@ -176,7 +176,7 @@ void set_tune(int tune)
 	}
 }
 
-void tune_home_set(bool use_buzzer)
+_EXT_ITCM void tune_home_set(bool use_buzzer)
 {
 	blink_msg_end = hrt_absolute_time() + BLINK_MSG_TIME;
 	rgbled_set_color_and_mode(led_control_s::COLOR_GREEN, led_control_s::MODE_BLINK_FAST);
@@ -186,7 +186,7 @@ void tune_home_set(bool use_buzzer)
 	}
 }
 
-void tune_mission_ok(bool use_buzzer)
+_EXT_ITCM void tune_mission_ok(bool use_buzzer)
 {
 	blink_msg_end = hrt_absolute_time() + BLINK_MSG_TIME;
 	rgbled_set_color_and_mode(led_control_s::COLOR_GREEN, led_control_s::MODE_BLINK_FAST);
@@ -196,7 +196,7 @@ void tune_mission_ok(bool use_buzzer)
 	}
 }
 
-void tune_mission_fail(bool use_buzzer)
+_EXT_ITCM void tune_mission_fail(bool use_buzzer)
 {
 	blink_msg_end = hrt_absolute_time() + BLINK_MSG_TIME;
 	rgbled_set_color_and_mode(led_control_s::COLOR_GREEN, led_control_s::MODE_BLINK_FAST);
@@ -209,7 +209,7 @@ void tune_mission_fail(bool use_buzzer)
 /**
  * Blink green LED and play positive tune (if use_buzzer == true).
  */
-void tune_positive(bool use_buzzer)
+_EXT_ITCM void tune_positive(bool use_buzzer)
 {
 	blink_msg_end = hrt_absolute_time() + BLINK_MSG_TIME;
 	rgbled_set_color_and_mode(led_control_s::COLOR_GREEN, led_control_s::MODE_BLINK_FAST);
@@ -222,7 +222,7 @@ void tune_positive(bool use_buzzer)
 /**
  * Blink white LED and play neutral tune (if use_buzzer == true).
  */
-void tune_neutral(bool use_buzzer)
+_EXT_ITCM void tune_neutral(bool use_buzzer)
 {
 	blink_msg_end = hrt_absolute_time() + BLINK_MSG_TIME;
 	rgbled_set_color_and_mode(led_control_s::COLOR_WHITE, led_control_s::MODE_BLINK_FAST);
@@ -235,7 +235,7 @@ void tune_neutral(bool use_buzzer)
 /**
  * Blink red LED and play negative tune (if use_buzzer == true).
  */
-void tune_negative(bool use_buzzer)
+_EXT_ITCM void tune_negative(bool use_buzzer)
 {
 	blink_msg_end = hrt_absolute_time() + BLINK_MSG_TIME;
 	rgbled_set_color_and_mode(led_control_s::COLOR_RED, led_control_s::MODE_BLINK_FAST);
@@ -245,7 +245,7 @@ void tune_negative(bool use_buzzer)
 	}
 }
 
-void tune_failsafe(bool use_buzzer)
+_EXT_ITCM void tune_failsafe(bool use_buzzer)
 {
 	blink_msg_end = hrt_absolute_time() + BLINK_MSG_TIME;
 	rgbled_set_color_and_mode(led_control_s::COLOR_PURPLE, led_control_s::MODE_BLINK_FAST);
@@ -255,7 +255,7 @@ void tune_failsafe(bool use_buzzer)
 	}
 }
 
-int blink_msg_state()
+_EXT_ITCM int blink_msg_state()
 {
 	if (blink_msg_end == 0) {
 		return 0;
@@ -269,7 +269,7 @@ int blink_msg_state()
 	}
 }
 
-int led_init()
+_EXT_ITCM int led_init()
 {
 	blink_msg_end = 0;
 
@@ -310,7 +310,7 @@ int led_init()
 	return 0;
 }
 
-void led_deinit()
+_EXT_ITCM void led_deinit()
 {
 	orb_unadvertise(led_control_pub);
 #ifndef CONFIG_ARCH_BOARD_RPI
@@ -318,22 +318,22 @@ void led_deinit()
 #endif
 }
 
-int led_toggle(int led)
+_EXT_ITCM int led_toggle(int led)
 {
 	return h_leds.ioctl(LED_TOGGLE, led);
 }
 
-int led_on(int led)
+_EXT_ITCM int led_on(int led)
 {
 	return h_leds.ioctl(LED_ON, led);
 }
 
-int led_off(int led)
+_EXT_ITCM int led_off(int led)
 {
 	return h_leds.ioctl(LED_OFF, led);
 }
 
-void rgbled_set_color_and_mode(uint8_t color, uint8_t mode, uint8_t blinks, uint8_t prio)
+_EXT_ITCM void rgbled_set_color_and_mode(uint8_t color, uint8_t mode, uint8_t blinks, uint8_t prio)
 {
 	led_control.mode = mode;
 	led_control.color = color;
@@ -343,6 +343,6 @@ void rgbled_set_color_and_mode(uint8_t color, uint8_t mode, uint8_t blinks, uint
 	orb_publish(ORB_ID(led_control), led_control_pub, &led_control);
 }
 
-void rgbled_set_color_and_mode(uint8_t color, uint8_t mode){
+_EXT_ITCM void rgbled_set_color_and_mode(uint8_t color, uint8_t mode){
 	rgbled_set_color_and_mode(color, mode, 0, 0);
 }

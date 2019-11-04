@@ -49,12 +49,12 @@ class Navigator;
 class RCLoss : public MissionBlock, public ModuleParams
 {
 public:
-	RCLoss(Navigator *navigator);
+	_EXT_ITCM RCLoss(Navigator *navigator);
 	~RCLoss() = default;
 
-	void on_inactive() override;
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_inactive() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
 private:
 	DEFINE_PARAMETERS(
@@ -71,11 +71,11 @@ private:
 	/**
 	 * Set the RCL item
 	 */
-	void		set_rcl_item();
+	_EXT_ITCM void		set_rcl_item();
 
 	/**
 	 * Move to next RCL item
 	 */
-	void		advance_rcl();
+	_EXT_ITCM void		advance_rcl();
 
 };

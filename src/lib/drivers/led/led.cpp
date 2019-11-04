@@ -59,11 +59,11 @@ __END_DECLS
 class LED : device::CDev
 {
 public:
-	LED();
-	virtual ~LED();
+	_EXT_ITCM LED();
+	_EXT_ITCM virtual ~LED();
 
-	virtual int		init();
-	virtual int		ioctl(device::file_t *filp, int cmd, unsigned long arg);
+	_EXT_ITCM virtual int		init();
+	_EXT_ITCM virtual int		ioctl(device::file_t *filp, int cmd, unsigned long arg);
 };
 
 LED::LED() : CDev("led", LED0_DEVICE_PATH)

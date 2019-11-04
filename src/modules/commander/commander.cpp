@@ -228,7 +228,7 @@ void *commander_low_prio_loop(void *arg);
 
 static void answer_command(const vehicle_command_s &cmd, unsigned result, orb_advert_t &command_ack_pub);
 
-static int power_button_state_notification_cb(board_power_button_state_notification_e request)
+_EXT_ITCM static int power_button_state_notification_cb(board_power_button_state_notification_e request)
 {
 	// Note: this can be called from IRQ handlers, so we publish a message that will be handled
 	// on the main thread of commander.
@@ -263,7 +263,7 @@ static int power_button_state_notification_cb(board_power_button_state_notificat
 	return ret;
 }
 
-int commander_main(int argc, char *argv[])
+_EXT_ITCM int commander_main(int argc, char *argv[])
 {
 	if (argc < 2) {
 		usage("missing command");
@@ -534,7 +534,7 @@ int commander_main(int argc, char *argv[])
 	return 1;
 }
 
-void usage(const char *reason)
+_EXT_ITCM void usage(const char *reason)
 {
 	if (reason && *reason > 0) {
 		PX4_INFO("%s", reason);
@@ -543,7 +543,7 @@ void usage(const char *reason)
 	PX4_INFO("usage: commander {start|stop|status|calibrate|check|arm|disarm|takeoff|land|transition|mode}\n");
 }
 
-void print_status()
+_EXT_ITCM void print_status()
 {
 	warnx("type: %s", (status.is_rotary_wing) ? "symmetric motion" : "forward motion");
 	warnx("safety: USB enabled: %s, power state valid: %s", (status_flags.usb_connected) ? "[OK]" : "[NO]",
@@ -558,7 +558,7 @@ void print_status()
 
 static orb_advert_t status_pub;
 
-transition_result_t arm_disarm(bool arm, orb_advert_t *mavlink_log_pub_local, const char *armedBy)
+_EXT_ITCM transition_result_t arm_disarm(bool arm, orb_advert_t *mavlink_log_pub_local, const char *armedBy)
 {
 	transition_result_t arming_res = TRANSITION_NOT_CHANGED;
 
@@ -2788,7 +2788,7 @@ Commander::run()
 	thread_running = false;
 }
 
-void
+_EXT_ITCM void
 get_circuit_breaker_params()
 {
 	status_flags.circuit_breaker_engaged_power_check = circuit_breaker_enabled("CBRK_SUPPLY_CHK", CBRK_SUPPLY_CHK_KEY);
@@ -2812,7 +2812,7 @@ Commander::check_valid(const hrt_abstime &timestamp, const hrt_abstime &timeout,
 	}
 }
 
-void
+_EXT_ITCM void
 control_status_leds(vehicle_status_s *status_local, const actuator_armed_s *actuator_armed,
 		    bool changed, battery_status_s *battery_local, const cpuload_s *cpuload_local)
 {
@@ -3415,7 +3415,7 @@ Commander::check_posvel_validity(const bool data_valid, const float data_accurac
 	return valid;
 }
 
-void
+_EXT_ITCM void
 set_control_mode()
 {
 	/* set vehicle_control_mode according to set_navigation_state */
@@ -3625,7 +3625,7 @@ set_control_mode()
 	}
 }
 
-bool
+_EXT_ITCM bool
 stabilization_required()
 {
 	return (status.is_rotary_wing ||		// is a rotary wing, or
@@ -3634,7 +3634,7 @@ stabilization_required()
 		 !status.is_rotary_wing));	// is a fixed wing, ie: transitioning back to rotary wing mode
 }
 
-void
+_EXT_ITCM void
 print_reject_mode(const char *msg)
 {
 	hrt_abstime t = hrt_absolute_time();
@@ -3649,7 +3649,7 @@ print_reject_mode(const char *msg)
 	}
 }
 
-void
+_EXT_ITCM void
 print_reject_arm(const char *msg)
 {
 	hrt_abstime t = hrt_absolute_time();
@@ -3661,7 +3661,7 @@ print_reject_arm(const char *msg)
 	}
 }
 
-void answer_command(const vehicle_command_s &cmd, unsigned result, orb_advert_t &command_ack_pub)
+_EXT_ITCM void answer_command(const vehicle_command_s &cmd, unsigned result, orb_advert_t &command_ack_pub)
 {
 	switch (result) {
 	case vehicle_command_s::VEHICLE_CMD_RESULT_ACCEPTED:
@@ -3709,7 +3709,7 @@ void answer_command(const vehicle_command_s &cmd, unsigned result, orb_advert_t 
 	}
 }
 
-void *commander_low_prio_loop(void *arg)
+_EXT_ITCM void *commander_low_prio_loop(void *arg)
 {
 	/* Set thread name */
 	px4_prctl(PR_SET_NAME, "commander_low_prio", px4_getpid());

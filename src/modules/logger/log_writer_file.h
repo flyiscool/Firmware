@@ -51,78 +51,78 @@ namespace logger
 class LogWriterFile
 {
 public:
-	LogWriterFile(size_t buffer_size);
-	~LogWriterFile();
+	_EXT_ITCM LogWriterFile(size_t buffer_size);
+	_EXT_ITCM ~LogWriterFile();
 
-	bool init();
+	_EXT_ITCM bool init();
 
 	/**
 	 * start the thread
 	 * @return 0 on success, error number otherwise (@see pthread_create)
 	 */
-	int thread_start();
+	_EXT_ITCM int thread_start();
 
-	void thread_stop();
+	_EXT_ITCM void thread_stop();
 
-	void start_log(const char *filename);
+	_EXT_ITCM void start_log(const char *filename);
 
-	void stop_log();
+	_EXT_ITCM void stop_log();
 
-	bool is_started() const { return _should_run; }
+	_EXT_ITCM bool is_started() const { return _should_run; }
 
 	/** @see LogWriter::write_message() */
-	int write_message(void *ptr, size_t size, uint64_t dropout_start = 0);
+	_EXT_ITCM int write_message(void *ptr, size_t size, uint64_t dropout_start = 0);
 
-	void lock()
+	_EXT_ITCM void lock()
 	{
 		pthread_mutex_lock(&_mtx);
 	}
 
-	void unlock()
+	_EXT_ITCM void unlock()
 	{
 		pthread_mutex_unlock(&_mtx);
 	}
 
-	void notify()
+	_EXT_ITCM void notify()
 	{
 		pthread_cond_broadcast(&_cv);
 	}
 
-	size_t get_total_written() const
+	_EXT_ITCM size_t get_total_written() const
 	{
 		return _total_written;
 	}
 
-	size_t get_buffer_size() const
+	_EXT_ITCM size_t get_buffer_size() const
 	{
 		return _buffer_size;
 	}
 
-	size_t get_buffer_fill_count() const
+	_EXT_ITCM size_t get_buffer_fill_count() const
 	{
 		return _count;
 	}
 
-	void set_need_reliable_transfer(bool need_reliable)
+	_EXT_ITCM void set_need_reliable_transfer(bool need_reliable)
 	{
 		_need_reliable_transfer = need_reliable;
 	}
 
-	bool need_reliable_transfer() const
+	_EXT_ITCM bool need_reliable_transfer() const
 	{
 		return _need_reliable_transfer;
 	}
 
-	pthread_t thread_id() const { return _thread; }
+	_EXT_ITCM pthread_t thread_id() const { return _thread; }
 
 private:
-	static void *run_helper(void *);
+	_EXT_ITCM static void *run_helper(void *);
 
-	void run();
+	_EXT_ITCM void run();
 
-	size_t get_read_ptr(void **ptr, bool *is_part);
+	_EXT_ITCM size_t get_read_ptr(void **ptr, bool *is_part);
 
-	void mark_read(size_t n)
+	_EXT_ITCM void mark_read(size_t n)
 	{
 		_count -= n;
 	}
@@ -133,12 +133,12 @@ private:
 	 * @param log_file path to the log file
 	 * @return 0 on success, <0 errno otherwise
 	 */
-	int hardfault_store_filename(const char *log_file);
+	_EXT_ITCM int hardfault_store_filename(const char *log_file);
 
 	/**
 	 * write w/o waiting/blocking
 	 */
-	int write(void *ptr, size_t size, uint64_t dropout_start);
+	_EXT_ITCM int write(void *ptr, size_t size, uint64_t dropout_start);
 
 	/**
 	 * Write to the buffer but assuming there is enough space

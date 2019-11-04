@@ -40,7 +40,7 @@
 #include <uORB/uORB.h>
 #include <uORB/topics/tune_control.h>
 #include "tune_definition.h"
-
+#include "chip.h"
 #define TUNE_MAX_UPDATE_INTERVAL_US 100000
 
 #define TUNE_DEFAULT_TEMPO 120
@@ -66,14 +66,14 @@ public:
 	 * default_note_length: TUNE_DEFAULT_NOTE_LENGTH
 	 * default_mode: NORMAL
 	 */
-	Tunes();
+	_EXT_ITCM Tunes();
 
 	/**
 	 * Constructor that can set the default parameters
 	 */
-	Tunes(unsigned default_tempo, unsigned default_octave, unsigned default_note_length, NoteMode default_mode);
+	_EXT_ITCM Tunes(unsigned default_tempo, unsigned default_octave, unsigned default_note_length, NoteMode default_mode);
 
-	~Tunes() = default;
+	_EXT_ITCM ~Tunes() = default;
 
 	/**
 	 * Set tune to be played using the message. If a tune is already being played
@@ -82,7 +82,7 @@ public:
 	 * @param  tune_control struct containig the uORB message
 	 * @return              return -EINVAL if the default tune does not exist.
 	 */
-	int set_control(const tune_control_s &tune_control);
+	_EXT_ITCM int set_control(const tune_control_s &tune_control);
 
 	/**
 	 * Set tune to be played using a string.
@@ -92,7 +92,7 @@ public:
 	 *
 	 * @param  string    tune input string
 	 */
-	void set_string(const char *const string, uint8_t strength);
+	_EXT_ITCM void set_string(const char *const string, uint8_t strength);
 
 	/**
 	 * Get next note in the current tune, which has been provided by either
@@ -102,7 +102,7 @@ public:
 	 * @param  silence   return silence duration (us)
 	 * @return           -1 for error, 0 for play one tone and 1 for continue a sequence
 	 */
-	int get_next_tune(unsigned &frequency, unsigned &duration, unsigned &silence);
+	_EXT_ITCM int get_next_tune(unsigned &frequency, unsigned &duration, unsigned &silence);
 
 	/**
 	 * Get next note in the current tune, which has been provided by either
@@ -113,7 +113,7 @@ public:
 	 * @param  strength  return the strength of the note (between 0-100)
 	 * @return           -1 for error, 0 for play one tone and 1 for continue a sequence
 	 */
-	int get_next_tune(unsigned &frequency, unsigned &duration, unsigned &silence,
+	_EXT_ITCM int get_next_tune(unsigned &frequency, unsigned &duration, unsigned &silence,
 			  uint8_t &strength);
 
 	/**
@@ -121,9 +121,9 @@ public:
 	 *  requested via its tune ID.
 	 *  @return		Number of default tunes accessible via tune ID
 	 */
-	unsigned int get_default_tunes_size() const {return _default_tunes_size;}
+	_EXT_ITCM unsigned int get_default_tunes_size() const {return _default_tunes_size;}
 
-	unsigned int get_maximum_update_interval() {return (unsigned int)TUNE_MAX_UPDATE_INTERVAL_US;}
+	_EXT_ITCM unsigned int get_maximum_update_interval() {return (unsigned int)TUNE_MAX_UPDATE_INTERVAL_US;}
 
 private:
 	static const char *const _default_tunes[];
@@ -156,7 +156,7 @@ private:
 	 * @param  note unsigned value of the semitone from C
 	 * @return      frequency (Hz)
 	 */
-	uint32_t note_to_frequency(unsigned note) const;
+	_EXT_ITCM uint32_t note_to_frequency(unsigned note) const;
 
 	/**
 	 * Calculate the duration in microseconds of play and silence for a
@@ -168,7 +168,7 @@ private:
 	 * @param  dots        extention of the note length
 	 * @return             duration of the note (us)
 	 */
-	unsigned note_duration(unsigned &silence, unsigned note_length, unsigned dots) const;
+	_EXT_ITCM unsigned note_duration(unsigned &silence, unsigned note_length, unsigned dots) const;
 
 	/**
 	 * Calculate the duration in microseconds of a rest corresponding to
@@ -178,34 +178,34 @@ private:
 	 * @param  dots        number of extension dots
 	 * @return             rest duration (us)
 	 */
-	unsigned rest_duration(unsigned rest_length, unsigned dots) const;
+	_EXT_ITCM unsigned rest_duration(unsigned rest_length, unsigned dots) const;
 
 	/**
 	 * Find the next character in the string, discard any whitespace.
 	 *
 	 * @return uppercase version of the char.
 	 */
-	int next_char();
+	_EXT_ITCM int next_char();
 
 	/**
 	 * Extract a number from the string, consuming all the digit characters.
 	 *
 	 * @return extracted number.
 	 */
-	unsigned next_number();
+	_EXT_ITCM unsigned next_number();
 
 	/**
 	 * Consume dot characters from the string
 	 *
 	 * @return number of consumed dots
 	 */
-	unsigned next_dots();
+	_EXT_ITCM unsigned next_dots();
 
 	/**
 	 * Reset the tune parameters. This is necessary when for example a tune moved
 	 * one or more octaves up or down. reset() should always be called before
 	 * (re)-starting a tune.
 	 */
-	void reset(bool repeat_flag);
+	_EXT_ITCM void reset(bool repeat_flag);
 
 };

@@ -50,9 +50,9 @@ public:
 	virtual ~FlightTaskManualPosition() = default;
 
 protected:
-	void _updateXYlock(); /**< applies positon lock based on stick and velocity */
-	void _updateSetpoints() override;
-	void _scaleSticks() override;
+	_EXT_ITCM void _updateXYlock(); /**< applies positon lock based on stick and velocity */
+	_EXT_ITCM void _updateSetpoints() override;
+	_EXT_ITCM void _scaleSticks() override;
 
 	DEFINE_PARAMETERS_CUSTOM_PARENT(FlightTaskManualAltitude,
 					(ParamFloat<px4::params::MPC_VEL_MANUAL>) _vel_xy_manual_max, /**< maximum speed allowed horizontally */

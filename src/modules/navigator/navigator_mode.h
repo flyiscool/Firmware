@@ -41,41 +41,43 @@
 
 #pragma once
 
+#include "chip.h"
+
 class Navigator;
 
 class NavigatorMode
 {
 public:
-	NavigatorMode(Navigator *navigator);
+	_EXT_ITCM NavigatorMode(Navigator *navigator);
 	virtual ~NavigatorMode() = default;
-	NavigatorMode(const NavigatorMode &) = delete;
-	NavigatorMode operator=(const NavigatorMode &) = delete;
+	_EXT_ITCM NavigatorMode(const NavigatorMode &) = delete;
+	_EXT_ITCM NavigatorMode operator=(const NavigatorMode &) = delete;
 
-	void run(bool active);
+	_EXT_ITCM void run(bool active);
 
 	/**
 	 * This function is called while the mode is inactive
 	 */
-	virtual void on_inactive();
+	_EXT_ITCM virtual void on_inactive();
 
 	/**
 	 * This function is called one time when mode becomes active, pos_sp_triplet must be initialized here
 	 */
-	virtual void on_activation();
+	_EXT_ITCM virtual void on_activation();
 
 	/**
 	 * This function is called one time when mode becomes inactive
 	 */
-	virtual void on_inactivation();
+	_EXT_ITCM virtual void on_inactivation();
 
 	/**
 	 * This function is called while the mode is active
 	 */
-	virtual void on_active();
+	_EXT_ITCM virtual void on_active();
 
 protected:
 	Navigator *_navigator{nullptr};
 
 private:
-	bool _active{false};
+	 bool _active{false};
 };

@@ -73,7 +73,7 @@ static const char mfg_uid_str[]         = "mfguid";
 #  define CPU_UUID_SEPARATOR ":"
 #endif
 
-static void usage(const char *reason)
+_EXT_ITCM static void usage(const char *reason)
 {
 	if (reason != NULL) {
 		printf("%s\n\n", reason);
@@ -103,7 +103,7 @@ static void usage(const char *reason)
 
 __EXPORT int ver_main(int argc, char *argv[]);
 
-int ver_main(int argc, char *argv[])
+_EXT_ITCM int ver_main(int argc, char *argv[])
 {
 	/* defaults to an error */
 	int ret = 1;

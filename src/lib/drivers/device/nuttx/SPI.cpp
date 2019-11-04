@@ -50,6 +50,8 @@
 #include <px4_config.h>
 #include <nuttx/arch.h>
 
+#include "ar_uart.h"
+
 #ifndef CONFIG_SPI_EXCHANGE
 # error This driver requires CONFIG_SPI_EXCHANGE
 #endif
@@ -96,7 +98,6 @@ SPI::init()
 	if (_dev == nullptr) {
 		_dev = px4_spibus_initialize(get_device_bus());
 	}
-
 	if (_dev == nullptr) {
 		DEVICE_DEBUG("failed to init SPI");
 		ret = -ENOENT;

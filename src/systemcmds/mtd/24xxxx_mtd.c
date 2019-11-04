@@ -202,7 +202,7 @@ static struct at24c_dev_s g_at24c;
  * Private Functions
  ************************************************************************************/
 
-static int at24c_eraseall(FAR struct at24c_dev_s *priv)
+_EXT_ITCM static int at24c_eraseall(FAR struct at24c_dev_s *priv)
 {
 	int startblock = 0;
 	uint8_t buf[AT24XX_PAGESIZE + 2];
@@ -241,7 +241,7 @@ static int at24c_eraseall(FAR struct at24c_dev_s *priv)
  * Name: at24c_erase
  ************************************************************************************/
 
-static int at24c_erase(FAR struct mtd_dev_s *dev, off_t startblock, size_t nblocks)
+_EXT_ITCM static int at24c_erase(FAR struct mtd_dev_s *dev, off_t startblock, size_t nblocks)
 {
 	/* EEprom need not erase */
 
@@ -252,7 +252,7 @@ static int at24c_erase(FAR struct mtd_dev_s *dev, off_t startblock, size_t nbloc
  * Name: at24c_test
  ************************************************************************************/
 
-void at24c_test(void)
+_EXT_ITCM void at24c_test(void)
 {
 	uint8_t buf[CONFIG_AT24XX_MTD_BLOCKSIZE];
 	unsigned count = 0;
@@ -281,7 +281,7 @@ void at24c_test(void)
  * Name: at24c_bread
  ************************************************************************************/
 
-static ssize_t at24c_bread(FAR struct mtd_dev_s *dev, off_t startblock,
+_EXT_ITCM static ssize_t at24c_bread(FAR struct mtd_dev_s *dev, off_t startblock,
 			   size_t nblocks, FAR uint8_t *buffer)
 {
 	FAR struct at24c_dev_s *priv = (FAR struct at24c_dev_s *)dev;
@@ -375,7 +375,7 @@ static ssize_t at24c_bread(FAR struct mtd_dev_s *dev, off_t startblock,
  *
  ************************************************************************************/
 
-static ssize_t at24c_bwrite(FAR struct mtd_dev_s *dev, off_t startblock, size_t nblocks,
+_EXT_ITCM static ssize_t at24c_bwrite(FAR struct mtd_dev_s *dev, off_t startblock, size_t nblocks,
 			    FAR const uint8_t *buffer)
 {
 	FAR struct at24c_dev_s *priv = (FAR struct at24c_dev_s *)dev;
@@ -459,7 +459,7 @@ static ssize_t at24c_bwrite(FAR struct mtd_dev_s *dev, off_t startblock, size_t 
  * Name: at24c_ioctl
  ************************************************************************************/
 
-static int at24c_ioctl(FAR struct mtd_dev_s *dev, int cmd, unsigned long arg)
+_EXT_ITCM static int at24c_ioctl(FAR struct mtd_dev_s *dev, int cmd, unsigned long arg)
 {
 	FAR struct at24c_dev_s *priv = (FAR struct at24c_dev_s *)dev;
 	int ret = -EINVAL; /* Assume good command with bad parameters */
@@ -536,7 +536,7 @@ static int at24c_ioctl(FAR struct mtd_dev_s *dev, int cmd, unsigned long arg)
  *
  ************************************************************************************/
 
-FAR struct mtd_dev_s *at24c_initialize(FAR struct i2c_master_s *dev)
+_EXT_ITCM FAR struct mtd_dev_s *at24c_initialize(FAR struct i2c_master_s *dev)
 {
 	FAR struct at24c_dev_s *priv;
 
@@ -609,7 +609,7 @@ FAR struct mtd_dev_s *at24c_initialize(FAR struct i2c_master_s *dev)
 /*
  * XXX: debug hackery
  */
-int at24c_nuke(void)
+_EXT_ITCM int at24c_nuke(void)
 {
 	return at24c_eraseall(&g_at24c);
 }

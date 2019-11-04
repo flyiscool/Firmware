@@ -68,6 +68,7 @@
 #include <platforms/px4_getopt.h>
 
 #include "ms5611.h"
+#include "ar_uart.h"
 
 enum MS56XX_DEVICE_TYPES {
 	MS56XX_DEVICE   = 0,
@@ -287,7 +288,7 @@ MS5611::init()
 	bool autodetect = false;
 
 	ret = CDev::init();
-
+	
 	if (ret != OK) {
 		DEVICE_DEBUG("CDev init failed");
 		goto out;
@@ -324,13 +325,13 @@ MS5611::init()
 		}
 
 		usleep(MS5611_CONVERSION_INTERVAL);
-
 		if (OK != collect()) {
 			ret = -EIO;
 			break;
 		}
 
 		/* now do a pressure measurement */
+
 		if (OK != measure()) {
 			ret = -EIO;
 			break;
@@ -857,24 +858,24 @@ struct ms5611_bus_option {
 	uint8_t busnum;
 	MS5611 *dev;
 } bus_options[] = {
-#if defined(PX4_SPIDEV_EXT_BARO) && defined(PX4_SPI_BUS_EXT)
-	{ MS5611_BUS_SPI_EXTERNAL, "/dev/ms5611_spi_ext", &MS5611_spi_interface, PX4_SPI_BUS_EXT, NULL },
-#endif
+// #if defined(PX4_SPIDEV_EXT_BARO) && defined(PX4_SPI_BUS_EXT)
+// 	{ MS5611_BUS_SPI_EXTERNAL, "/dev/ms5611_spi_ext", &MS5611_spi_interface, PX4_SPI_BUS_EXT, NULL },
+// #endif
 #ifdef PX4_SPIDEV_BARO
 	{ MS5611_BUS_SPI_INTERNAL, "/dev/ms5611_spi_int", &MS5611_spi_interface, PX4_SPI_BUS_BARO, NULL },
 #endif
-#ifdef PX4_I2C_BUS_ONBOARD
-	{ MS5611_BUS_I2C_INTERNAL, "/dev/ms5611_int", &MS5611_i2c_interface, PX4_I2C_BUS_ONBOARD, NULL },
-#endif
-#ifdef PX4_I2C_BUS_EXPANSION
-	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION, NULL },
-#endif
-#ifdef PX4_I2C_BUS_EXPANSION1
-	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext1", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION1, NULL },
-#endif
-#ifdef PX4_I2C_BUS_EXPANSION2
-	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext2", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION2, NULL },
-#endif
+// #ifdef PX4_I2C_BUS_ONBOARD
+// 	{ MS5611_BUS_I2C_INTERNAL, "/dev/ms5611_int", &MS5611_i2c_interface, PX4_I2C_BUS_ONBOARD, NULL },
+// #endif
+// #ifdef PX4_I2C_BUS_EXPANSION
+// 	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION, NULL },
+// #endif
+// #ifdef PX4_I2C_BUS_EXPANSION1
+// 	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext1", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION1, NULL },
+// #endif
+// #ifdef PX4_I2C_BUS_EXPANSION2
+// 	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext2", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION2, NULL },
+// #endif
 };
 #define NUM_BUS_OPTIONS (sizeof(bus_options)/sizeof(bus_options[0]))
 
@@ -939,14 +940,17 @@ crc4(uint16_t *n_prom)
 bool
 start_bus(struct ms5611_bus_option &bus, enum MS56XX_DEVICE_TYPES device_type)
 {
+
+
 	if (bus.dev != nullptr) {
 		errx(1, "bus option already started");
 	}
-
+	
 	prom_u prom_buf;
 	device::Device *interface = bus.interface_constructor(prom_buf, bus.busnum);
 
 	if (interface->init() != OK) {
+
 		delete interface;
 		warnx("no device on bus %u", (unsigned)bus.busid);
 		return false;

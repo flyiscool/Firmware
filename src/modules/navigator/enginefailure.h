@@ -47,12 +47,12 @@ class Navigator;
 class EngineFailure : public MissionBlock
 {
 public:
-	EngineFailure(Navigator *navigator);
+	_EXT_ITCM EngineFailure(Navigator *navigator);
 	~EngineFailure() = default;
 
-	void on_inactive() override;
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_inactive() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
 private:
 	enum EFState {
@@ -63,11 +63,11 @@ private:
 	/**
 	 * Set the DLL item
 	 */
-	void		set_ef_item();
+	_EXT_ITCM void		set_ef_item();
 
 	/**
 	 * Move to next EF item
 	 */
-	void		advance_ef();
+	_EXT_ITCM void		advance_ef();
 
 };

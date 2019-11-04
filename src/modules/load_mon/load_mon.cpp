@@ -74,39 +74,39 @@ const unsigned LOAD_MON_INTERVAL_US = 1000000;
 class LoadMon : public ModuleBase<LoadMon>
 {
 public:
-	LoadMon();
-	~LoadMon();
+	_EXT_ITCM LoadMon();
+	_EXT_ITCM ~LoadMon();
 
-	static int task_spawn(int argc, char *argv[]);
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int custom_command(int argc, char *argv[])
+	_EXT_ITCM static int custom_command(int argc, char *argv[])
 	{
 		return print_usage("unknown command");
 	}
 
 	/** @see ModuleBase */
-	static int print_usage(const char *reason = nullptr);
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
 	/** @see ModuleBase::print_status() */
-	int print_status() override;
+	_EXT_ITCM int print_status() override;
 
 	/** Trampoline for the work queue. */
-	static void cycle_trampoline(void *arg);
+	_EXT_ITCM static void cycle_trampoline(void *arg);
 
 private:
 	/** Do a compute and schedule the next cycle. */
-	void _cycle();
+	_EXT_ITCM void _cycle();
 
 	/** Do a calculation of the CPU load and publish it. */
-	void _compute();
+	_EXT_ITCM void _compute();
 
 	/** Calculate the memory usage */
-	float _ram_used();
+	_EXT_ITCM float _ram_used();
 
 #ifdef __PX4_NUTTX
 	/* Calculate stack usage */
-	void _stack_usage();
+	_EXT_ITCM void _stack_usage();
 
 	struct task_stack_info_s _task_stack_info;
 	int _stack_task_index;

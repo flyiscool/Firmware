@@ -384,8 +384,9 @@ pwm_main(int argc, char *argv[])
 		 */
 
 		if (oneshot || alt_rate >= 0) {
-			ret = px4_ioctl(fd, PWM_SERVO_SET_UPDATE_RATE, oneshot ? 0 : alt_rate);
 
+			PX4_INFO("oneshot = %d, alt_rate = %d\r\n",oneshot,alt_rate);
+			ret = px4_ioctl(fd, PWM_SERVO_SET_UPDATE_RATE, oneshot ? 0 : alt_rate);
 			if (ret != OK) {
 				PX4_ERR("PWM_SERVO_SET_UPDATE_RATE (check rate for sanity)");
 				return error_on_warn;

@@ -48,12 +48,12 @@ class Navigator;
 class GpsFailure : public MissionBlock, public ModuleParams
 {
 public:
-	GpsFailure(Navigator *navigator);
+	_EXT_ITCM GpsFailure(Navigator *navigator);
 	~GpsFailure() = default;
 
-	void on_inactive() override;
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_inactive() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
 private:
 	DEFINE_PARAMETERS(
@@ -77,11 +77,11 @@ private:
 	/**
 	 * Set the GPSF item
 	 */
-	void		set_gpsf_item();
+	_EXT_ITCM void		set_gpsf_item();
 
 	/**
 	 * Move to next GPSF item
 	 */
-	void		advance_gpsf();
+	_EXT_ITCM void		advance_gpsf();
 
 };

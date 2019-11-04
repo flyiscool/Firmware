@@ -277,7 +277,7 @@ static int open_log_file(void);
 
 static int open_perf_file(const char* str);
 
-static void
+_EXT_ITCM static void
 sdlog2_usage(const char *reason)
 {
 	if (reason) {
@@ -301,7 +301,7 @@ sdlog2_usage(const char *reason)
  * The actual stack size should be set in the call
  * to task_spawn().
  */
-int sdlog2_main(int argc, char *argv[])
+_EXT_ITCM int sdlog2_main(int argc, char *argv[])
 {
 	if (argc < 2) {
 		sdlog2_usage("missing command");
@@ -410,7 +410,7 @@ int sdlog2_main(int argc, char *argv[])
 	return 1;
 }
 
-bool get_log_time_tt(struct tm *tt, bool boot_time) {
+_EXT_ITCM bool get_log_time_tt(struct tm *tt, bool boot_time) {
 	struct timespec ts;
 	px4_clock_gettime(CLOCK_REALTIME, &ts);
 	/* use RTC time for log file naming, e.g. /fs/microsd/2014-01-19/19_37_52.px4log */
@@ -438,7 +438,7 @@ bool get_log_time_tt(struct tm *tt, bool boot_time) {
 	}
 }
 
-int create_log_dir()
+_EXT_ITCM int create_log_dir()
 {
 	/* create dir on sdcard if needed */
 	uint16_t dir_number = 1; // start with dir sess001
@@ -501,7 +501,7 @@ int create_log_dir()
 	return 0;
 }
 
-int open_log_file()
+_EXT_ITCM int open_log_file()
 {
 	/* string to hold the path to the log */
 	char log_file_name[64] = "";
@@ -554,7 +554,7 @@ int open_log_file()
 	return fd;
 }
 
-int open_perf_file(const char* str)
+_EXT_ITCM int open_perf_file(const char* str)
 {
 	/* string to hold the path to the log */
 	char log_file_name[64] = "";
@@ -608,7 +608,7 @@ int open_perf_file(const char* str)
 	return fd;
 }
 
-static void *logwriter_thread(void *arg)
+_EXT_ITCM static void *logwriter_thread(void *arg)
 {
 	/* set name */
 	px4_prctl(PR_SET_NAME, "sdlog2_writer", 0);
@@ -720,7 +720,7 @@ static void *logwriter_thread(void *arg)
 	return NULL;
 }
 
-void sdlog2_start_log()
+_EXT_ITCM void sdlog2_start_log()
 {
 	if (logging_enabled) {
 		return;
@@ -782,7 +782,7 @@ void sdlog2_start_log()
 	logging_enabled = true;
 }
 
-void sdlog2_stop_log()
+_EXT_ITCM void sdlog2_stop_log()
 {
 	if (!logging_enabled) {
 		return;
@@ -836,7 +836,7 @@ void sdlog2_stop_log()
 	sdlog2_status();
 }
 
-int write_formats(int fd)
+_EXT_ITCM int write_formats(int fd)
 {
 	/* construct message format packet */
 	struct {
@@ -857,7 +857,7 @@ int write_formats(int fd)
 	return written;
 }
 
-int write_version(int fd)
+_EXT_ITCM int write_version(int fd)
 {
 	/* construct version message */
 	struct {
@@ -875,7 +875,7 @@ int write_version(int fd)
 	return write(fd, &log_msg_VER, sizeof(log_msg_VER));
 }
 
-int write_parameters(int fd)
+_EXT_ITCM int write_parameters(int fd)
 {
 	/* construct parameter message */
 	struct {
@@ -917,12 +917,12 @@ int write_parameters(int fd)
 	return written;
 }
 
-bool copy_if_updated(orb_id_t topic, int *handle, void *buffer)
+_EXT_ITCM bool copy_if_updated(orb_id_t topic, int *handle, void *buffer)
 {
 	return copy_if_updated_multi(topic, 0, handle, buffer);
 }
 
-bool copy_if_updated_multi(orb_id_t topic, int multi_instance, int *handle, void *buffer)
+_EXT_ITCM bool copy_if_updated_multi(orb_id_t topic, int multi_instance, int *handle, void *buffer)
 {
 	bool updated = false;
 
@@ -952,7 +952,7 @@ bool copy_if_updated_multi(orb_id_t topic, int multi_instance, int *handle, void
 	return updated;
 }
 
-int sdlog2_thread_main(int argc, char *argv[])
+_EXT_ITCM int sdlog2_thread_main(int argc, char *argv[])
 {
 	/* default log rate: 50 Hz */
 	int32_t log_rate = 50;
@@ -2162,7 +2162,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 	return 0;
 }
 
-void sdlog2_status()
+_EXT_ITCM void sdlog2_status()
 {
 	PX4_WARN("extended logging: %s", (_extended_logging) ? "ON" : "OFF");
 	PX4_WARN("time: gps: %u seconds", (unsigned)gps_time_sec);
@@ -2182,13 +2182,13 @@ void sdlog2_status()
 /**
  * @return true if file exists
  */
-bool file_exist(const char *filename)
+_EXT_ITCM bool file_exist(const char *filename)
 {
 	struct stat buffer;
 	return stat(filename, &buffer) == 0;
 }
 
-int check_free_space()
+_EXT_ITCM int check_free_space()
 {
 	/* use statfs to determine the number of blocks left */
 	FAR struct statfs statfs_buf;
@@ -2215,7 +2215,7 @@ int check_free_space()
 	return PX4_OK;
 }
 
-void handle_command(struct vehicle_command_s *cmd)
+_EXT_ITCM void handle_command(struct vehicle_command_s *cmd)
 {
 	int param;
 
@@ -2242,7 +2242,7 @@ void handle_command(struct vehicle_command_s *cmd)
 	}
 }
 
-void handle_status(struct vehicle_status_s *status)
+_EXT_ITCM void handle_status(struct vehicle_status_s *status)
 {
 	// TODO use flag from actuator_armed here?
 	bool armed = status->arming_state == VEHICLE_STATUS_ARMING_STATE_ARMED;

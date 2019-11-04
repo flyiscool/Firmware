@@ -174,6 +174,9 @@ class uploader(object):
 
     REBOOT          = b'\x30'
 
+    SET_ERASE_SIZE  = b'\x70'     # set erase size
+    SET_ERASE_ADR   = b'\x71'     # set erase start address
+
     INFO_BL_REV     = b'\x01'        # bootloader protocol revision
     BL_REV_MIN      = 2              # minimum supported bootloader protocol
     BL_REV_MAX      = 5              # maximum supported bootloader protocol
@@ -206,7 +209,6 @@ class uploader(object):
     def open(self):
         # upload timeout
         timeout = time.time() + 0.2
-
         # attempt to open the port while it exists and until timeout occurs
         while self.port is not None:
             portopen = True
@@ -232,12 +234,16 @@ class uploader(object):
         # print("send " + binascii.hexlify(c))
         self.port.write(c)
 
-    def __recv(self, count=1):
-        c = self.port.read(count)
-        if len(c) < 1:
-            raise RuntimeError("timeout waiting for data (%u bytes)" % count)
-        # print("recv " + binascii.hexlify(c))
-        return c
+    def __recv(self, count=1, timeout=0.2):
+
+        deadline = time.time() + timeout
+
+        while time.time() < deadline:
+            c = self.port.read(count)
+            if len(c) >= 1:
+                return c            
+
+        raise RuntimeError("timeout waiting for data (%u bytes)" % count)
 
     def __recv_int(self):
         raw = self.__recv(4)
@@ -343,13 +349,13 @@ class uploader(object):
                     uploader.EOC)
 
         # erase is very slow, give it 20s
-        deadline = time.time() + 30.0
+        deadline = time.time() + 40.0
         while time.time() < deadline:
 
             # Draw progress bar (erase usually takes about 9 seconds to complete)
             estimatedTimeRemaining = deadline-time.time()
             if estimatedTimeRemaining >= 9.0:
-                self.__drawProgressBar(label, 30.0-estimatedTimeRemaining, 9.0)
+                self.__drawProgressBar(label, 40.0-estimatedTimeRemaining, 30.0)
             else:
                 self.__drawProgressBar(label, 10.0, 10.0)
                 sys.stdout.write(" (timeout: %d seconds) " % int(deadline-time.time()))
@@ -401,9 +407,14 @@ class uploader(object):
                     uploader.EOC)
         self.port.flush()
 
-        # v3+ can report failure if the first word flash fails
         if self.bl_rev >= 3:
-            self.__getSync()
+            deadline = time.time() + 5
+
+            while time.time() < deadline:
+                if self.__trySync():
+                    return
+
+            raise RuntimeError("timed out waiting for reboot")
 
     # split a sequence into a list of size-constrained pieces
     def __split_len(self, seq, length):
@@ -411,7 +422,7 @@ class uploader(object):
 
     # upload code
     def __program(self, label, fw):
-        print("\n", end='')
+        print("\n ", end='')
         code = fw.image
         groups = self.__split_len(code, uploader.PROG_MULTI_MAX)
 
@@ -448,6 +459,14 @@ class uploader(object):
         expect_crc = fw.crc(self.fw_maxsize)
         self.__send(uploader.GET_CRC +
                     uploader.EOC)
+
+        max_time = fw.property('image_size')/(1024 * 1024) + 10
+        deadline = time.time() + max_time
+        while time.time() < deadline:
+            estimatedTimeRemaining = deadline-time.time()
+            if estimatedTimeRemaining >= 0.1:
+                self.__drawProgressBar(label, max_time-estimatedTimeRemaining, max_time)
+
         report_crc = self.__recv_int()
         self.__getSync()
         if report_crc != expect_crc:
@@ -462,6 +481,18 @@ class uploader(object):
                     uploader.EOC)
         self.__getSync()
 
+    def __set_erase_size(self, size):
+        self.__send(uploader.SET_ERASE_SIZE +
+                    struct.pack("I", size) +
+                    uploader.EOC)
+        self.__getSync()
+
+    def __set_erase_adr(self, adr):
+        self.__send(uploader.SET_ERASE_ADR +
+                    struct.pack("I", adr) +
+                    uploader.EOC)
+        self.__getSync()
+
     # get basic data about the board
     def identify(self):
         # make sure we are in sync before starting
@@ -472,7 +503,7 @@ class uploader(object):
         if (self.bl_rev < uploader.BL_REV_MIN) or (self.bl_rev > uploader.BL_REV_MAX):
             print("Unsupported bootloader protocol %d" % uploader.INFO_BL_REV)
             raise RuntimeError("Bootloader protocol mismatch")
-
+        
         self.board_type = self.__getInfo(uploader.INFO_BOARD_ID)
         self.board_rev = self.__getInfo(uploader.INFO_BOARD_REV)
         self.fw_maxsize = self.__getInfo(uploader.INFO_FLASH_SIZE)
@@ -495,34 +526,56 @@ class uploader(object):
 
         # OTP added in v4:
         if self.bl_rev >= 4:
-            for byte in range(0, 32*6, 4):
-                x = self.__getOTP(byte)
-                self.otp = self.otp + x
-                print(binascii.hexlify(x).decode('Latin-1') + ' ', end='')
-            # see src/modules/systemlib/otp.h in px4 code:
-            self.otp_id = self.otp[0:4]
-            self.otp_idtype = self.otp[4:5]
-            self.otp_vid = self.otp[8:4:-1]
-            self.otp_pid = self.otp[12:8:-1]
-            self.otp_coa = self.otp[32:160]
+            print('''
+          00000000000000000000000000000000          
+        000000000000000000000000000000000000       
+       00000000000000000000000000000000000000      
+      0000000        0000000000000000000000000     
+    0000000           0000000000000000   000000    
+    000000   0000000    00000000000000    00000    
+    00000   0000  000    000000000  0000   00000   
+    00000   00     0000   0000000     00   00000   
+    00000   00     0000000 000000     00   00000   
+    00000   000   000000000   000    000   00000   
+    000000   00000000000000    00000000   000000   
+    000000   0000000000000000    0000    000000    
+     0000000000000000000000000          0000000    
+      000000000000000000000000000    000000000     
+       0000000000000000000000000000000000000       
+         0000000000000000000000000000000000        
+          0000000000000000000000000000000          
+            ''')
+
+            # for byte in range(0, 32*6, 4):
+            #     x = self.__getOTP(byte)
+            #     self.otp = self.otp + x
+            #     print(binascii.hexlify(x).decode('Latin-1') + ' ', end='')
+            # # see src/modules/systemlib/otp.h in px4 code:
+            # self.otp_id = self.otp[0:4]
+            # self.otp_idtype = self.otp[4:5]
+            # self.otp_vid = self.otp[8:4:-1]
+            # self.otp_pid = self.otp[12:8:-1]
+            # self.otp_coa = self.otp[32:160]
             # show user:
-            try:
-                print("type: " + self.otp_id.decode('Latin-1'))
-                print("idtype: " + binascii.b2a_qp(self.otp_idtype).decode('Latin-1'))
-                print("vid: " + binascii.hexlify(self.otp_vid).decode('Latin-1'))
-                print("pid: " + binascii.hexlify(self.otp_pid).decode('Latin-1'))
-                print("coa: " + binascii.b2a_base64(self.otp_coa).decode('Latin-1'))
-                print("sn: ", end='')
-                for byte in range(0, 12, 4):
-                    x = self.__getSN(byte)
-                    x = x[::-1]  # reverse the bytes
-                    self.sn = self.sn + x
-                    print(binascii.hexlify(x).decode('Latin-1'), end='')  # show user
-                print('')
-                print("chip: %08x" % self.__getCHIP())
-            except Exception:
+            # try:
+                # print("type: " + self.otp_id.decode('Latin-1'))
+                # print("idtype: " + binascii.b2a_qp(self.otp_idtype).decode('Latin-1'))
+                # print("vid: " + binascii.hexlify(self.otp_vid).decode('Latin-1'))
+                # print("pid: " + binascii.hexlify(self.otp_pid).decode('Latin-1'))
+                # print("coa: " + binascii.b2a_base64(self.otp_coa).decode('Latin-1'))
+                # print("sn: ", end='')
+                # for byte in range(0, 12, 4):
+                #     x = self.__getSN(byte)
+                #     x = x[::-1]  # reverse the bytes
+                #     self.sn = self.sn + x
+                #     print(binascii.hexlify(x).decode('Latin-1'), end='')  # show user
+                # print('')
+                # print("chip: %08x" % self.__getCHIP())
+                
+
+            # except Exception:
                 # ignore bad character encodings
-                pass
+                # pass
 
         # Silicon errata check was added in v5
         if (self.bl_rev >= 5):
@@ -556,6 +609,12 @@ class uploader(object):
                                    "\n"
                                    "If you know you that the board does not have the silicon errata, use\n"
                                    "this script with --force, or update the bootloader.\n")
+
+        # set erase size = app space to reduce erasa time    
+        self.__set_erase_size(fw.property('image_size') + 64 * 1024)
+
+        # set erase start address 
+        self.__set_erase_adr(128 * 1024)
 
         self.__erase("Erase  ")
         self.__program("Program", fw)
@@ -678,7 +737,7 @@ def main():
 
             for port in portlist:
 
-                # print("Trying %s" % port)
+                print("Trying %s" % port)
 
                 # create an uploader attached to the port
                 try:
@@ -701,7 +760,6 @@ def main():
                 except Exception:
                     # open failed, rate-limit our attempts
                     time.sleep(0.05)
-
                     # and loop to the next port
                     continue
 

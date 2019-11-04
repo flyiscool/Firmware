@@ -46,15 +46,15 @@
 class StateMachineHelperTest : public UnitTest
 {
 public:
-	StateMachineHelperTest() = default;
-	virtual ~StateMachineHelperTest() = default;
+	_EXT_ITCM StateMachineHelperTest() = default;
+	_EXT_ITCM virtual ~StateMachineHelperTest() = default;
 
-	virtual bool run_tests();
+	_EXT_ITCM virtual bool run_tests();
 
 private:
-	bool armingStateTransitionTest();
-	bool mainStateTransitionTest();
-	bool isSafeTest();
+	_EXT_ITCM bool armingStateTransitionTest();
+	_EXT_ITCM bool mainStateTransitionTest();
+	_EXT_ITCM bool isSafeTest();
 };
 
 bool StateMachineHelperTest::armingStateTransitionTest()

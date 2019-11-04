@@ -58,7 +58,7 @@ enum FIRMWARE_TYPE {
 	FIRMWARE_TYPE_RELEASE = 255
 };
 
-uint32_t version_tag_to_number(const char *tag)
+_EXT_ITCM uint32_t version_tag_to_number(const char *tag)
 {
 	uint32_t version_number = 0;
 
@@ -141,12 +141,12 @@ uint32_t version_tag_to_number(const char *tag)
 	return version_number;
 }
 
-uint32_t px4_firmware_version(void)
+_EXT_ITCM uint32_t px4_firmware_version(void)
 {
 	return version_tag_to_number(PX4_GIT_TAG_STR);
 }
 
-uint32_t version_tag_to_vendor_version_number(const char *tag)
+_EXT_ITCM uint32_t version_tag_to_vendor_version_number(const char *tag)
 {
 	uint32_t version_number = 0;
 
@@ -232,17 +232,17 @@ uint32_t version_tag_to_vendor_version_number(const char *tag)
 	return version_number;
 }
 
-uint32_t px4_firmware_vendor_version(void)
+_EXT_ITCM uint32_t px4_firmware_vendor_version(void)
 {
 	return version_tag_to_vendor_version_number(PX4_GIT_TAG_STR);
 }
 
-const char *px4_firmware_git_branch(void)
+_EXT_ITCM const char *px4_firmware_git_branch(void)
 {
 	return PX4_GIT_BRANCH_NAME;
 }
 
-uint32_t px4_board_version(void)
+_EXT_ITCM uint32_t px4_board_version(void)
 {
 #if defined(__PX4_NUTTX)
 	return CONFIG_CDCACM_PRODUCTID;
@@ -251,7 +251,7 @@ uint32_t px4_board_version(void)
 #endif
 }
 
-uint32_t px4_os_version(void)
+_EXT_ITCM uint32_t px4_os_version(void)
 {
 #if defined(__PX4_DARWIN) || defined(__PX4_CYGWIN) || defined(__PX4_QURT)
 	return 0; //TODO: implement version for Darwin, Cygwin, QuRT
@@ -280,7 +280,7 @@ uint32_t px4_os_version(void)
 #endif
 }
 
-const char *px4_os_version_string(void)
+_EXT_ITCM const char *px4_os_version_string(void)
 {
 #if defined(__PX4_NUTTX)
 	return NUTTX_GIT_VERSION_STR;
@@ -289,7 +289,7 @@ const char *px4_os_version_string(void)
 #endif
 }
 
-const char *px4_os_name(void)
+_EXT_ITCM const char *px4_os_name(void)
 {
 #if defined(__PX4_DARWIN)
 	return "Darwin";
@@ -306,7 +306,7 @@ const char *px4_os_name(void)
 #endif
 }
 
-const char *px4_toolchain_name(void)
+_EXT_ITCM const char *px4_toolchain_name(void)
 {
 #if defined(__clang__)
 	return "Clang/LLVM";
@@ -321,7 +321,7 @@ const char *px4_toolchain_name(void)
 #endif
 }
 
-const char *px4_toolchain_version(void)
+_EXT_ITCM const char *px4_toolchain_version(void)
 {
 #ifdef __VERSION__
 	return __VERSION__;
@@ -330,22 +330,22 @@ const char *px4_toolchain_version(void)
 #endif
 }
 
-const char *px4_firmware_version_string(void)
+_EXT_ITCM const char *px4_firmware_version_string(void)
 {
 	return PX4_GIT_VERSION_STR;
 }
 
-uint64_t px4_firmware_version_binary(void)
+_EXT_ITCM uint64_t px4_firmware_version_binary(void)
 {
 	return PX4_GIT_VERSION_BINARY;
 }
 
-uint64_t px4_mavlink_lib_version_binary(void)
+_EXT_ITCM uint64_t px4_mavlink_lib_version_binary(void)
 {
 	return MAVLINK_LIB_GIT_VERSION_BINARY;
 }
 
-uint64_t px4_os_version_binary(void)
+_EXT_ITCM uint64_t px4_os_version_binary(void)
 {
 	//TODO: get NuttX version via git tag
 	return 0;

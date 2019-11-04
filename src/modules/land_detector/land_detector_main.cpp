@@ -171,7 +171,7 @@ The module runs periodically on the HP work queue.
 }
 
 
-int land_detector_main(int argc, char *argv[])
+_EXT_ITCM int land_detector_main(int argc, char *argv[])
 {
 	return LandDetector::main(argc, argv);
 }

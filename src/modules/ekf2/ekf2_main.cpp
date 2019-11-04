@@ -78,39 +78,39 @@ extern "C" __EXPORT int ekf2_main(int argc, char *argv[]);
 class Ekf2 final : public ModuleBase<Ekf2>, public ModuleParams
 {
 public:
-	Ekf2();
-	~Ekf2() override;
+	_EXT_DTCM_EKF2 Ekf2();
+	_EXT_DTCM_EKF2 ~Ekf2() override;
 
 	/** @see ModuleBase */
-	static int task_spawn(int argc, char *argv[]);
+	_EXT_DTCM_EKF2 static int task_spawn(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static Ekf2 *instantiate(int argc, char *argv[]);
+	_EXT_DTCM_EKF2 static Ekf2 *instantiate(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int custom_command(int argc, char *argv[]);
+	_EXT_DTCM_EKF2 static int custom_command(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int print_usage(const char *reason = nullptr);
+	_EXT_DTCM_EKF2 static int print_usage(const char *reason = nullptr);
 
 	/** @see ModuleBase::run() */
-	void run() override;
+	_EXT_DTCM_EKF2 void run() override;
 
-	void set_replay_mode(bool replay) { _replay_mode = replay; }
+	_EXT_DTCM_EKF2 void set_replay_mode(bool replay) { _replay_mode = replay; }
 
-	static void	task_main_trampoline(int argc, char *argv[]);
+	_EXT_DTCM_EKF2 static void	task_main_trampoline(int argc, char *argv[]);
 
-	int print_status() override;
+	_EXT_DTCM_EKF2 int print_status() override;
 
 private:
-	int getRangeSubIndex(const int *subs); ///< get subscription index of first downward-facing range sensor
+	_EXT_DTCM_EKF2 int getRangeSubIndex(const int *subs); ///< get subscription index of first downward-facing range sensor
 
 	template<typename Param>
-	void update_mag_bias(Param &mag_bias_param, int axis_index);
+	_EXT_DTCM_EKF2 void update_mag_bias(Param &mag_bias_param, int axis_index);
 
-	bool publish_wind_estimate(const hrt_abstime &timestamp);
+	_EXT_DTCM_EKF2 bool publish_wind_estimate(const hrt_abstime &timestamp);
 
-	const Vector3f get_vel_body_wind();
+	_EXT_DTCM_EKF2 const Vector3f get_vel_body_wind();
 
 	bool 	_replay_mode = false;			///< true when we use replay data from a log
 
@@ -1584,7 +1584,7 @@ int Ekf2::task_spawn(int argc, char *argv[])
 	return 0;
 }
 
-int ekf2_main(int argc, char *argv[])
+_EXT_DTCM_EKF2 int ekf2_main(int argc, char *argv[])
 {
 	return Ekf2::main(argc, argv);
 }

@@ -794,7 +794,7 @@ VtolAttitudeControl::start()
 }
 
 
-int vtol_att_control_main(int argc, char *argv[])
+_EXT_ITCM int vtol_att_control_main(int argc, char *argv[])
 {
 	if (argc < 2) {
 		PX4_WARN("usage: vtol_att_control {start|stop|status}");

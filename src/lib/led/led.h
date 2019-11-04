@@ -69,17 +69,17 @@ public:
 	 * @param led_control_sub uorb subscription for led_control
 	 * @return 0 on success, <0 on error otherwise
 	 */
-	int init(int led_control_sub);
+	_EXT_ITCM int init(int led_control_sub);
 
 	/**
 	 * check if already initialized
 	 */
-	bool is_init() const { return _led_control_sub >= 0; }
+	_EXT_ITCM bool is_init() const { return _led_control_sub >= 0; }
 
 	/**
 	 * get maxium time between two consecutive calls to update() in us.
 	 */
-	int maximum_update_interval() const
+	_EXT_ITCM int maximum_update_interval() const
 	{
 		return _breathe_enabled ? BREATHE_INTERVAL : BLINK_FAST_DURATION;
 	}
@@ -90,7 +90,7 @@ public:
 	 * @param control_data output structure (will always be set)
 	 * @return 1 if control_data set (state changed), 0 if control_data not changed (state did not change), <0 error otherwise
 	 */
-	int update(LedControlData &control_data);
+	_EXT_ITCM int update(LedControlData &control_data);
 
 	static const int BREATHE_INTERVAL = 25 * 1000; /**< single step when in breathe mode */
 	static const int BREATHE_STEPS = 64; /**< number of steps in breathe mode for a full on-off cycle */
@@ -102,12 +102,12 @@ public:
 	static const int BLINK_SLOW_DURATION = 2000 * 1000; /**< duration of half a blinking cycle
 									(on-to-off and off-to-on) in us */
 
-	int led_control_subscription() const { return _led_control_sub; }
+	_EXT_ITCM int led_control_subscription() const { return _led_control_sub; }
 
 private:
 
 	/** set control_data based on current Led states */
-	inline void get_control_data(LedControlData &control_data);
+	_EXT_ITCM inline void get_control_data(LedControlData &control_data);
 
 	struct PerPriorityData {
 		uint8_t color = 0; ///< one of led_control_s::COLOR_*
@@ -122,7 +122,7 @@ private:
 		uint8_t num_blinks;
 		uint8_t priority = led_control_s::MAX_PRIORITY + 1;
 
-		void set(const led_control_s &led_control)
+		_EXT_ITCM void set(const led_control_s &led_control)
 		{
 			color = led_control.color;
 			mode = led_control.mode;
@@ -133,8 +133,8 @@ private:
 				priority = led_control_s::MAX_PRIORITY;
 			}
 		}
-		void reset() { priority = led_control_s::MAX_PRIORITY + 1; }
-		bool is_valid() const { return priority != led_control_s::MAX_PRIORITY + 1; }
+		_EXT_ITCM void reset() { priority = led_control_s::MAX_PRIORITY + 1; }
+		_EXT_ITCM bool is_valid() const { return priority != led_control_s::MAX_PRIORITY + 1; }
 	};
 
 	struct PerLedData {
@@ -142,7 +142,7 @@ private:
 		uint16_t current_blinking_time = 0; ///< how long the Led was in current state (in 0.1 ms, wraps if > 6.5s)
 		NextState next_state;
 
-		void set(const led_control_s &led_control)
+		_EXT_ITCM void set(const led_control_s &led_control)
 		{
 			int next_priority = (int)led_control.priority;
 			priority[next_priority].color = led_control.color;

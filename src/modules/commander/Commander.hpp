@@ -69,27 +69,27 @@ using namespace time_literals;
 class Commander : public ModuleBase<Commander>, public ModuleParams
 {
 public:
-	Commander();
+	_EXT_ITCM Commander();
 
 	/** @see ModuleBase */
-	static int task_spawn(int argc, char *argv[]);
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static Commander *instantiate(int argc, char *argv[]);
+	_EXT_ITCM static Commander *instantiate(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int custom_command(int argc, char *argv[]);
+	_EXT_ITCM static int custom_command(int argc, char *argv[]);
 
 	/** @see ModuleBase */
-	static int print_usage(const char *reason = nullptr);
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
 	/** @see ModuleBase::run() */
-	void run() override;
+	_EXT_ITCM void run() override;
 
-	void enable_hil();
+	_EXT_ITCM void enable_hil();
 
 	// TODO: only temporarily static until low priority thread is removed
-	static bool preflight_check(bool report);
+	_EXT_ITCM static bool preflight_check(bool report);
 
 private:
 
@@ -118,45 +118,45 @@ private:
 	hrt_abstime	_lpos_probation_time_us = POSVEL_PROBATION_MIN;
 	hrt_abstime	_lvel_probation_time_us = POSVEL_PROBATION_MIN;
 
-	bool handle_command(vehicle_status_s *status, const vehicle_command_s &cmd,
+	_EXT_ITCM bool handle_command(vehicle_status_s *status, const vehicle_command_s &cmd,
 			    actuator_armed_s *armed, home_position_s *home, orb_advert_t *home_pub, orb_advert_t *command_ack_pub, bool *changed);
 
-	bool set_home_position(orb_advert_t &homePub, home_position_s &home, bool set_alt_only_to_lpos_ref);
+	_EXT_ITCM bool set_home_position(orb_advert_t &homePub, home_position_s &home, bool set_alt_only_to_lpos_ref);
 
 	// Set the main system state based on RC and override device inputs
-	transition_result_t set_main_state(const vehicle_status_s &status, bool *changed);
+	_EXT_ITCM transition_result_t set_main_state(const vehicle_status_s &status, bool *changed);
 
 	// Enable override (manual reversion mode) on the system
-	transition_result_t set_main_state_override_on(const vehicle_status_s &status, bool *changed);
+	_EXT_ITCM transition_result_t set_main_state_override_on(const vehicle_status_s &status, bool *changed);
 
 	// Set the system main state based on the current RC inputs
-	transition_result_t set_main_state_rc(const vehicle_status_s &status, bool *changed);
+	_EXT_ITCM transition_result_t set_main_state_rc(const vehicle_status_s &status, bool *changed);
 
 	// Set the main system state based on RC and override device inputs
-	transition_result_t set_main_state(vehicle_status_s *status, bool *changed);
-	transition_result_t set_main_state_override_on(vehicle_status_s *status, bool *changed);
-	transition_result_t set_main_state_rc(vehicle_status_s *status, bool *changed);
+	_EXT_ITCM transition_result_t set_main_state(vehicle_status_s *status, bool *changed);
+	_EXT_ITCM transition_result_t set_main_state_override_on(vehicle_status_s *status, bool *changed);
+	_EXT_ITCM transition_result_t set_main_state_rc(vehicle_status_s *status, bool *changed);
 
-	void check_valid(const hrt_abstime &timestamp, const hrt_abstime &timeout, const bool valid_in, bool *valid_out, bool *changed);
+	_EXT_ITCM void check_valid(const hrt_abstime &timestamp, const hrt_abstime &timeout, const bool valid_in, bool *valid_out, bool *changed);
 
-	bool check_posvel_validity(const bool data_valid, const float data_accuracy, const float required_accuracy,
+	_EXT_ITCM bool check_posvel_validity(const bool data_valid, const float data_accuracy, const float required_accuracy,
 				   const hrt_abstime &data_timestamp_us, hrt_abstime *last_fail_time_us, hrt_abstime *probation_time_us, bool *valid_state,
 				   bool *validity_changed);
 
-	void reset_posvel_validity(bool *changed);
+	_EXT_ITCM void reset_posvel_validity(bool *changed);
 
-	void mission_init();
+	_EXT_ITCM void mission_init();
 
 	/**
 	 * Update the telemetry status and the corresponding status variables.
 	 * Perform system checks when new telemetry link connected.
 	 */
-	void poll_telemetry_status();
+	_EXT_ITCM void poll_telemetry_status();
 
 	/**
 	 * Checks the status of all available data links and handles switching between different system telemetry states.
 	 */
-	void data_link_checks(int32_t highlatencydatalink_loss_timeout, int32_t highlatencydatalink_regain_timeout,
+	_EXT_ITCM void data_link_checks(int32_t highlatencydatalink_loss_timeout, int32_t highlatencydatalink_regain_timeout,
 			      int32_t datalink_loss_timeout, int32_t datalink_regain_timeout, bool *status_changed);
 
 	// telemetry variables

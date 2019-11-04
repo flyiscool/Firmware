@@ -62,7 +62,7 @@
 static void	usage(const char *reason);
 __EXPORT int	esc_calib_main(int argc, char *argv[]);
 
-static void
+_EXT_ITCM static void
 usage(const char *reason)
 {
 	if (reason != NULL) {
@@ -88,7 +88,7 @@ usage(const char *reason)
 	PRINT_MODULE_USAGE_PARAM_FLAG('a', "Select all channels", true);
 }
 
-int
+_EXT_ITCM int
 esc_calib_main(int argc, char *argv[])
 {
 	const char *dev = PWM_OUTPUT0_DEVICE_PATH;

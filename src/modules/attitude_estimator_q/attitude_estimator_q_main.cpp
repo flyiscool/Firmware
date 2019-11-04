@@ -81,23 +81,23 @@ public:
 	/**
 	 * Constructor
 	 */
-	AttitudeEstimatorQ();
+	_EXT_DTCM_EKF2 AttitudeEstimatorQ();
 
 	/**
 	 * Destructor, also kills task.
 	 */
-	~AttitudeEstimatorQ();
+	_EXT_DTCM_EKF2 ~AttitudeEstimatorQ();
 
 	/**
 	 * Start task.
 	 *
 	 * @return		OK on success.
 	 */
-	int		start();
+	_EXT_DTCM_EKF2 int		start();
 
-	static int	task_main_trampoline(int argc, char *argv[]);
+	_EXT_DTCM_EKF2 static int	task_main_trampoline(int argc, char *argv[]);
 
-	void		task_main();
+	_EXT_DTCM_EKF2 void		task_main();
 
 private:
 	const float _dt_min = 0.00001f;
@@ -158,16 +158,16 @@ private:
 	bool		_data_good = false;
 	bool		_ext_hdg_good = false;
 
-	void update_parameters(bool force);
+	_EXT_DTCM_EKF2 void update_parameters(bool force);
 
-	int update_subscriptions();
+	_EXT_DTCM_EKF2 int update_subscriptions();
 
-	bool init();
+	_EXT_DTCM_EKF2 bool init();
 
-	bool update(float dt);
+	_EXT_DTCM_EKF2 bool update(float dt);
 
 	// Update magnetic declination (in rads) immediately changing yaw rotation
-	void update_mag_declination(float new_declination);
+	_EXT_DTCM_EKF2 void update_mag_declination(float new_declination);
 };
 
 
@@ -675,7 +675,7 @@ void AttitudeEstimatorQ::update_mag_declination(float new_declination)
 	}
 }
 
-int attitude_estimator_q_main(int argc, char *argv[])
+_EXT_DTCM_EKF2 int attitude_estimator_q_main(int argc, char *argv[])
 {
 	if (argc < 2) {
 		warnx("usage: attitude_estimator_q {start|stop|status}");

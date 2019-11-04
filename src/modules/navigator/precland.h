@@ -66,37 +66,37 @@ enum class PrecLandMode {
 class PrecLand : public MissionBlock, public ModuleParams
 {
 public:
-	PrecLand(Navigator *navigator);
+	_EXT_ITCM PrecLand(Navigator *navigator);
 	~PrecLand() override = default;
 
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
-	void set_mode(PrecLandMode mode) { _mode = mode; };
+	_EXT_ITCM void set_mode(PrecLandMode mode) { _mode = mode; };
 
-	PrecLandMode get_mode() { return _mode; };
+	_EXT_ITCM PrecLandMode get_mode() { return _mode; };
 
 private:
 	// run the control loop for each state
-	void run_state_start();
-	void run_state_horizontal_approach();
-	void run_state_descend_above_target();
-	void run_state_final_approach();
-	void run_state_search();
-	void run_state_fallback();
+	_EXT_ITCM void run_state_start();
+	_EXT_ITCM void run_state_horizontal_approach();
+	_EXT_ITCM void run_state_descend_above_target();
+	_EXT_ITCM void run_state_final_approach();
+	_EXT_ITCM void run_state_search();
+	_EXT_ITCM void run_state_fallback();
 
 	// attempt to switch to a different state. Returns true if state change was successful, false otherwise
-	bool switch_to_state_start();
-	bool switch_to_state_horizontal_approach();
-	bool switch_to_state_descend_above_target();
-	bool switch_to_state_final_approach();
-	bool switch_to_state_search();
-	bool switch_to_state_fallback();
-	bool switch_to_state_done();
+	_EXT_ITCM bool switch_to_state_start();
+	_EXT_ITCM bool switch_to_state_horizontal_approach();
+	_EXT_ITCM bool switch_to_state_descend_above_target();
+	_EXT_ITCM bool switch_to_state_final_approach();
+	_EXT_ITCM bool switch_to_state_search();
+	_EXT_ITCM bool switch_to_state_fallback();
+	_EXT_ITCM bool switch_to_state_done();
 
 	// check if a given state could be changed into. Return true if possible to transition to state, false otherwise
-	bool check_state_conditions(PrecLandState state);
-	void slewrate(float &sp_x, float &sp_y);
+	_EXT_ITCM bool check_state_conditions(PrecLandState state);
+	_EXT_ITCM void slewrate(float &sp_x, float &sp_y);
 
 	landing_target_pose_s _target_pose{}; /**< precision landing target position */
 

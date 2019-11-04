@@ -45,7 +45,7 @@
 
 #include "logbuffer.h"
 
-int logbuffer_init(struct logbuffer_s *lb, int size)
+_EXT_ITCM int logbuffer_init(struct logbuffer_s *lb, int size)
 {
 	lb->size  = size;
 	lb->write_ptr = 0;
@@ -55,7 +55,7 @@ int logbuffer_init(struct logbuffer_s *lb, int size)
 	return PX4_OK;
 }
 
-int logbuffer_count(struct logbuffer_s *lb)
+_EXT_ITCM int logbuffer_count(struct logbuffer_s *lb)
 {
 	int n = lb->write_ptr - lb->read_ptr;
 
@@ -66,12 +66,12 @@ int logbuffer_count(struct logbuffer_s *lb)
 	return n;
 }
 
-int logbuffer_is_empty(struct logbuffer_s *lb)
+_EXT_ITCM int logbuffer_is_empty(struct logbuffer_s *lb)
 {
 	return lb->read_ptr == lb->write_ptr;
 }
 
-bool logbuffer_write(struct logbuffer_s *lb, void *ptr, int size)
+_EXT_ITCM bool logbuffer_write(struct logbuffer_s *lb, void *ptr, int size)
 {
 	// allocate buffer if not yet present
 	if (lb->data == NULL) {
@@ -115,7 +115,7 @@ bool logbuffer_write(struct logbuffer_s *lb, void *ptr, int size)
 	return true;
 }
 
-int logbuffer_get_ptr(struct logbuffer_s *lb, void **ptr, bool *is_part)
+_EXT_ITCM int logbuffer_get_ptr(struct logbuffer_s *lb, void **ptr, bool *is_part)
 {
 	// bytes available to read
 	int available = lb->write_ptr - lb->read_ptr;
@@ -141,12 +141,12 @@ int logbuffer_get_ptr(struct logbuffer_s *lb, void **ptr, bool *is_part)
 	return n;
 }
 
-void logbuffer_mark_read(struct logbuffer_s *lb, int n)
+_EXT_ITCM void logbuffer_mark_read(struct logbuffer_s *lb, int n)
 {
 	lb->read_ptr = (lb->read_ptr + n) % lb->size;
 }
 
-void logbuffer_free(struct logbuffer_s *lb)
+_EXT_ITCM void logbuffer_free(struct logbuffer_s *lb)
 {
 	if (lb->data) {
 		free(lb->data);
@@ -157,7 +157,7 @@ void logbuffer_free(struct logbuffer_s *lb)
 	}
 }
 
-void logbuffer_reset(struct logbuffer_s *lb)
+_EXT_ITCM void logbuffer_reset(struct logbuffer_s *lb)
 {
 	// Keep the buffer but reset the pointers.
 	lb->write_ptr = 0;

@@ -53,7 +53,7 @@
   ************************************************************************************/
 
 
-void board_gpio_init(const uint32_t list[], int count)
+_EXT_ITCM void board_gpio_init(const uint32_t list[], int count)
 {
 	for (int gpio = 0; gpio < count; gpio++) {
 		if (list[gpio] != 0) {

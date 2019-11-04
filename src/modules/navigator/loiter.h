@@ -48,12 +48,12 @@
 class Loiter : public MissionBlock, public ModuleParams
 {
 public:
-	Loiter(Navigator *navigator);
+	_EXT_ITCM Loiter(Navigator *navigator);
 	~Loiter() = default;
 
-	void on_inactive() override;
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_inactive() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
 	// TODO: share this with mission
 	enum mission_yaw_mode {
@@ -69,12 +69,12 @@ private:
 	 * Use the stored reposition location of the navigator
 	 * to move to a new location.
 	 */
-	void reposition();
+	_EXT_ITCM void reposition();
 
 	/**
 	 * Set the position to hold based on the current local position
 	 */
-	void set_loiter_position();
+	_EXT_ITCM void set_loiter_position();
 
 	DEFINE_PARAMETERS(
 		(ParamInt<px4::params::MIS_YAWMODE>) _param_yawmode

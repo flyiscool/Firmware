@@ -49,9 +49,9 @@ public:
 	virtual ~FlightTaskManualAltitude() = default;
 
 protected:
-	void _updateAltitudeLock(); /**< checks for position lock */
-	void _updateSetpoints() override; /**< updates all setpoints */
-	void _scaleSticks() override; /**< scales sticks to velocity in z */
+	_EXT_ITCM void _updateAltitudeLock(); /**< checks for position lock */
+	_EXT_ITCM void _updateSetpoints() override; /**< updates all setpoints */
+	_EXT_ITCM void _scaleSticks() override; /**< scales sticks to velocity in z */
 
 	DEFINE_PARAMETERS_CUSTOM_PARENT(FlightTaskManualStabilized,
 					(ParamFloat<px4::params::MPC_Z_VEL_MAX_DN>) _vel_max_down, /**< maximum speed allowed to go up */

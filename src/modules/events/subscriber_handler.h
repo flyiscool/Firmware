@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chip.h>
 #include <uORB/uORB.h>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/cpuload.h>
@@ -18,22 +19,22 @@ namespace events
 class SubscriberHandler
 {
 public:
-	void subscribe();
-	void unsubscribe();
-	void check_for_updates();
+	_EXT_ITCM void subscribe();
+	_EXT_ITCM void unsubscribe();
+	_EXT_ITCM void check_for_updates();
 
-	int get_battery_status_sub() const { return _battery_status_sub; }
-	int get_cpuload_sub() const { return _cpuload_sub; }
-	int get_vehicle_command_sub() const { return _vehicle_command_sub; }
-	int get_vehicle_status_sub() const { return _vehicle_status_sub; }
-	int get_vehicle_status_flags_sub() const { return _vehicle_status_flags_sub; }
+	_EXT_ITCM int get_battery_status_sub() const { return _battery_status_sub; }
+	_EXT_ITCM int get_cpuload_sub() const { return _cpuload_sub; }
+	_EXT_ITCM int get_vehicle_command_sub() const { return _vehicle_command_sub; }
+	_EXT_ITCM int get_vehicle_status_sub() const { return _vehicle_status_sub; }
+	_EXT_ITCM int get_vehicle_status_flags_sub() const { return _vehicle_status_flags_sub; }
 
 	/* update checking methods */
-	bool battery_status_updated() const { return _update_bitfield & (uint32_t)StatusMask::BatteryStatus; }
-	bool cpuload_updated() const { return _update_bitfield & (uint32_t)StatusMask::CpuLoad; }
-	bool vehicle_command_updated() const { return _update_bitfield & (uint32_t)StatusMask::VehicleCommand; }
-	bool vehicle_status_updated() const { return _update_bitfield & (uint32_t)StatusMask::VehicleStatus; }
-	bool vehicle_status_flags_updated() const { return _update_bitfield & (uint32_t)StatusMask::VehicleStatusFlags; }
+	_EXT_ITCM bool battery_status_updated() const { return _update_bitfield & (uint32_t)StatusMask::BatteryStatus; }
+	_EXT_ITCM bool cpuload_updated() const { return _update_bitfield & (uint32_t)StatusMask::CpuLoad; }
+	_EXT_ITCM bool vehicle_command_updated() const { return _update_bitfield & (uint32_t)StatusMask::VehicleCommand; }
+	_EXT_ITCM bool vehicle_status_updated() const { return _update_bitfield & (uint32_t)StatusMask::VehicleStatus; }
+	_EXT_ITCM bool vehicle_status_flags_updated() const { return _update_bitfield & (uint32_t)StatusMask::VehicleStatusFlags; }
 
 
 private:

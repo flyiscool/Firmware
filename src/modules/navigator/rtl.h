@@ -56,28 +56,28 @@ public:
 		RTL_MISSION,
 	};
 
-	RTL(Navigator *navigator);
+	_EXT_ITCM RTL(Navigator *navigator);
 
 	~RTL() = default;
 
-	void on_inactive() override;
-	void on_activation() override;
-	void on_active() override;
+	_EXT_ITCM void on_inactive() override;
+	_EXT_ITCM void on_activation() override;
+	_EXT_ITCM void on_active() override;
 
-	void set_return_alt_min(bool min);
+	_EXT_ITCM void set_return_alt_min(bool min);
 
-	int rtl_type() const;
+	_EXT_ITCM int rtl_type() const;
 
 private:
 	/**
 	 * Set the RTL item
 	 */
-	void		set_rtl_item();
+	_EXT_ITCM void		set_rtl_item();
 
 	/**
 	 * Move to next RTL item
 	 */
-	void		advance_rtl();
+	_EXT_ITCM void		advance_rtl();
 
 	enum RTLState {
 		RTL_STATE_NONE = 0,

@@ -493,6 +493,9 @@ public:
 	 */
 	struct ping_statistics_s &get_ping_statistics() { return _ping_stats; }
 
+	bool isUserCustomUart();
+
+
 protected:
 	Mavlink			*next;
 
@@ -685,4 +688,5 @@ private:
 	/* do not allow copying this class */
 	Mavlink(const Mavlink &);
 	Mavlink operator=(const Mavlink &);
+
 };

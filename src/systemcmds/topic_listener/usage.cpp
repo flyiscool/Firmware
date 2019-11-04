@@ -38,7 +38,7 @@
 
 #include <px4_module.h>
 
-static void
+_EXT_ITCM static void
 usage()
 {
 	PRINT_MODULE_DESCRIPTION(

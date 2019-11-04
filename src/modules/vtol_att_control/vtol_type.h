@@ -112,16 +112,16 @@ class VtolType
 {
 public:
 
-	VtolType(VtolAttitudeControl *att_controller);
-	VtolType(const VtolType &) = delete;
-	VtolType &operator=(const VtolType &) = delete;
+	_EXT_ITCM VtolType(VtolAttitudeControl *att_controller);
+	_EXT_ITCM VtolType(const VtolType &) = delete;
+	_EXT_ITCM VtolType &operator=(const VtolType &) = delete;
 
-	virtual ~VtolType();
+	_EXT_ITCM virtual ~VtolType();
 
 	/**
 	 * Initialise.
 	 */
-	bool init();
+	_EXT_ITCM bool init();
 
 	/**
 	 * Update vtol state.
@@ -136,12 +136,12 @@ public:
 	/**
 	 * Update multicopter state.
 	 */
-	virtual void update_mc_state();
+	_EXT_ITCM virtual void update_mc_state();
 
 	/**
 	 * Update fixed wing state.
 	 */
-	virtual void update_fw_state();
+	_EXT_ITCM virtual void update_fw_state();
 
 	/**
 	 * Write control values to actuator output topics.
@@ -157,16 +157,16 @@ public:
 	/**
 	 * Checks for fixed-wing failsafe condition and issues abort request if needed.
 	 */
-	void check_quadchute_condition();
+	_EXT_ITCM void check_quadchute_condition();
 
 	/**
 	 * Returns true if we're allowed to do a mode transition on the ground.
 	 */
-	bool can_transition_on_ground();
+	_EXT_ITCM bool can_transition_on_ground();
 
 
 
-	mode get_mode() {return _vtol_mode;}
+	_EXT_ITCM mode get_mode() {return _vtol_mode;}
 
 	virtual void parameters_update() = 0;
 
@@ -223,7 +223,7 @@ protected:
 	 *
 	 * @return     true on success
 	 */
-	bool set_idle_mc();
+	_EXT_ITCM bool set_idle_mc();
 
 	/**
 	 * @brief      Sets mc motor minimum pwm to PWM_MIN which ensures that the
@@ -231,7 +231,7 @@ protected:
 	 *
 	 * @return     true on success
 	 */
-	bool set_idle_fw();
+	_EXT_ITCM bool set_idle_fw();
 
 
 	/**
@@ -244,7 +244,7 @@ protected:
 	 *
 	 * @return     next_state if succesfull, otherwise current_state
 	 */
-	motor_state set_motor_state(const motor_state current_state, const motor_state next_state, const int value = 0);
+	_EXT_ITCM motor_state set_motor_state(const motor_state current_state, const motor_state next_state, const int value = 0);
 
 private:
 
@@ -263,7 +263,7 @@ private:
 	 *
 	 * @return     True on success.
 	 */
-	bool apply_pwm_limits(struct pwm_output_values &pwm_values, pwm_limit_type type);
+	_EXT_ITCM bool apply_pwm_limits(struct pwm_output_values &pwm_values, pwm_limit_type type);
 
 	/**
 	 * @brief      Determines if this channel is one selected by VT_FW_MOT_OFFID
@@ -272,7 +272,7 @@ private:
 	 *
 	 * @return     True if motor off channel, False otherwise.
 	 */
-	bool is_motor_off_channel(const int channel);
+	_EXT_ITCM bool is_motor_off_channel(const int channel);
 
 };
 

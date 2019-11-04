@@ -43,6 +43,7 @@
 #include "subscriber_handler.h"
 
 #include <drivers/drv_hrt.h>
+#include <chip.h>
 
 #include <uORB/uORB.h>
 #include <uORB/topics/battery_status.h>
@@ -58,25 +59,25 @@ class StatusDisplay
 {
 public:
 
-	StatusDisplay(const events::SubscriberHandler &subscriber_handler);
+	_EXT_ITCM StatusDisplay(const events::SubscriberHandler &subscriber_handler);
 
 	/** regularily called to handle state updates */
-	void process();
+	_EXT_ITCM void process();
 
 protected:
 	/**
 	 * check for topic updates
 	 * @return true if one or more topic got updated
 	 */
-	bool check_for_updates();
+	_EXT_ITCM bool check_for_updates();
 
 	/**
 	 * handle LED logic changes & call publish()
 	 */
-	void set_leds();
+	_EXT_ITCM void set_leds();
 
 	/** publish LED control */
-	void publish();
+	_EXT_ITCM void publish();
 
 	// TODO: review if there is a better variant that allocate this in the memory
 	struct battery_status_s _battery_status = {};

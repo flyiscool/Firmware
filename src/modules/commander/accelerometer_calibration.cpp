@@ -169,7 +169,7 @@ typedef struct  {
 	int		sensor_correction_sub;
 } accel_worker_data_t;
 
-int do_accel_calibration(orb_advert_t *mavlink_log_pub)
+_EXT_ITCM int do_accel_calibration(orb_advert_t *mavlink_log_pub)
 {
 #ifdef __PX4_NUTTX
 	int fd;
@@ -421,7 +421,7 @@ int do_accel_calibration(orb_advert_t *mavlink_log_pub)
 	return res;
 }
 
-static calibrate_return accel_calibration_worker(detect_orientation_return orientation, int cancel_sub, void* data)
+_EXT_ITCM static calibrate_return accel_calibration_worker(detect_orientation_return orientation, int cancel_sub, void* data)
 {
 	const unsigned samples_num = 750;
 	accel_worker_data_t* worker_data = (accel_worker_data_t*)(data);
@@ -441,7 +441,7 @@ static calibrate_return accel_calibration_worker(detect_orientation_return orien
 	return calibrate_return_ok;
 }
 
-calibrate_return do_accel_calibration_measurements(orb_advert_t *mavlink_log_pub, float (&accel_offs)[max_accel_sens][3], float (&accel_T)[max_accel_sens][3][3], unsigned *active_sensors)
+_EXT_ITCM calibrate_return do_accel_calibration_measurements(orb_advert_t *mavlink_log_pub, float (&accel_offs)[max_accel_sens][3], float (&accel_T)[max_accel_sens][3][3], unsigned *active_sensors)
 {
 	calibrate_return result = calibrate_return_ok;
 
@@ -566,7 +566,7 @@ calibrate_return do_accel_calibration_measurements(orb_advert_t *mavlink_log_pub
 /*
  * Read specified number of accelerometer samples, calculate average and dispersion.
  */
-calibrate_return read_accelerometer_avg(int sensor_correction_sub, int (&subs)[max_accel_sens], float (&accel_avg)[max_accel_sens][detect_orientation_side_count][3], unsigned orient, unsigned samples_num)
+_EXT_ITCM calibrate_return read_accelerometer_avg(int sensor_correction_sub, int (&subs)[max_accel_sens], float (&accel_avg)[max_accel_sens][detect_orientation_side_count][3], unsigned orient, unsigned samples_num)
 {
 	/* get total sensor board rotation matrix */
 	param_t board_rotation_h = param_find("SENS_BOARD_ROT");
@@ -678,7 +678,7 @@ calibrate_return read_accelerometer_avg(int sensor_correction_sub, int (&subs)[m
 	return calibrate_return_ok;
 }
 
-int mat_invert3(float src[3][3], float dst[3][3])
+_EXT_ITCM int mat_invert3(float src[3][3], float dst[3][3])
 {
 	float det = src[0][0] * (src[1][1] * src[2][2] - src[1][2] * src[2][1]) -
 		    src[0][1] * (src[1][0] * src[2][2] - src[1][2] * src[2][0]) +
@@ -701,7 +701,7 @@ int mat_invert3(float src[3][3], float dst[3][3])
 	return PX4_OK;
 }
 
-calibrate_return calculate_calibration_values(unsigned sensor, float (&accel_ref)[max_accel_sens][detect_orientation_side_count][3], float (&accel_T)[max_accel_sens][3][3], float (&accel_offs)[max_accel_sens][3], float g)
+_EXT_ITCM calibrate_return calculate_calibration_values(unsigned sensor, float (&accel_ref)[max_accel_sens][detect_orientation_side_count][3], float (&accel_T)[max_accel_sens][3][3], float (&accel_offs)[max_accel_sens][3], float g)
 {
 	/* calculate offsets */
 	for (unsigned i = 0; i < 3; i++) {
@@ -737,7 +737,7 @@ calibrate_return calculate_calibration_values(unsigned sensor, float (&accel_ref
 	return calibrate_return_ok;
 }
 
-int do_level_calibration(orb_advert_t *mavlink_log_pub) {
+_EXT_ITCM int do_level_calibration(orb_advert_t *mavlink_log_pub) {
 	const unsigned cal_time = 5;
 	const unsigned cal_hz = 100;
 	unsigned settle_time = 30;
