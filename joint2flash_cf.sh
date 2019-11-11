@@ -17,8 +17,8 @@ skycpu0=$1
 # skycpu2=$base_path/boot/ar8020_skycpu2.bin
 # outcfgbin=$base_path/boot/cfgdata.bin
 
-skycpu2=$base_path/../ar8020_sdk/Application/C201d/cpu2/ar8020_skycpu2.bin
-outcfgbin=$base_path/../ar8020_sdk/Application/C201d/cfgdata.bin
+skycpu2=$base_path/boot/ar8020_skycpu2.bin
+outcfgbin=$base_path/boot/cfgdata.bin
 
 echo "cf_log: -----------------------------------------"
 echo "cf_log: Making the image package, please wait ..."
