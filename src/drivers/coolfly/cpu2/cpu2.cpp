@@ -41,35 +41,35 @@
 #include <px4_workqueue.h>
 #include <px4_getopt.h>
 #include <drivers/drv_intercore.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 
 #include <uORB/uORB.h>
 #include <uORB/topics/h264_input_format.h>
 #include <uORB/topics/input_rc.h>
 
-#include "cpu2.h"
-#include "Mavlink.h"
 
-// static void ar_intercore_init();
+#include "cpu2.h"
+
 static void cycle_trampoline(void *arg);
-// static int drv_intercore_tim_isr(int irq, void *context, void *arg);
+
 uint8_t arsys_event_cpu0t2_append(AR_INTERCORE_EVENT *message);
+
 int tolower(int c);
+
 int htoi(char s[]);
 
 static uint8_t needlogging = 0;
 
-// static void parseRcMavlinkMsg(uint8_t *bufferPtr, uint16_t length);
-
 static struct work_s h264_work = {};
+
 static int h264_fd = 0;
+
 static struct h264_input_format_s att; 
+
 static void h264_cycle(void *arg);
-
-
-// static mavlink_message_t mavlinkMsg;
-
-// static mavlink_status_t _status; 
-
 
 class CPU2 : public device::CDev
 {
@@ -118,19 +118,31 @@ _EXT_ITCM static void cycle_trampoline(void *arg)
 			}
         }        
     }
-	
+
 	work_queue(LPWORK, &_work, (worker_t)&cycle_trampoline, nullptr, 5);
 } 
 
 
-_EXT_ITCM static void initSramForMavlink() 
-{
+_EXT_ITCM static void initSram() 
+{	
     memset((void *)SRAM_MAVLINK_RC_MSG_ST_ADDR, 0, SRAM_MAVLINK_RC_MSG_SIZE);
 	
-	STRU_SramBuffer *msgBuffer = (STRU_SramBuffer*)SRAM_MAVLINK_RC_MSG_ST_ADDR;
-	msgBuffer->header.buf_wr_pos = (uint32_t)msgBuffer->buf;
-	msgBuffer->header.buf_rd_pos = (uint32_t)msgBuffer->buf;
+	STRU_SramBuffer *sramBuffer;
+
+	sramBuffer = (STRU_SramBuffer*)SRAM_MAVLINK_RC_MSG_ST_ADDR;
+	sramBuffer->header.buf_wr_pos = (uint32_t)sramBuffer->buf;
+	sramBuffer->header.buf_rd_pos = (uint32_t)sramBuffer->buf;
+
+	sramBuffer = (STRU_SramBuffer*)SRAM_SESSION1_TO_UART_DATA_ST_ADDR;
+    sramBuffer->header.buf_wr_pos = (uint32_t)sramBuffer->buf;
+    sramBuffer->header.buf_rd_pos = (uint32_t)sramBuffer->buf;
+
+    sramBuffer = (STRU_SramBuffer*)SRAM_UART_TO_SESSION1_DATA_ST_ADDR;
+    sramBuffer->header.buf_wr_pos = (uint32_t)sramBuffer->buf;
+    sramBuffer->header.buf_rd_pos = (uint32_t)sramBuffer->buf;
+
 }
+
 
 
 _EXT_ITCM static void h264_cycle(void *arg)
@@ -175,6 +187,8 @@ _EXT_ITCM static void h264_cycle(void *arg)
  
 		// arsys_event_cpu0t2_try_trigger();
     }	
+
+
 
 	(void)work_queue(LPWORK, &h264_work, (worker_t)&h264_cycle, nullptr, USEC2TICK(1000 * 1000));
 }
@@ -232,12 +246,11 @@ int CPU2::init()
 	return ret;
 }
 
-
 int CPU2::start()
 {
 	px4_flash_init();
 
-	initSramForMavlink();
+	initSram();
 
 	return PX4_OK;
 }
@@ -287,7 +300,6 @@ void cpu2_usage();
 
 _EXT_ITCM void cpu2_usage()
 {
-
 	PX4_INFO("missing command: try 'start' or 'setid' or 'log' or 'blind'");
 	PX4_INFO("Example:");
 	PX4_INFO("		using setid: 'cpu2 setid ab cd ef 12 34 aa bb' ");
@@ -371,3 +383,4 @@ _EXT_ITCM int cpu2_main(int argc, char *argv[])
 	
 	return EXIT_SUCCESS;
 }
+

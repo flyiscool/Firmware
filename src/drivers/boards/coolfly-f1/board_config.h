@@ -87,8 +87,9 @@
 
 #define BOARD_HAS_CONTROL_STATUS_LEDS      1
 
-#define PX4_SPI_BUS_BARO      4
 #define PX4_SPI_BUS_SENSORS   6
+#define PX4_SPI_BUS_BARO      4
+#define PX4_SPI_BUS_EXT   	  PX4_SPI_BUS_BARO
 
 #define PX4_SPI_BUS_RAMTRON   0
 #define PX4_SPI_BUS_MEMORY    0
@@ -165,9 +166,12 @@
 
 #define PX4_SPIDEV_BARO                     PX4_MK_SPI_SEL(PX4_SPI_BUS_BARO,0)
 #define PX4_SPIDEV_BARO_ONBOARD             PX4_MK_SPI_SEL(PX4_SPI_BUS_BARO,1)
+#define PX4_SPIDEV_EXT_BARO					PX4_SPIDEV_BARO_ONBOARD
 
-#define PX4_BARO_BUS_CS_GPIO            {GPIO_SPI4_CS1_MS5611}
-#define PX4_BARO_BUS_CS2_GPIO           {GPIO_SPI4_CS2_MS5611_ONBOARD}
+#define PX4_BARO_BUS_CS_GPIO            {\
+											GPIO_SPI4_CS1_MS5611, 		  \
+											GPIO_SPI4_CS2_MS5611_ONBOARD  \
+										}
 
 
 #define PX4_BARO_BUS_FIRST_CS       PX4_SPIDEV_BARO

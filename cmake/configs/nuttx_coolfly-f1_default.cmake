@@ -8,13 +8,14 @@ set(config_module_list
 	# Board support modules
 	#
 	drivers/barometer
-	# drivers/differential_pressure
+	drivers/differential_pressure
 	# drivers/distance_sensor
 	drivers/magnetometer
 	# drivers/telemetry
 	drivers/it66021
-	drivers/cpu2
-
+	drivers/coolfly/cpu2
+	drivers/coolfly/RFUart
+	
 	drivers/batt_smbus
 	# drivers/blinkm
 	# drivers/camera_trigger
@@ -29,7 +30,7 @@ set(config_module_list
 	# drivers/oreoled
 	#drivers/pwm_input
 	# drivers/pwm_out_sim
-	# drivers/px4flow
+	drivers/px4flow
 	drivers/px4fmu
 	#drivers/px4io
 	#drivers/rc_input

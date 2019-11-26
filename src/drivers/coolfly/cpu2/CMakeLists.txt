@@ -37,7 +37,6 @@ px4_add_module(
 		-Wno-unused-function
 	SRCS
 		cpu2.cpp
-		Mavlink.cpp
 	DEPENDS
 	)
 

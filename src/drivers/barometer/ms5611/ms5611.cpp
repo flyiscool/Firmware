@@ -383,9 +383,17 @@ MS5611::init()
 		brp.device_id = _device_id.devid;
 
 		ret = OK;
-
-		_baro_topic = orb_advertise_multi(ORB_ID(sensor_baro), &brp,
-						  &_orb_class_instance, _interface->external() ? ORB_PRIO_HIGH : ORB_PRIO_DEFAULT);
+		
+		if (_interface->get_device_address() == PX4_SPIDEV_EXT_BARO)
+		{
+			_baro_topic = orb_advertise_multi(ORB_ID(sensor_baro), &brp,
+						  &_orb_class_instance, ORB_PRIO_HIGH );
+		}
+		else 
+		{
+			_baro_topic = orb_advertise_multi(ORB_ID(sensor_baro), &brp,
+						  &_orb_class_instance, ORB_PRIO_DEFAULT );
+		}
 
 		if (_baro_topic == nullptr) {
 			warnx("failed to create sensor_baro publication");
@@ -858,24 +866,12 @@ struct ms5611_bus_option {
 	uint8_t busnum;
 	MS5611 *dev;
 } bus_options[] = {
-// #if defined(PX4_SPIDEV_EXT_BARO) && defined(PX4_SPI_BUS_EXT)
-// 	{ MS5611_BUS_SPI_EXTERNAL, "/dev/ms5611_spi_ext", &MS5611_spi_interface, PX4_SPI_BUS_EXT, NULL },
-// #endif
+#if defined(PX4_SPIDEV_EXT_BARO) && defined(PX4_SPI_BUS_EXT)
+	{ MS5611_BUS_SPI_EXTERNAL, "/dev/ms5611_spi_ext", &MS5611_spi_interface, PX4_SPI_BUS_EXT + 1 , NULL }, // due to  PX4_SPI_BUS_EXT == PX4_SPI_BUS_BARO
+#endif
 #ifdef PX4_SPIDEV_BARO
 	{ MS5611_BUS_SPI_INTERNAL, "/dev/ms5611_spi_int", &MS5611_spi_interface, PX4_SPI_BUS_BARO, NULL },
 #endif
-// #ifdef PX4_I2C_BUS_ONBOARD
-// 	{ MS5611_BUS_I2C_INTERNAL, "/dev/ms5611_int", &MS5611_i2c_interface, PX4_I2C_BUS_ONBOARD, NULL },
-// #endif
-// #ifdef PX4_I2C_BUS_EXPANSION
-// 	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION, NULL },
-// #endif
-// #ifdef PX4_I2C_BUS_EXPANSION1
-// 	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext1", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION1, NULL },
-// #endif
-// #ifdef PX4_I2C_BUS_EXPANSION2
-// 	{ MS5611_BUS_I2C_EXTERNAL, "/dev/ms5611_ext2", &MS5611_i2c_interface, PX4_I2C_BUS_EXPANSION2, NULL },
-// #endif
 };
 #define NUM_BUS_OPTIONS (sizeof(bus_options)/sizeof(bus_options[0]))
 
