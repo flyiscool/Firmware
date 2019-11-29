@@ -93,6 +93,7 @@
 
 #define PX4_SPI_BUS_RAMTRON   0
 #define PX4_SPI_BUS_MEMORY    0
+
 /*
  *  Define the ability to shut off off the sensor signals
  *  by changing the signals to inputs
@@ -140,7 +141,9 @@
 #define GPIO_SPI4_CS1_MS5611            (GPIO_OUTPUT|GPIO_OUTSET|GPIO_PIN54)
 #define GPIO_SPI4_CS2_MS5611_ONBOARD    (GPIO_OUTPUT|GPIO_OUTSET|GPIO_PIN40)
 
-
+#define GPIO_SPI4_SCK_OFF  	_PIN_OFF(GPIO_SPI4_SCK)
+#define GPIO_SPI4_MISO_OFF  _PIN_OFF(GPIO_SPI4_MISO)
+#define GPIO_SPI4_MOSI_OFF  _PIN_OFF(GPIO_SPI4_MOSI)
 
 /* v BEGIN Legacy SPI defines TODO: fix this with enumeration */
 #define PX4_SPIDEV_BMA 0

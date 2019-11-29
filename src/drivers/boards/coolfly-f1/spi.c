@@ -295,9 +295,19 @@ __EXPORT uint8_t ar_spi0status(FAR struct spi_dev_s *dev, uint32_t devid)
 		}
 	}
 
+	for (size_t cs = 0;  arraySize(spi4selects_gpio) > 1 && cs < arraySize(spi4selects_gpio); cs++) {
+		if (spi4selects_gpio[cs] != 0) {
+			ar_configgpio(_PIN_OFF(spi4selects_gpio[cs]));
+		}
+	}
+
 	ar_configgpio(GPIO_SPI6_SCK_OFF);
 	ar_configgpio(GPIO_SPI6_MISO_OFF);
 	ar_configgpio(GPIO_SPI6_MOSI_OFF);
+
+	ar_configgpio(GPIO_SPI4_SCK_OFF);
+	ar_configgpio(GPIO_SPI4_MISO_OFF);
+	ar_configgpio(GPIO_SPI4_MOSI_OFF);
 
 #if BOARD_USE_DRDY
 	ar_configgpio(GPIO_DRDY_OFF_SPI6_DRDY1_ICM20689);
@@ -329,9 +339,20 @@ __EXPORT uint8_t ar_spi0status(FAR struct spi_dev_s *dev, uint32_t devid)
 		}
 	}
 
+	for (size_t cs = 0; arraySize(spi4selects_gpio) > 1 && cs < arraySize(spi4selects_gpio); cs++) {
+		if (spi4selects_gpio[cs] != 0) {
+			ar_configgpio(spi4selects_gpio[cs]);
+		}
+	}
+
 	ar_configgpio(GPIO_SPI6_SCK);
 	ar_configgpio(GPIO_SPI6_MISO);
 	ar_configgpio(GPIO_SPI6_MOSI);
+
+	ar_configgpio(GPIO_SPI4_SCK);
+	ar_configgpio(GPIO_SPI4_MISO);
+	ar_configgpio(GPIO_SPI4_MOSI);
+
 
 #if BOARD_USE_DRDY
 	ar_configgpio(GPIO_SPI1_DRDY1_ICM20689);

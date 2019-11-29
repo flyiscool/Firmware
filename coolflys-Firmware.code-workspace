@@ -2,12 +2,6 @@
     "folders": [
         {
             "path": "."
-        },
-        {
-            "path": "/home/liuwei/coolfly/Bootloader"
-        },
-        {
-            "path": "/home/liuwei/coolfly/ar8020_sdk"
         }
     ],
     "settings": {
