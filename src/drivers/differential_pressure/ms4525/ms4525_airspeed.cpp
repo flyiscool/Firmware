@@ -375,18 +375,18 @@ namespace meas_airspeed
 MEASAirspeed	*g_dev = nullptr;
 
 int bus_options[] = {
-#ifdef PX4_I2C_BUS_EXPANSION
-	PX4_I2C_BUS_EXPANSION,
-#endif
-#ifdef PX4_I2C_BUS_EXPANSION1
+// #ifdef PX4_I2C_BUS_EXPANSION
+// 	PX4_I2C_BUS_EXPANSION,
+// #endif
+// #ifdef PX4_I2C_BUS_EXPANSION1
 	PX4_I2C_BUS_EXPANSION1,
-#endif
-#ifdef PX4_I2C_BUS_EXPANSION2
-	PX4_I2C_BUS_EXPANSION2,
-#endif
-#ifdef PX4_I2C_BUS_ONBOARD
-	PX4_I2C_BUS_ONBOARD,
-#endif
+// #endif
+// #ifdef PX4_I2C_BUS_EXPANSION2
+// 	PX4_I2C_BUS_EXPANSION2,
+// #endif
+// #ifdef PX4_I2C_BUS_ONBOARD
+// 	PX4_I2C_BUS_ONBOARD,
+// #endif
 };
 
 #define NUM_BUS_OPTIONS (sizeof(bus_options)/sizeof(bus_options[0]))

@@ -31,7 +31,7 @@
 #
 ############################################################################
 
-add_subdirectory(ets)
+# add_subdirectory(ets)
 add_subdirectory(ms4525)
-add_subdirectory(ms5525)
-add_subdirectory(sdp3x)
+# add_subdirectory(ms5525)
+# add_subdirectory(sdp3x)
