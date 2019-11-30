@@ -365,7 +365,7 @@ _EXT_ITCM int cpu2_main(int argc, char *argv[])
 			buffer[5] = htoi(argv[7]);
 			buffer[6] = htoi(argv[8]);
 			px4_flash_updateid(buffer, sizeof(buffer), 2);
-
+		
 		}
 	} 
 	else if (strcmp(verb, "log") == 0) 
