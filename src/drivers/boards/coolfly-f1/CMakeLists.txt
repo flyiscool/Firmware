@@ -38,6 +38,7 @@ px4_add_library(drivers_board
 	spi.c
 	timer_config.c
 	usb.c
+	can.c
 )
 target_link_libraries(drivers_board
 	PRIVATE

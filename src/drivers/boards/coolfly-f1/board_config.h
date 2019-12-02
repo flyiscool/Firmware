@@ -756,6 +756,7 @@ extern void ar_usbinitialize(void);
 
 extern void board_peripheral_reset(int ms);
 
+extern int can_devinit(void);
 
 /****************************************************************************
  * Name: nsh_archinitialize

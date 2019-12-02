@@ -503,5 +503,15 @@ _EXT_ITCM  int board_app_initialize(uintptr_t arg)
 
 #endif
 
+#ifdef CONFIG_CAN
+	ret = can_devinit();
+
+	if (ret != OK)
+	{
+		PX4_ERR("Can dev init fail");
+	}
+#endif
+
+
 	return OK;
 }

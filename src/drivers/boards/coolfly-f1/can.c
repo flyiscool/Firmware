@@ -46,14 +46,12 @@
 #include <errno.h>
 #include <debug.h>
 
-#include <nuttx/can.h>
 #include <arch/board/board.h>
+#include <ar_can.h>
 
-#include "chip.h"
 #include "up_arch.h"
 
 #include "chip.h"
-#include "ar_can.h"
 #include "board_config.h"
 
 #ifdef CONFIG_CAN
@@ -63,12 +61,22 @@
  ************************************************************************************/
 /* Configuration ********************************************************************/
 
-
 #ifdef CONFIG_AR_CAN0
-#  define CAN_PORT 0
-#else
-#  define CAN_PORT 1
+	#define CAN_PORT0 0
 #endif
+
+#ifdef CONFIG_AR_CAN1
+	#define CAN_PORT1 1
+#endif
+
+#ifdef CONFIG_AR_CAN2
+	#define CAN_PORT2 2
+#endif
+
+#ifdef CONFIG_AR_CAN3
+	#define CAN_PORT3 3
+#endif
+
 
 /************************************************************************************
  * Private Functions
@@ -90,33 +98,95 @@
 int can_devinit(void)
 {
 	static bool initialized = false;
+
+	/* Check if we have already initialized */
+	if (initialized) 
+	{
+		return OK;
+	}
+
 	struct can_dev_s *can;
 	int ret;
 
-	/* Check if we have already initialized */
+	#if defined(CONFIG_CAN) && defined(CONFIG_AR_CAN0) && defined(CAN_PORT0) 
+		can = ar_caninitialize(CAN_PORT0);
+		
+		if (can != NULL) 
+		{
+			ret = can_register("/dev/can0", can);
+			initialized = true;
 
-	if (!initialized) {
-		/* Call stm32_caninitialize() to get an instance of the CAN interface */
+			if (ret < 0)
+			{
+				canerr("ERROR: can0_register failed: %d\n", ret);
+			}
+		} 
+		else 
+		{
+			canerr("ERROR:  Failed to get CAN0 interface\n");
+		}	
+	#endif
 
-		can = ar_caninitialize(CAN_PORT);
+	#if defined(CONFIG_CAN) && defined(CONFIG_AR_CAN1) && defined(CAN_PORT1) 
+		can = ar_caninitialize(CAN_PORT1);
+		
+		if (can != NULL) 
+		{
+			ret = can_register("/dev/can1", can);
+			initialized = true;
 
-		if (can == NULL) {
-			canerr("ERROR:  Failed to get CAN interface\n");
-			return -ENODEV;
-		}
+			if (ret < 0)
+			{
+				canerr("ERROR: can1_register failed: %d\n", ret);
+			}
+		} 
+		else 
+		{
+			canerr("ERROR:  Failed to get CAN1 interface\n");
+		}	
+	#endif
+	
+	#if defined(CONFIG_CAN) && defined(CONFIG_AR_CAN2) && defined(CAN_PORT2) 
+		can = ar_caninitialize(CAN_PORT2);
+		
+		if (can != NULL) 
+		{
+			ret = can_register("/dev/can2", can);
+			initialized = true;
 
-		/* Register the CAN driver at "/dev/can0" */
+			if (ret < 0)
+			{
+				canerr("ERROR: can2_register failed: %d\n", ret);
+			}
+		} 
+		else 
+		{
+			canerr("ERROR:  Failed to get CAN2 interface\n");
+		}	
+	#endif
 
-		ret = can_register("/dev/can0", can);
+	#if defined(CONFIG_CAN) && defined(CONFIG_AR_CAN3) && defined(CAN_PORT3) 
+		can = ar_caninitialize(CAN_PORT3);
+		
+		if (can != NULL) 
+		{
+			ret = can_register("/dev/can3", can);
+			initialized = true;
 
-		if (ret < 0) {
-			canerr("ERROR: can_register failed: %d\n", ret);
-			return ret;
-		}
+			if (ret < 0)
+			{
+				canerr("ERROR: can3_register failed: %d\n", ret);
+			}
+		} 
+		else 
+		{
+			canerr("ERROR:  Failed to get CAN3 interface\n");
+		}	
+	#endif
 
-		/* Now we are initialized */
-
-		initialized = true;
+	if (initialized == false)
+	{
+		return -ENODEV;
 	}
 
 	return OK;
