@@ -32,8 +32,9 @@
  ****************************************************************************/
 
 #include <string.h>
-
 #include <px4_config.h>
+#include <px4_module.h>
+
 #include <sys/types.h>
 #include <systemlib/err.h>
 #include <drivers/device/i2c.h>
@@ -45,12 +46,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
 #include <uORB/uORB.h>
 #include <uORB/topics/h264_input_format.h>
 #include <uORB/topics/input_rc.h>
-
-
 #include "cpu2.h"
 
 static void cycle_trampoline(void *arg);
@@ -63,15 +61,17 @@ int htoi(char s[]);
 
 static uint8_t needlogging = 0;
 
+
+static struct work_s _work = {};
+
 static struct work_s h264_work = {};
 
 static int h264_fd = 0;
 
-static struct h264_input_format_s att; 
+static struct h264_input_format_s att = {0}; 
 
-static void h264_cycle(void *arg);
 
-class CPU2 : public device::CDev
+class CPU2 : public device::CDev, public ModuleBase<CPU2>
 {
 public:
 	_EXT_ITCM CPU2();
@@ -80,22 +80,56 @@ public:
 
 	_EXT_ITCM virtual int init();
 
-	_EXT_ITCM int start();
+	_EXT_ITCM static int custom_command(int argc, char *argv[]);
 
-	_EXT_ITCM void handler_event();
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
+
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
+
+private:
+	_EXT_ITCM static void intercore_event_msg_cycle_trampoline(void *arg);
+
+	_EXT_ITCM static void cycle_trampoline(void *arg);
+
+	_EXT_ITCM static void h264_cycle(void *arg);
+
+	// _EXT_ITCM static void clog();
+
 };
 
-namespace
-{
-	CPU2 *g_cpu2 = nullptr;
 
-	work_s _work = {};
+// _EXT_ITCM void CPU2::clog() 
+// {
+// 	if (shouldLog == false) {
+// 		return;
+// 	}
+
+// 	PX4_INFO("clog info in cpu2");
+// }
+
+void CPU2::cycle_trampoline(void *arg)
+{
+	CPU2 *dev = reinterpret_cast<CPU2 *>(arg);
+
+	if (dev == nullptr) {
+
+		if ((dev = new CPU2()) == NULL) {
+			PX4_ERR("alloc failed");
+			return;
+		}
+
+		if (dev->init() != PX4_OK) {
+			return;
+		} 
+		_object = dev;
+	}
+
+	dev->intercore_event_msg_cycle_trampoline(NULL);
+	dev->h264_cycle(NULL);
 }
 
 
-
-// static int daemon_task;				/**< Handle of daemon task / thread */
-_EXT_ITCM static void cycle_trampoline(void *arg)
+void CPU2::intercore_event_msg_cycle_trampoline(void *arg) 
 {
 	uint8_t i = 0;
 
@@ -118,15 +152,14 @@ _EXT_ITCM static void cycle_trampoline(void *arg)
 			}
         }        
     }
-
-	work_queue(LPWORK, &_work, (worker_t)&cycle_trampoline, nullptr, 5);
-} 
+	work_queue(LPWORK, &_work, (worker_t)&CPU2::intercore_event_msg_cycle_trampoline, nullptr, 5);
+}
 
 
 _EXT_ITCM static void initSram() 
 {	
     memset((void *)SRAM_MAVLINK_RC_MSG_ST_ADDR, 0, SRAM_MAVLINK_RC_MSG_SIZE);
-	
+
 	STRU_SramBuffer *sramBuffer;
 
 	sramBuffer = (STRU_SramBuffer*)SRAM_MAVLINK_RC_MSG_ST_ADDR;
@@ -140,12 +173,11 @@ _EXT_ITCM static void initSram()
     sramBuffer = (STRU_SramBuffer*)SRAM_UART_TO_SESSION1_DATA_ST_ADDR;
     sramBuffer->header.buf_wr_pos = (uint32_t)sramBuffer->buf;
     sramBuffer->header.buf_rd_pos = (uint32_t)sramBuffer->buf;
-
 }
 
 
 
-_EXT_ITCM static void h264_cycle(void *arg)
+_EXT_ITCM void CPU2::h264_cycle(void *arg)
 {
     if (h264_fd == 0)
     {
@@ -184,22 +216,13 @@ _EXT_ITCM static void h264_cycle(void *arg)
 		PX4_INFO("-----------------------------------------\n");
 
 		arsys_event_cpu0t2_append(&msg);
- 
-		// arsys_event_cpu0t2_try_trigger();
     }	
 
-
-
-	(void)work_queue(LPWORK, &h264_work, (worker_t)&h264_cycle, nullptr, USEC2TICK(1000 * 1000));
+	(void)work_queue(LPWORK, &h264_work, (worker_t)&CPU2::h264_cycle, nullptr, USEC2TICK(1000 * 1000));
 }
 
-
-extern "C" __EXPORT int cpu2_main(int argc, char *argv[]);
-
-
-CPU2::CPU2():CDev("cpu2", "/dev/cpu2") 
-{
-}
+CPU2::CPU2(): CDev("cpu2", "/dev/cpu2") 
+{}
  
 
 _EXT_ITCM uint8_t arsys_event_cpu0t2_append(AR_INTERCORE_EVENT *message)
@@ -241,13 +264,13 @@ CPU2::~CPU2() {}
 
 int CPU2::init()
 {
-	int ret = CDev::init();
+	int ret;
+	if ((ret = CDev::init()) != PX4_OK) 
+	{
+		PX4_ERR("CPU2::init fail");
+		return ret;
+	}
 
-	return ret;
-}
-
-int CPU2::start()
-{
 	px4_flash_init();
 
 	initSram();
@@ -283,7 +306,7 @@ int htoi(char s[])
 
 
     for (; (s[i] >= '0' && s[i] <= '9') || (s[i] >= 'a' && s[i] <= 'z') || (s[i] >='A' && s[i] <= 'Z');++i)  
-    {  
+    {  	
         if (tolower(s[i]) > '9')  
         {  
             n = 16 * n + (10 + tolower(s[i]) - 'a');  
@@ -296,76 +319,59 @@ int htoi(char s[])
     return n;  
 }  
 
-void cpu2_usage();
 
-_EXT_ITCM void cpu2_usage()
+int CPU2::task_spawn(int argc, char *argv[])
 {
-	PX4_INFO("missing command: try 'start' or 'setid' or 'log' or 'blind'");
-	PX4_INFO("Example:");
-	PX4_INFO("		using setid: 'cpu2 setid ab cd ef 12 34 aa bb' ");
-	PX4_INFO("		using log: 'cpu2 log', display  intercore cpu2 log info");
-	PX4_INFO("		using blind: 'cpu2 blind', not display  intercore cpu2 log info");
+	int ret;
+	if ((ret = work_queue(LPWORK, &_work, (worker_t)&CPU2::cycle_trampoline, nullptr, 0)) < 0) {
+		return ret;
+	}
+
+	_task_id = task_id_is_work_queue;
+		
+	return PX4_OK;
 }
 
-_EXT_ITCM int cpu2_main(int argc, char *argv[])
+
+int CPU2::print_usage(const char *reason)
 {
-	const char *verb = argv[1];
+	if (reason) {
+		PX4_WARN("%s\n", reason);
+	}
 
-	if (strcmp(verb, "start") == 0)
-	{
-		if (g_cpu2 != nullptr)
+	PRINT_MODULE_USAGE_NAME("cpu2", "driver");
+
+	PRINT_MODULE_USAGE_COMMAND("start");
+	PRINT_MODULE_USAGE_COMMAND_DESCR("setid", "cpu2 setid ab cd ef 12 34 aa bb");
+	PRINT_MODULE_USAGE_COMMAND_DESCR("log", "'cpu2 log', display  intercore cpu2 log info");
+	PRINT_MODULE_USAGE_COMMAND_DESCR("blind", "'cpu2 blind', not display  intercore cpu2 log info");
+
+	PRINT_MODULE_USAGE_DEFAULT_COMMANDS();
+
+	return OK;
+}
+
+
+int CPU2::custom_command(int argc, char *argv[]) 
+{
+	const char *verb = argv[0];
+	if (strcmp(verb, "setid") == 0) {
+		if (argc < 8) 
 		{
-			PX4_ERR("already started");
-			return EXIT_SUCCESS;
-		}
-
-		g_cpu2 = new CPU2();
-		
-		if (g_cpu2 == nullptr)
-		{
-			PX4_ERR("couldn't allocate the CPU2 driver \n");
-			return EXIT_FAILURE;
-		}
-		if (OK != g_cpu2->init())
-		{
-			delete g_cpu2;
-			g_cpu2 = nullptr;
-			PX4_ERR("CPU2 init failed \n");
-			return EXIT_FAILURE;
-		}	
-
-		g_cpu2->start();
-
-		
-		h264_work = {};
-    	h264_fd = 0;
-		memset(&att, 0 , sizeof(att));
-
-		(void)work_queue(LPWORK, &h264_work, (worker_t)&h264_cycle, nullptr, USEC2TICK(1000 * 1000));
-
-		work_queue(LPWORK, &_work, (worker_t)&cycle_trampoline, nullptr, 5);
-
-	} 
-	else if (strcmp(verb, "setid") == 0)
-	{	
-		// cpu2 setid 1 2 3 4 5 6 7 
-		if (argc < 9)
-		{
-			cpu2_usage();
+			print_usage();
 		}
 		else 
 		{
 			uint8_t buffer[7] = {0};			
 
-			buffer[0] = htoi(argv[2]);
-			buffer[1] = htoi(argv[3]);
-			buffer[2] = htoi(argv[4]);
-			buffer[3] = htoi(argv[5]);
-			buffer[4] = htoi(argv[6]);
-			buffer[5] = htoi(argv[7]);
-			buffer[6] = htoi(argv[8]);
+			buffer[0] = htoi(argv[1]);
+			buffer[1] = htoi(argv[2]);
+			buffer[2] = htoi(argv[3]);
+			buffer[3] = htoi(argv[4]);
+			buffer[4] = htoi(argv[5]);
+			buffer[5] = htoi(argv[6]);
+			buffer[6] = htoi(argv[7]);
 			px4_flash_updateid(buffer, sizeof(buffer), 2);
-		
 		}
 	} 
 	else if (strcmp(verb, "log") == 0) 
@@ -375,12 +381,21 @@ _EXT_ITCM int cpu2_main(int argc, char *argv[])
 	else if (strcmp(verb, "blind") == 0) 
 	{
 		needlogging = 0;
-	} 
+	}
 	else 
 	{
-		cpu2_usage();
+		print_usage();
 	}
-	
-	return EXIT_SUCCESS;
+
+	return PX4_OK;
+}
+
+
+
+extern "C" __EXPORT int cpu2_main(int argc, char *argv[]);
+
+_EXT_ITCM int cpu2_main(int argc, char *argv[])
+{
+	return CPU2::main(argc, argv);
 }
 
