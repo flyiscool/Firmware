@@ -94,6 +94,9 @@
 #define PX4_SPI_BUS_RAMTRON   0
 #define PX4_SPI_BUS_MEMORY    0
 
+
+#define GPIO_HDMI_VIDEO_INDICATOR 			(GPIO_PIN13)
+
 /*
  *  Define the ability to shut off off the sensor signals
  *  by changing the signals to inputs
@@ -616,7 +619,6 @@
 // #define GPIO_NOUSED_G93     (GPIO_OUTPUT|GPIO_OUTRESET|GPIO_PIN93)
 // #define GPIO_NOUSED_G105    (GPIO_OUTPUT|GPIO_OUTRESET|GPIO_PIN105)
 // #define GPIO_NOUSED_G44     (GPIO_INPUT|GPIO_PIN44)
-
 
 
 
