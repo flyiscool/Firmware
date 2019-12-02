@@ -50,6 +50,7 @@
 #include <uORB/topics/h264_input_format.h>
 #include <uORB/topics/input_rc.h>
 #include "cpu2.h"
+#include <board_config.h>
 
 static void cycle_trampoline(void *arg);
 
@@ -205,6 +206,9 @@ _EXT_ITCM void CPU2::h264_cycle(void *arg)
 
     	msg.length = length;
     	msg.type = SYS_EVENT_ID_H264_INPUT_FORMAT_CHANGE;
+
+		bool needIndicator = (att.width != 0 && att.hight != 0 && att.framerate != 0);
+		px4_arch_gpiowrite(GPIO_HDMI_VIDEO_INDICATOR, !needIndicator);
 
 		PX4_INFO("-----------------------------------------");
         PX4_INFO("index = %d ", att.index);
