@@ -91,136 +91,136 @@
 
 /* freerun timer */
 #if HRT_TIMER_FREERUN == 0
-	# define HRT_TIMER_FREERUN_BASE         AR_TIM0_BASE
+# define HRT_TIMER_FREERUN_BASE         AR_TIM0_BASE
 #elif HRT_TIMER_FREERUN == 1
-	# define HRT_TIMER_FREERUN_BASE         AR_TIM1_BASE
+# define HRT_TIMER_FREERUN_BASE         AR_TIM1_BASE
 #elif   HRT_TIMER_FREERUN == 2
-	# define HRT_TIMER_FREERUN_BASE         AR_TIM2_BASE
+# define HRT_TIMER_FREERUN_BASE         AR_TIM2_BASE
 #endif
 
 /* freerun timer channel */
 #if HRT_TIMER_FREERUN == 0
-	#if HRT_TIMER_FREERUN_CHANNEL == 0
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH0
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 1
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH1
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 2
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH2
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 3
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH3
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 4
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH4
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 5
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH5
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 6
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH6
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 7
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH7
-	#endif
+#if HRT_TIMER_FREERUN_CHANNEL == 0
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH0
+#elif   HRT_TIMER_FREERUN_CHANNEL == 1
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH1
+#elif   HRT_TIMER_FREERUN_CHANNEL == 2
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH2
+#elif   HRT_TIMER_FREERUN_CHANNEL == 3
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH3
+#elif   HRT_TIMER_FREERUN_CHANNEL == 4
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH4
+#elif   HRT_TIMER_FREERUN_CHANNEL == 5
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH5
+#elif   HRT_TIMER_FREERUN_CHANNEL == 6
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH6
+#elif   HRT_TIMER_FREERUN_CHANNEL == 7
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM0_CH7
+#endif
 #elif HRT_TIMER_FREERUN == 1
-	#if HRT_TIMER_FREERUN_CHANNEL == 0
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH0
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 1					 
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH1
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 2					
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH2
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 3					
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH3
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 4					
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH4
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 5					
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH5
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 6					
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH6
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 7					
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH7
-	#endif
+#if HRT_TIMER_FREERUN_CHANNEL == 0
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH0
+#elif   HRT_TIMER_FREERUN_CHANNEL == 1
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH1
+#elif   HRT_TIMER_FREERUN_CHANNEL == 2
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH2
+#elif   HRT_TIMER_FREERUN_CHANNEL == 3
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH3
+#elif   HRT_TIMER_FREERUN_CHANNEL == 4
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH4
+#elif   HRT_TIMER_FREERUN_CHANNEL == 5
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH5
+#elif   HRT_TIMER_FREERUN_CHANNEL == 6
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH6
+#elif   HRT_TIMER_FREERUN_CHANNEL == 7
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM1_CH7
+#endif
 #elif   HRT_TIMER_FREERUN == 2
-	#if HRT_TIMER_FREERUN_CHANNEL == 0
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH0
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 1                      	
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH1
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 2                      
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH2
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 3                      
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH3
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 4                      
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH4
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 5                      
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH5
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 6                      
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH6
-	#elif   HRT_TIMER_FREERUN_CHANNEL == 7                      
-	# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH7
-	#endif
+#if HRT_TIMER_FREERUN_CHANNEL == 0
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH0
+#elif   HRT_TIMER_FREERUN_CHANNEL == 1
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH1
+#elif   HRT_TIMER_FREERUN_CHANNEL == 2
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH2
+#elif   HRT_TIMER_FREERUN_CHANNEL == 3
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH3
+#elif   HRT_TIMER_FREERUN_CHANNEL == 4
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH4
+#elif   HRT_TIMER_FREERUN_CHANNEL == 5
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH5
+#elif   HRT_TIMER_FREERUN_CHANNEL == 6
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH6
+#elif   HRT_TIMER_FREERUN_CHANNEL == 7
+# 	define HRT_TIMER_FREERUN_VECTOR       AR_IRQ_TIM2_CH7
+#endif
 #endif
 
 
 /* compare timer */
 #if HRT_TIMER_CCR == 0
-	# define HRT_TIMER_CCR_BASE         AR_TIM0_BASE
+# define HRT_TIMER_CCR_BASE         AR_TIM0_BASE
 #elif HRT_TIMER_CCR == 1
-	# define HRT_TIMER_CCR_BASE         AR_TIM1_BASE
+# define HRT_TIMER_CCR_BASE         AR_TIM1_BASE
 #elif   HRT_TIMER_CCR == 2
-	# define HRT_TIMER_CCR_BASE         AR_TIM2_BASE
+# define HRT_TIMER_CCR_BASE         AR_TIM2_BASE
 #endif
 
 
 /* compare timer channel */
 #if HRT_TIMER_CCR == 0
-	#if HRT_TIMER_CCR_CHANNEL == 0
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH0
-	#elif   HRT_TIMER_CCR_CHANNEL == 1
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH1
-	#elif   HRT_TIMER_CCR_CHANNEL == 2
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH2
-	#elif   HRT_TIMER_CCR_CHANNEL == 3
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH3
-	#elif   HRT_TIMER_CCR_CHANNEL == 4
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH4
-	#elif   HRT_TIMER_CCR_CHANNEL == 5
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH5
-	#elif   HRT_TIMER_CCR_CHANNEL == 6
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH6
-	#elif   HRT_TIMER_CCR_CHANNEL == 7
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH7
-	#endif
+#if HRT_TIMER_CCR_CHANNEL == 0
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH0
+#elif   HRT_TIMER_CCR_CHANNEL == 1
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH1
+#elif   HRT_TIMER_CCR_CHANNEL == 2
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH2
+#elif   HRT_TIMER_CCR_CHANNEL == 3
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH3
+#elif   HRT_TIMER_CCR_CHANNEL == 4
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH4
+#elif   HRT_TIMER_CCR_CHANNEL == 5
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH5
+#elif   HRT_TIMER_CCR_CHANNEL == 6
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH6
+#elif   HRT_TIMER_CCR_CHANNEL == 7
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM0_CH7
+#endif
 #elif HRT_TIMER_CCR == 1
-	#if HRT_TIMER_CCR_CHANNEL == 0
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH0
-	#elif   HRT_TIMER_CCR_CHANNEL == 1					 
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH1
-	#elif   HRT_TIMER_CCR_CHANNEL == 2					
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH2
-	#elif   HRT_TIMER_CCR_CHANNEL == 3					
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH3
-	#elif   HRT_TIMER_CCR_CHANNEL == 4					
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH4
-	#elif   HRT_TIMER_CCR_CHANNEL == 5					
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH5
-	#elif   HRT_TIMER_CCR_CHANNEL == 6					
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH6
-	#elif   HRT_TIMER_CCR_CHANNEL == 7					
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH7
-	#endif
+#if HRT_TIMER_CCR_CHANNEL == 0
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH0
+#elif   HRT_TIMER_CCR_CHANNEL == 1
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH1
+#elif   HRT_TIMER_CCR_CHANNEL == 2
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH2
+#elif   HRT_TIMER_CCR_CHANNEL == 3
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH3
+#elif   HRT_TIMER_CCR_CHANNEL == 4
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH4
+#elif   HRT_TIMER_CCR_CHANNEL == 5
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH5
+#elif   HRT_TIMER_CCR_CHANNEL == 6
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH6
+#elif   HRT_TIMER_CCR_CHANNEL == 7
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM1_CH7
+#endif
 #elif   HRT_TIMER_CCR == 2
-	#if HRT_TIMER_CCR_CHANNEL == 0
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH0
-	#elif   HRT_TIMER_CCR_CHANNEL == 1                      	
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH1
-	#elif   HRT_TIMER_CCR_CHANNEL == 2                      
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH2
-	#elif   HRT_TIMER_CCR_CHANNEL == 3                      
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH3
-	#elif   HRT_TIMER_CCR_CHANNEL == 4                      
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH4
-	#elif   HRT_TIMER_CCR_CHANNEL == 5                      
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH5
-	#elif   HRT_TIMER_CCR_CHANNEL == 6                      
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH6
-	#elif   HRT_TIMER_CCR_CHANNEL == 7                      
-	# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH7
-	#endif
+#if HRT_TIMER_CCR_CHANNEL == 0
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH0
+#elif   HRT_TIMER_CCR_CHANNEL == 1
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH1
+#elif   HRT_TIMER_CCR_CHANNEL == 2
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH2
+#elif   HRT_TIMER_CCR_CHANNEL == 3
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH3
+#elif   HRT_TIMER_CCR_CHANNEL == 4
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH4
+#elif   HRT_TIMER_CCR_CHANNEL == 5
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH5
+#elif   HRT_TIMER_CCR_CHANNEL == 6
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH6
+#elif   HRT_TIMER_CCR_CHANNEL == 7
+# 	define HRT_TIMER_CCR_VECTOR       AR_IRQ_TIM2_CH7
+#endif
 #endif
 
 
@@ -257,7 +257,7 @@
  */
 
 #define REG_FR(_reg)       	(HRT_TIMER_FREERUN_BASE + _reg)
- 
+
 
 #if HRT_TIMER_FREERUN_CHANNEL == 0
 #   define rTIMERLOADCOUNT_HRT_FR                REG_FR(AR_TIM_TIMER0LOADCOUNT_OFFSET   )
@@ -404,10 +404,10 @@ static void		hrt_latency_update(void);
 
 /* callout list manipulation */
 static void		hrt_call_internal(struct hrt_call *entry,
-		                            hrt_abstime deadline,
-		                            hrt_abstime interval,
-		                            hrt_callout callout,
-		                            void *arg);
+		hrt_abstime deadline,
+		hrt_abstime interval,
+		hrt_callout callout,
+		void *arg);
 
 static void		hrt_call_enter(struct hrt_call *entry);
 static void		hrt_call_reschedule(void);
@@ -426,41 +426,41 @@ hrt_tim_init(void)
 
 	/* claim our interrupt vector */
 	irq_attach(HRT_TIMER_CCR_VECTOR, hrt_tim_ccr_isr, NULL);
-	
-	/* clock/power on our timer */ 
+
+	/* clock/power on our timer */
 	// ar8020 clock is power by default
 
 	/*freerun timer*/
-	putreg32(AR_TIMERCONTROLREG_ENABLE_DISABLE,rTIMERCONTROLREG_HRT_FR);
+	putreg32(AR_TIMERCONTROLREG_ENABLE_DISABLE, rTIMERCONTROLREG_HRT_FR);
 
-    /* clear cnt */
-	putreg32(0xFFFFFFFF,rTIMERLOADCOUNT_HRT_FR);
+	/* clear cnt */
+	putreg32(0xFFFFFFFF, rTIMERLOADCOUNT_HRT_FR);
 
-    /* clear cnt2 */
-	putreg32(0,rTIMERLOADCOUNT2_HRT_FR);
+	/* clear cnt2 */
+	putreg32(0, rTIMERLOADCOUNT2_HRT_FR);
 
-    getreg32(rTIMEREOI_HRT_FR);	/* clear inturput */
+	getreg32(rTIMEREOI_HRT_FR);	/* clear inturput */
 
 	putreg32(AR_TIMERCONTROLREG_PWM_DISABLE	|   \
-							AR_TIMERCONTROLREG_INTMASK_MASKED 	|   \
-							AR_TIMERCONTROLREG_MODE_FREERUN 	|   \
-							AR_TIMERCONTROLREG_ENABLE_ENABLE,rTIMERCONTROLREG_HRT_FR);
+		 AR_TIMERCONTROLREG_INTMASK_MASKED 	|   \
+		 AR_TIMERCONTROLREG_MODE_FREERUN 	|   \
+		 AR_TIMERCONTROLREG_ENABLE_ENABLE, rTIMERCONTROLREG_HRT_FR);
 
 
 	/*ccr timer*/
-	putreg32(AR_TIMERCONTROLREG_ENABLE_DISABLE,rTIMERCONTROLREG_HRT_CCR);
-	
-    /* clear cnt */
-	putreg32(128000-1,rTIMERLOADCOUNT_HRT_CCR);
-	
-	putreg32(0,rTIMERLOADCOUNT2_HRT_CCR);
+	putreg32(AR_TIMERCONTROLREG_ENABLE_DISABLE, rTIMERCONTROLREG_HRT_CCR);
 
-    getreg32(rTIMEREOI_HRT_CCR);	/* clear inturput */
+	/* clear cnt */
+	putreg32(128000 - 1, rTIMERLOADCOUNT_HRT_CCR);
+
+	putreg32(0, rTIMERLOADCOUNT2_HRT_CCR);
+
+	getreg32(rTIMEREOI_HRT_CCR);	/* clear inturput */
 
 	putreg32(AR_TIMERCONTROLREG_PWM_DISABLE	|   \
-							AR_TIMERCONTROLREG_INTMASK_NOMASKED 	|   \
-							AR_TIMERCONTROLREG_MODE_USERDEFINED 		|   \
-							AR_TIMERCONTROLREG_ENABLE_ENABLE,rTIMERCONTROLREG_HRT_CCR);
+		 AR_TIMERCONTROLREG_INTMASK_NOMASKED 	|   \
+		 AR_TIMERCONTROLREG_MODE_USERDEFINED 		|   \
+		 AR_TIMERCONTROLREG_ENABLE_ENABLE, rTIMERCONTROLREG_HRT_CCR);
 
 	/* enable interrupts */
 	up_enable_irq(HRT_TIMER_CCR_VECTOR);
@@ -470,27 +470,26 @@ static bool flash =  true;
 
 static uint16_t flashCnt = 0;
 
-	//static uint8_t cnt = 0;
+//static uint8_t cnt = 0;
 /**
  * Handle the compare interrupt by calling the callout dispatcher
  * and then re-scheduling the next deadline.
  */
-static int 
+static int
 hrt_tim_ccr_isr(int irq, void *context, void *arg)
 {
-	if (flashCnt ++ == 4500)
-	{
+	if (flashCnt ++ == 4500) {
 		flash = !flash;
-		ar_gpiowrite(GPIO_OUTPUT|GPIO_OUTSET|GPIO_PIN14, flash); 
+		ar_gpiowrite(GPIO_OUTPUT | GPIO_OUTSET | GPIO_PIN14, flash);
 
 		flashCnt = 0;
 	}
-	
+
 	/* grab the timer for latency tracking purposes */
 	// because the ar8020 is only -1 cnt mode
-		
+
 	latency_actual = 0xFFFFFFFF - getreg32(rTIMERCURRENTVALUE_HRT_FR);
-	
+
 	/* ack the interrupts we just read */
 	getreg32(rTIMEREOI_HRT_CCR);
 
@@ -502,7 +501,7 @@ hrt_tim_ccr_isr(int irq, void *context, void *arg)
 
 	/* and schedule the next interrupt */
 	hrt_call_reschedule();
-	
+
 	return OK;
 }
 
@@ -510,7 +509,7 @@ hrt_tim_ccr_isr(int irq, void *context, void *arg)
  * Fetch a never-wrapping absolute time value in microseconds from
  * some arbitrary epoch shortly after system start.
  */
-hrt_abstime 
+hrt_abstime
 hrt_absolute_time(void)
 {
 	hrt_abstime	abstime;
@@ -530,9 +529,9 @@ hrt_absolute_time(void)
 	flags = px4_enter_critical_section();
 
 	/* get the current counter value */
-	/* because the ar8020 is -1 cnt mode */ 
+	/* because the ar8020 is -1 cnt mode */
 	count = (0xFFFFFFFF - getreg32(rTIMERCURRENTVALUE_HRT_FR));
-	
+
 	/*
 	 * Determine whether the counter has wrapped since the
 	 * last time we're called.
@@ -540,9 +539,8 @@ hrt_absolute_time(void)
 	 * This simple test is sufficient due to the guarantee that
 	 * we are always called at least once per counter period.
 	 */
-	
-	if (count < last_count) 
-	{
+
+	if (count < last_count) {
 		base_time += 0xFFFFFFFF;
 	}
 
@@ -723,22 +721,17 @@ hrt_call_enter(struct hrt_call *entry)
 
 	call = (struct hrt_call *)sq_peek(&callout_queue);
 
-	if ((call == NULL) || (entry->deadline < call->deadline))
-    {
+	if ((call == NULL) || (entry->deadline < call->deadline)) {
 		sq_addfirst(&entry->link, &callout_queue);
 		hrtinfo("call enter at head, reschedule\n");
 		/* we changed the next deadline, reschedule the timer event */
 		hrt_call_reschedule();
 
-	} 
-    else 
-    {
-		do 
-        {
+	} else {
+		do {
 			next = (struct hrt_call *)sq_next(&call->link);
 
-			if ((next == NULL) || (entry->deadline < next->deadline)) 
-            {
+			if ((next == NULL) || (entry->deadline < next->deadline)) {
 				hrtinfo("call enter after head\n");
 				sq_addafter(&call->link, &entry->link, &callout_queue);
 				break;
@@ -755,20 +748,17 @@ hrt_call_invoke(void)
 	struct hrt_call	*call;
 	hrt_abstime deadline;
 
-	while (true) 
-    {
+	while (true) {
 		/* get the current time */
 		hrt_abstime now = hrt_absolute_time();
 
 		call = (struct hrt_call *)sq_peek(&callout_queue);
 
-		if (call == NULL) 
-        {
+		if (call == NULL) {
 			break;
 		}
 
-		if (call->deadline > now) 
-        {
+		if (call->deadline > now) {
 			break;
 		}
 
@@ -782,20 +772,17 @@ hrt_call_invoke(void)
 		call->deadline = 0;
 
 		/* invoke the callout (if there is one) */
-		if (call->callout) 
-        {
+		if (call->callout) {
 			hrtinfo("call %p: %p(%p)\n", call, call->callout, call->arg);
 			call->callout(call->arg);
 		}
 
 		/* if the callout has a non-zero period, it has to be re-entered */
-		if (call->period != 0) 
-        {
+		if (call->period != 0) {
 			// re-check call->deadline to allow for
 			// callouts to re-schedule themselves
 			// using hrt_call_delay()
-			if (call->deadline <= now) 
-            {
+			if (call->deadline <= now) {
 				call->deadline = deadline + call->period;
 			}
 
@@ -829,18 +816,15 @@ hrt_call_reschedule()
 		* interrupt fires sufficiently often that the base_time update in
 		* hrt_absolute_time runs at least once per timer period.
 		*/
-	if (next != NULL) 
-	{
+	if (next != NULL) {
 		hrtinfo("entry in queue\n");
 
-		if (next->deadline <= (now + HRT_INTERVAL_MIN)) 
-		{
+		if (next->deadline <= (now + HRT_INTERVAL_MIN)) {
 			hrtinfo("pre-expired\n");
 			/* set a minimal deadline so that we call ASAP */
 			deadline = now + HRT_INTERVAL_MIN;
-		} 
-		else if (next->deadline < deadline) 
-		{
+
+		} else if (next->deadline < deadline) {
 			hrtinfo("due soon\n");
 			deadline = next->deadline;
 		}
@@ -849,34 +833,32 @@ hrt_call_reschedule()
 	//hrtinfo("schedule for %u at %u\n", (unsigned)(deadline & 0xffffffff), (unsigned)(now & 0xffffffff));
 
 	/* set the new compare value and remember it for latency tracking */
-	
 
-	uint32_t temp = deadline -now;
-	
 
-	latency_baseline = now_fr_cnt + temp *128;
+	uint32_t temp = deadline - now;
+
+
+	latency_baseline = now_fr_cnt + temp * 128;
 
 	// latency_baseline -= deadline * 128;
-	putreg32(AR_TIMERCONTROLREG_ENABLE_DISABLE,rTIMERCONTROLREG_HRT_CCR);
-	putreg32(temp *128, rTIMERLOADCOUNT_HRT_CCR);
+	putreg32(AR_TIMERCONTROLREG_ENABLE_DISABLE, rTIMERCONTROLREG_HRT_CCR);
+	putreg32(temp * 128, rTIMERLOADCOUNT_HRT_CCR);
 
 	putreg32(AR_TIMERCONTROLREG_PWM_DISABLE	|   \
-							AR_TIMERCONTROLREG_INTMASK_NOMASKED 	|   \
-							AR_TIMERCONTROLREG_MODE_USERDEFINED 		|   \
-							AR_TIMERCONTROLREG_ENABLE_ENABLE,rTIMERCONTROLREG_HRT_CCR);
+		 AR_TIMERCONTROLREG_INTMASK_NOMASKED 	|   \
+		 AR_TIMERCONTROLREG_MODE_USERDEFINED 		|   \
+		 AR_TIMERCONTROLREG_ENABLE_ENABLE, rTIMERCONTROLREG_HRT_CCR);
 }
 
 static void
 hrt_latency_update(void)
 {
-	uint32_t latency = (latency_actual - latency_baseline)/128;
+	uint32_t latency = (latency_actual - latency_baseline) / 128;
 	unsigned	index;
-	
+
 	/* bounded buckets */
-	for (index = 0; index < LATENCY_BUCKET_COUNT; index++)
-     {
-		if (latency <= latency_buckets[index]) 
-        {
+	for (index = 0; index < LATENCY_BUCKET_COUNT; index++) {
+		if (latency <= latency_buckets[index]) {
 			latency_counters[index]++;
 			return;
 		}

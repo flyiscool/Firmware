@@ -38,15 +38,15 @@
 
 
 #ifdef _FIX_ID_028_
-    //xxxxx 2014-0417
-    //FIX_ID_028 xxxxx //For Debug Audio error with S2
-        #define AUDIO_READY_TIMEOUT                 	MS_TimeOut(0)	// change 100ms to 0 for speed up audio on
-    //FIX_ID_028 xxxxx
-    //xxxxx 2014-0417
+//xxxxx 2014-0417
+//FIX_ID_028 xxxxx //For Debug Audio error with S2
+#define AUDIO_READY_TIMEOUT                 	MS_TimeOut(0)	// change 100ms to 0 for speed up audio on
+//FIX_ID_028 xxxxx
+//xxxxx 2014-0417
 #else
-    //FIX_ID_023 xxxxx		//Fixed for Audio Channel Status Error with invalid HDMI source
-    #define AUDIO_READY_TIMEOUT                 	MS_TimeOut(200)
-    //FIX_ID_023 xxxxx
+//FIX_ID_023 xxxxx		//Fixed for Audio Channel Status Error with invalid HDMI source
+#define AUDIO_READY_TIMEOUT                 	MS_TimeOut(200)
+//FIX_ID_023 xxxxx
 #endif
 
 #define AUDIO_MONITOR_TIMEOUT               MS_TimeOut(150)
@@ -73,21 +73,20 @@ void IT66021::getHDMIRXInputAudio(AUDIO_CAPS *pAudioCaps)
 	pAudioCaps->AudSrcEnable = uc & M_AUDIO_CH;
 	pAudioCaps->AudSrcEnable |= hdmirxrd(REG_RX_0AA) & M_AUDIO_CH;
 
-	if ((uc & (B_HBRAUDIO | B_DSDAUDIO)) == 0)
-	{
+	if ((uc & (B_HBRAUDIO | B_DSDAUDIO)) == 0) {
 		uc = hdmirxrd(REG_RX_0AB); //REG_RX_AUD_CHSTAT0
 
-		if ((uc & B_NLPCM) == 0)
-		{
+		if ((uc & B_NLPCM) == 0) {
 			pAudioCaps->AudioFlag |= B_CAP_LPCM;
 		}
 	}
 
 #ifdef EnableCalFs
-	if (hdmirxrd(REG_RX_074) & 0x40)
-	{
+
+	if (hdmirxrd(REG_RX_074) & 0x40) {
 		AudioFsCal();
 	}
+
 #endif
 }
 
@@ -106,15 +105,13 @@ void IT66021::IT6602AudioOutputEnable(unsigned char bEnable)
 	hdmirxset(REG_RX_HWMuteCtrl, (B_HWAudMuteClrMode), (0));
 	aud_fiforst();
 
-	if (bEnable == TRUE)
-	{
+	if (bEnable == TRUE) {
 		hdmirxset(REG_RX_052, (B_TriI2SIO | B_TriSPDIF), 0x00);
 		it6602data->m_AState = ASTATE_AudioOn;
 
 		IT_INFO(" === IT6602AudioOutputEnable 11111111111 ==== \r\n");
-	}
-	else
-	{
+
+	} else {
 		hdmirxset(REG_RX_052, (B_TriI2SIO | B_TriSPDIF), (B_TriI2SIO | B_TriSPDIF));
 		it6602data->m_AState = ASTATE_AudioOff;
 
@@ -128,18 +125,16 @@ void IT66021::IT6602AudioOutputEnable(unsigned char bEnable)
 // ---------------------------------------------------------------------------
 void IT66021::IT6602AudioOutputEnable(unsigned char bEnable)
 {
-	if (bEnable == true)
-	{
+	if (bEnable == true) {
 		hdmirxset(REG_RX_052, (B_TriI2SIO | B_TriSPDIF), 0x00);
-	}
-	else
-	{
+
+	} else {
 #ifdef EnableCalFs
 		//FIX_ID_023 xxxxx		//Fixed for Audio Channel Status Error with invalid HDMI source
 		m_u16TMDSCLK = 0;
 		m_AudioChannelStatusErrorCount = 0;
 		hdmirxset(REG_RX_074, 0x40, 0x00); // reg74[6]=0 disable Force FS mode
-										   //FIX_ID_023 xxxxx
+		//FIX_ID_023 xxxxx
 #endif
 
 		hdmirxset(REG_RX_052, (B_TriI2SIO | B_TriSPDIF), (B_TriI2SIO | B_TriSPDIF));
@@ -153,8 +148,7 @@ void IT66021::IT6602SwitchAudioState(struct it6602_dev_data *it6602, Audio_State
 {
 	//	unsigned char uc;
 
-	if (it6602->m_AState == state)
-	{
+	if (it6602->m_AState == state) {
 		return;
 	}
 
@@ -163,13 +157,13 @@ void IT66021::IT6602SwitchAudioState(struct it6602_dev_data *it6602, Audio_State
 	it6602->m_AState = state;
 	//AssignAudioVirtualTime();
 
-	switch (it6602->m_AState)
-	{
+	switch (it6602->m_AState) {
 	case ASTATE_AudioOff:
 		hdmirxset(REG_RX_RST_CTRL, B_AUDRST, B_AUDRST);
 		IT6602AudioOutputEnable(false);
 
 		break;
+
 	case ASTATE_RequestAudio:
 		IT6602AudioOutputEnable(false);
 
@@ -190,10 +184,11 @@ void IT66021::IT6602SwitchAudioState(struct it6602_dev_data *it6602, Audio_State
 		IT6602AudioOutputEnable(true);
 
 		IT_INFO("Cat6023 Audio--> Audio flag=%02X,Ch No=%02X,Fs=%02X ... \n",
-				 (int)it6602->m_RxAudioCaps.AudioFlag,
-				 (int)it6602->m_RxAudioCaps.AudSrcEnable,
-				 (int)it6602->m_RxAudioCaps.SampleFreq);
+			(int)it6602->m_RxAudioCaps.AudioFlag,
+			(int)it6602->m_RxAudioCaps.AudSrcEnable,
+			(int)it6602->m_RxAudioCaps.SampleFreq);
 		break;
+
 	default:
 		break;
 	}
@@ -210,46 +205,40 @@ void IT66021::IT6602AudioHandler(struct it6602_dev_data *it6602)
 {
 	//    unsigned char uc;
 
-	if (it6602->m_AudioCountingTimer > MS_LOOP)
-	{
+	if (it6602->m_AudioCountingTimer > MS_LOOP) {
 		it6602->m_AudioCountingTimer -= MS_LOOP;
-	}
-	else
-	{
+
+	} else {
 		it6602->m_AudioCountingTimer = 0;
 	}
 
-	if (it6602->m_RxHDCPState == RxHDCP_ModeCheck)
+	if (it6602->m_RxHDCPState == RxHDCP_ModeCheck) {
 		return;
+	}
 
-	switch (it6602->m_AState)
-	{
+	switch (it6602->m_AState) {
 	case ASTATE_RequestAudio:
 
 		getHDMIRXInputAudio(&it6602->m_RxAudioCaps);
 
-		if (it6602->m_RxAudioCaps.AudioFlag & B_CAP_AUDIO_ON)
-		{
+		if (it6602->m_RxAudioCaps.AudioFlag & B_CAP_AUDIO_ON) {
 
 			hdmirxset(REG_RX_MCLK_CTRL, M_MCLKSel, B_256FS);
 
-			if (it6602->m_RxAudioCaps.AudioFlag & B_CAP_HBR_AUDIO)
-			{
+			if (it6602->m_RxAudioCaps.AudioFlag & B_CAP_HBR_AUDIO) {
 				IT_INFO("+++++++++++ B_CAP_HBR_AUDIO +++++++++++++++++\n");
 
 				hdmirxset(REG_RX_MCLK_CTRL, M_MCLKSel, B_128FS); // MCLK = 128fs only for HBR audio
 
 				hdmirx_SetHWMuteClrMode();
 				hdmirx_ResetAudio();
-			}
-			else if (it6602->m_RxAudioCaps.AudioFlag & B_CAP_DSD_AUDIO)
-			{
+
+			} else if (it6602->m_RxAudioCaps.AudioFlag & B_CAP_DSD_AUDIO) {
 
 				hdmirx_SetHWMuteClrMode();
 				hdmirx_ResetAudio();
-			}
-			else
-			{
+
+			} else {
 
 				hdmirxset(REG_RX_HWMuteCtrl, B_HWMuteClr, 0x00);
 				hdmirx_SetHWMuteClrMode();
@@ -258,6 +247,7 @@ void IT66021::IT6602AudioHandler(struct it6602_dev_data *it6602)
 
 			IT6602SwitchAudioState(it6602, ASTATE_WaitForReady);
 		}
+
 		break;
 
 	case ASTATE_WaitForReady:
@@ -268,16 +258,17 @@ void IT66021::IT6602AudioHandler(struct it6602_dev_data *it6602)
 		TMDSGet();
 //FIX_ID_023 xxxxx
 #endif
-		if (it6602->m_AudioCountingTimer == 0)
-		{
+
+		if (it6602->m_AudioCountingTimer == 0) {
 			IT6602SwitchAudioState(it6602, ASTATE_AudioOn);
 		}
+
 		break;
 
 	case ASTATE_AudioOn:
+
 		//if(AudioTimeOutCheck(AUDIO_MONITOR_TIMEOUT)==TRUE)
-		if (it6602->m_AudioCountingTimer == 0)
-		{
+		if (it6602->m_AudioCountingTimer == 0) {
 			AUDIO_CAPS CurAudioCaps;
 			//it6602->m_AudioCountingTimer = GetCurrentVirtualTime();
 			//AssignAudioTimerTimeout(AUDIO_MONITOR_TIMEOUT);
@@ -285,13 +276,16 @@ void IT66021::IT6602AudioHandler(struct it6602_dev_data *it6602)
 
 			getHDMIRXInputAudio(&CurAudioCaps);
 
-			if (it6602->m_RxAudioCaps.AudioFlag != CurAudioCaps.AudioFlag || it6602->m_RxAudioCaps.AudSrcEnable != CurAudioCaps.AudSrcEnable || it6602->m_RxAudioCaps.SampleFreq != CurAudioCaps.SampleFreq)
-			{
+			if (it6602->m_RxAudioCaps.AudioFlag != CurAudioCaps.AudioFlag
+			    || it6602->m_RxAudioCaps.AudSrcEnable != CurAudioCaps.AudSrcEnable
+			    || it6602->m_RxAudioCaps.SampleFreq != CurAudioCaps.SampleFreq) {
 				//it6602->m_ucHDMIAudioErrorCount=0;
 				IT6602SwitchAudioState(it6602, ASTATE_RequestAudio);
 			}
 		}
+
 		break;
+
 	default:
 		break;
 	}

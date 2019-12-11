@@ -127,7 +127,7 @@
 
 /*
  * Timer register accessors
- */                        
+ */
 #define REG_TONE(_reg)	    (TONE_ALARM_TIMER_BASE + _reg)
 
 #define rTIMERLOADCOUNT_TONE        REG_TONE(AR_TIM_TIMER0LOADCOUNT_OFFSET   )
@@ -151,11 +151,10 @@ public:
 	_EXT_ITCM virtual int init();
 	_EXT_ITCM void status();
 
-	enum
-    {
-        CBRK_OFF = 0,
-        CBRK_ON,
-        CBRK_UNINIT
+	enum {
+		CBRK_OFF = 0,
+		CBRK_ON,
+		CBRK_UNINIT
 	};
 
 private:
@@ -223,8 +222,7 @@ ToneAlarm::~ToneAlarm()
 	_should_run = false;
 	int counter = 0;
 
-	while (_running && ++counter < 10) 
-	{
+	while (_running && ++counter < 10) {
 		usleep(100000);
 	}
 }
@@ -235,8 +233,7 @@ int ToneAlarm::init()
 
 	ret = CDev::init();
 
-	if (ret != OK) 
-	{
+	if (ret != OK) {
 		return ret;
 	}
 
@@ -244,25 +241,25 @@ int ToneAlarm::init()
 	px4_arch_configgpio(GPIO_TONE_ALARM_IDLE);
 
 	/* clock/power on our timer */
-    // AR8020 do nothing 
+	// AR8020 do nothing
 
 	/* initialise the timer */
 	/*freerun timer*/
 	putreg32(AR_TIMERCONTROLREG_ENABLE_DISABLE, rTIMERCONTROLREG_TONE);
 
-    /* clear cnt */
-	putreg32(0x0000FFFF,rTIMERLOADCOUNT_TONE);
+	/* clear cnt */
+	putreg32(0x0000FFFF, rTIMERLOADCOUNT_TONE);
 
-    /* clear cnt2 */
-	putreg32(0x0000FFFF,rTIMERLOADCOUNT2_TONE);
+	/* clear cnt2 */
+	putreg32(0x0000FFFF, rTIMERLOADCOUNT2_TONE);
 
-    getreg32(rTIMEREOI_TONE);	/* clear inturput */
+	getreg32(rTIMEREOI_TONE);	/* clear inturput */
 
 	putreg32(AR_TIMERCONTROLREG_PWM_DISABLE	| \
-			AR_TIMERCONTROLREG_INTMASK_MASKED 	| \
-			AR_TIMERCONTROLREG_MODE_USERDEFINED | \
-			AR_TIMERCONTROLREG_ENABLE_ENABLE, \
-            rTIMERCONTROLREG_TONE);
+		 AR_TIMERCONTROLREG_INTMASK_MASKED 	| \
+		 AR_TIMERCONTROLREG_MODE_USERDEFINED | \
+		 AR_TIMERCONTROLREG_ENABLE_ENABLE, \
+		 rTIMERCONTROLREG_TONE);
 
 	DEVICE_DEBUG("ready");
 
@@ -273,12 +270,10 @@ int ToneAlarm::init()
 
 void ToneAlarm::status()
 {
-	if (_running) 
-    {
+	if (_running) {
 		PX4_INFO("running");
-	} 
-    else 
-    {
+
+	} else {
 		PX4_INFO("stopped");
 	}
 }
@@ -296,8 +291,7 @@ unsigned ToneAlarm::frequency_to_divisor(unsigned frequency)
 void ToneAlarm::start_note(unsigned frequency)
 {
 	// check if circuit breaker is enabled
-	if (_cbrk == CBRK_UNINIT) 
-    {
+	if (_cbrk == CBRK_UNINIT) {
 		_cbrk = circuit_breaker_enabled("CBRK_BUZZER", CBRK_BUZZER_KEY);
 	}
 
@@ -309,14 +303,14 @@ void ToneAlarm::start_note(unsigned frequency)
 	// calculate the timer period for the selected prescaler value
 	unsigned period = (divisor / 2) - 1;
 
-    putreg32(period,rTIMERLOADCOUNT_TONE);
-    putreg32(period,rTIMERLOADCOUNT2_TONE);
+	putreg32(period, rTIMERLOADCOUNT_TONE);
+	putreg32(period, rTIMERLOADCOUNT2_TONE);
 
-    putreg32(AR_TIMERCONTROLREG_PWM_ENABLE	| \
-			AR_TIMERCONTROLREG_INTMASK_MASKED 	| \
-			AR_TIMERCONTROLREG_MODE_USERDEFINED | \
-			AR_TIMERCONTROLREG_ENABLE_ENABLE, \
-            rTIMERCONTROLREG_TONE);
+	putreg32(AR_TIMERCONTROLREG_PWM_ENABLE	| \
+		 AR_TIMERCONTROLREG_INTMASK_MASKED 	| \
+		 AR_TIMERCONTROLREG_MODE_USERDEFINED | \
+		 AR_TIMERCONTROLREG_ENABLE_ENABLE, \
+		 rTIMERCONTROLREG_TONE);
 
 	// configure the GPIO to enable timer output
 	px4_arch_configgpio(GPIO_TONE_ALARM);
@@ -326,10 +320,10 @@ void ToneAlarm::stop_note()
 {
 	/* stop the current note */
 	putreg32(AR_TIMERCONTROLREG_PWM_DISABLE	| \
-			AR_TIMERCONTROLREG_INTMASK_MASKED 	| \
-			AR_TIMERCONTROLREG_MODE_USERDEFINED | \
-			AR_TIMERCONTROLREG_ENABLE_ENABLE, \
-            rTIMERCONTROLREG_TONE);
+		 AR_TIMERCONTROLREG_INTMASK_MASKED 	| \
+		 AR_TIMERCONTROLREG_MODE_USERDEFINED | \
+		 AR_TIMERCONTROLREG_ENABLE_ENABLE, \
+		 rTIMERCONTROLREG_TONE);
 
 	/*
 	 * Make sure the GPIO is not driving the speaker.
@@ -339,10 +333,8 @@ void ToneAlarm::stop_note()
 
 void ToneAlarm::next_note()
 {
-	if (!_should_run) 
-	{
-		if (_tune_control_sub >= 0) 
-		{
+	if (!_should_run) {
+		if (_tune_control_sub >= 0) {
 			orb_unsubscribe(_tune_control_sub);
 		}
 
@@ -351,14 +343,12 @@ void ToneAlarm::next_note()
 	}
 
 	// subscribe to tune_control
-	if (_tune_control_sub < 0) 
-	{
+	if (_tune_control_sub < 0) {
 		_tune_control_sub = orb_subscribe(ORB_ID(tune_control));
 	}
 
 	// do we have an inter-note gap to wait for?
-	if (_silence_length > 0) 
-	{
+	if (_silence_length > 0) {
 		stop_note();
 		work_queue(HPWORK, &_work, (worker_t)&ToneAlarm::next_trampoline, this, USEC2TICK(_silence_length));
 		_silence_length = 0;
@@ -369,8 +359,7 @@ void ToneAlarm::next_note()
 	bool updated = false;
 	orb_check(_tune_control_sub, &updated);
 
-	if (updated) 
-	{
+	if (updated) {
 		orb_copy(ORB_ID(tune_control), _tune_control_sub, &_tune);
 
 		if (_tunes.set_control(_tune) == 0) {
@@ -383,38 +372,32 @@ void ToneAlarm::next_note()
 
 	unsigned frequency = 0, duration = 0;
 
-	if (_play_tone) 
-	{
+	if (_play_tone) {
 		_play_tone = false;
 		int parse_ret_val = _tunes.get_next_tune(frequency, duration, _silence_length);
 
-		if (parse_ret_val >= 0) 
-		{
+		if (parse_ret_val >= 0) {
 			// a frequency of 0 correspond to stop_note
-            if (frequency > 0) 
-            {
-                // start playing the note
-                start_note(frequency);
-            } 
-            else 
-            {
-                stop_note();
-            }
+			if (frequency > 0) {
+				// start playing the note
+				start_note(frequency);
 
-            if (parse_ret_val > 0) 
-            {
-                // continue playing
-                _play_tone = true;
-            }
+			} else {
+				stop_note();
+			}
+
+			if (parse_ret_val > 0) {
+				// continue playing
+				_play_tone = true;
+			}
 		}
-    } 
-    else 
-    {
-        // schedule a call with the tunes max interval
-        duration = _tunes.get_maximum_update_interval();
-        // stop playing the last note after the duration elapsed
-        stop_note();
-    }
+
+	} else {
+		// schedule a call with the tunes max interval
+		duration = _tunes.get_maximum_update_interval();
+		// stop playing the last note after the duration elapsed
+		stop_note();
+	}
 
 	// and arrange a callback when the note should stop
 	work_queue(HPWORK, &_work, (worker_t)&ToneAlarm::next_trampoline, this, USEC2TICK(duration));
@@ -446,30 +429,24 @@ _EXT_ITCM void tone_alarm_usage()
 _EXT_ITCM int tone_alarm_main(int argc, char *argv[])
 {
 
-	if (argc > 1) 
-    {
+	if (argc > 1) {
 		const char *argv1 = argv[1];
 
-		if (!strcmp(argv1, "start")) 
-        {
-			if (g_dev != nullptr) 
-            {
+		if (!strcmp(argv1, "start")) {
+			if (g_dev != nullptr) {
 				PX4_ERR("already started");
 				exit(1);
 			}
 
-			if (g_dev == nullptr) 
-            {
+			if (g_dev == nullptr) {
 				g_dev = new ToneAlarm();
 
-				if (g_dev == nullptr) 
-                {
+				if (g_dev == nullptr) {
 					PX4_ERR("couldn't allocate the ToneAlarm driver");
 					exit(1);
 				}
 
-				if (OK != g_dev->init()) 
-                {
+				if (OK != g_dev->init()) {
 					delete g_dev;
 					g_dev = nullptr;
 					PX4_ERR("ToneAlarm init failed");
@@ -480,15 +457,13 @@ _EXT_ITCM int tone_alarm_main(int argc, char *argv[])
 			exit(0);
 		}
 
-		if (!strcmp(argv1, "stop")) 
-        {
+		if (!strcmp(argv1, "stop")) {
 			delete g_dev;
 			g_dev = nullptr;
 			exit(0);
 		}
 
-		if (!strcmp(argv1, "status")) 
-        {
+		if (!strcmp(argv1, "status")) {
 			g_dev->status();
 			exit(0);
 		}

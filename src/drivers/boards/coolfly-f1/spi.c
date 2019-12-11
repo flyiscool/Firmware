@@ -85,13 +85,13 @@ static const uint32_t spi0selects_gpio[] = PX4_MEMORY_BUS_CS_GPIO;
  *
  ************************************************************************************/
 
- __EXPORT void ar_spiinitialize(void)
+__EXPORT void ar_spiinitialize(void)
 {
 	board_gpio_init(spi0selects_gpio, arraySize(spi0selects_gpio));
 	board_gpio_init(spi4selects_gpio, arraySize(spi4selects_gpio));
 	board_gpio_init(spi6selects_gpio, arraySize(spi6selects_gpio));
-	putreg32(0, AR_SPI0_BASE + SPI_SSIENR);	
-	putreg32(0, AR_SPI4_BASE + SPI_SSIENR);    
+	putreg32(0, AR_SPI0_BASE + SPI_SSIENR);
+	putreg32(0, AR_SPI4_BASE + SPI_SSIENR);
 	putreg32(0, AR_SPI6_BASE + SPI_SSIENR);
 }
 
@@ -107,7 +107,7 @@ static struct spi_dev_s *spi_memory;
 static struct spi_dev_s *spi_sensors;
 static struct spi_dev_s *spi_baro;
 
- __EXPORT int ar_spi_bus_initialize(void)
+__EXPORT int ar_spi_bus_initialize(void)
 {
 	/* Configure SPI-based devices */
 
@@ -115,8 +115,7 @@ static struct spi_dev_s *spi_baro;
 
 	spi_sensors = ar_spibus_initialize(PX4_SPI_BUS_SENSORS);
 
-	if (!spi_sensors) 
-	{
+	if (!spi_sensors) {
 		PX4_ERR("[boot] FAILED to initialize SPI port %d\n", PX4_SPI_BUS_SENSORS);
 		return -ENODEV;
 	}
@@ -127,8 +126,7 @@ static struct spi_dev_s *spi_baro;
 	SPI_SETBITS(spi_sensors, 8);
 	SPI_SETMODE(spi_sensors, SPIDEV_MODE3);
 
-	for (int cs = PX4_SENSORS_BUS_FIRST_CS; cs <= PX4_SENSORS_BUS_LAST_CS; cs++) 
-	{
+	for (int cs = PX4_SENSORS_BUS_FIRST_CS; cs <= PX4_SENSORS_BUS_LAST_CS; cs++) {
 		SPI_SELECT(spi_sensors, cs, false);
 	}
 
@@ -136,8 +134,7 @@ static struct spi_dev_s *spi_baro;
 
 	spi_baro = ar_spibus_initialize(PX4_SPI_BUS_BARO);
 
-	if (!spi_baro) 
-	{
+	if (!spi_baro) {
 		PX4_ERR("[boot] FAILED to initialize SPI port %d\n", PX4_SPI_BUS_BARO);
 		return -ENODEV;
 	}
@@ -226,15 +223,13 @@ __EXPORT void ar_spi4select(FAR struct spi_dev_s *dev, uint32_t devid, bool sele
 	ASSERT(PX4_SPI_BUS_ID(sel) == PX4_SPI_BUS_BARO);
 
 	/* Making sure the other peripherals are not selected */
-	for (size_t cs = 0; arraySize(spi4selects_gpio) > 1 && cs < arraySize(spi4selects_gpio); cs++) 
-	{
+	for (size_t cs = 0; arraySize(spi4selects_gpio) > 1 && cs < arraySize(spi4selects_gpio); cs++) {
 		ar_gpiowrite(spi4selects_gpio[cs], 1);
 	}
 
 	uint32_t gpio = spi4selects_gpio[PX4_SPI_DEV_ID(sel)];
 
-	if (gpio) 
-	{
+	if (gpio) {
 		ar_gpiowrite(gpio, !selected);
 	}
 }
@@ -260,15 +255,13 @@ __EXPORT void ar_spi0select(FAR struct spi_dev_s *dev, uint32_t devid, bool sele
 	ASSERT(PX4_SPI_BUS_ID(sel) == PX4_SPI_BUS_MEMORY);
 
 	/* Making sure the other peripherals are not selected */
-	for (size_t cs = 0; arraySize(spi0selects_gpio) > 1 && cs < arraySize(spi0selects_gpio); cs++) 
-	{
+	for (size_t cs = 0; arraySize(spi0selects_gpio) > 1 && cs < arraySize(spi0selects_gpio); cs++) {
 		ar_gpiowrite(spi0selects_gpio[cs], 1);
 	}
 
 	uint32_t gpio = spi0selects_gpio[PX4_SPI_DEV_ID(sel)];
 
-	if (gpio) 
-	{
+	if (gpio) {
 		ar_gpiowrite(gpio, !selected);
 	}
 }
@@ -286,7 +279,7 @@ __EXPORT uint8_t ar_spi0status(FAR struct spi_dev_s *dev, uint32_t devid)
  *
  ************************************************************************************/
 
- __EXPORT void board_spi_reset(int ms)
+__EXPORT void board_spi_reset(int ms)
 {
 	/* disable SPI bus */
 	for (size_t cs = 0;  arraySize(spi6selects_gpio) > 1 && cs < arraySize(spi6selects_gpio); cs++) {
@@ -318,7 +311,7 @@ __EXPORT uint8_t ar_spi0status(FAR struct spi_dev_s *dev, uint32_t devid)
 	ar_configgpio(GPIO_DRDY_OFF_SPI6_DRDY6_BMI055_ACC);
 #endif
 	/* set the sensor rail off */
-    ar_gpiowrite(GPIO_VDD_3V3_SENSORS_EN, 0);
+	ar_gpiowrite(GPIO_VDD_3V3_SENSORS_EN, 0);
 
 	/* wait for the sensor rail to reach GND */
 	usleep(ms * 1000);
@@ -327,7 +320,7 @@ __EXPORT uint8_t ar_spi0status(FAR struct spi_dev_s *dev, uint32_t devid)
 	/* re-enable power */
 
 	/* switch the sensor rail back on */
-    ar_gpiowrite(GPIO_VDD_3V3_SENSORS_EN, 1);
+	ar_gpiowrite(GPIO_VDD_3V3_SENSORS_EN, 1);
 
 	/* wait a bit before starting SPI, different times didn't influence results */
 	usleep(100);

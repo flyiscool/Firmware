@@ -184,7 +184,7 @@ _EXT_ITCM static void bootloader_app_shared_init(bootloader_app_shared_t *pshare
 
 __EXPORT
 _EXT_ITCM int bootloader_app_shared_read(bootloader_app_shared_t *shared,
-			       eRole_t role)
+		eRole_t role)
 {
 	int rv = -EBADR;
 	bootloader_app_shared_t working;
@@ -226,7 +226,7 @@ _EXT_ITCM int bootloader_app_shared_read(bootloader_app_shared_t *shared,
  ****************************************************************************/
 __EXPORT
 _EXT_ITCM void bootloader_app_shared_write(bootloader_app_shared_t *shared,
-				 eRole_t role)
+		eRole_t role)
 {
 	bootloader_app_shared_t working = *shared;
 	working.signature =

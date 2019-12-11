@@ -88,7 +88,7 @@ public:
 	 * @return true: system is obeying fence, false: system is violating fence
 	 */
 	_EXT_ITCM bool check(const vehicle_global_position_s &global_position,
-		   const vehicle_gps_position_s &gps_position, const home_position_s home_pos, bool home_position_set);
+			     const vehicle_gps_position_s &gps_position, const home_position_s home_pos, bool home_position_set);
 
 	/**
 	 * Return whether a mission item obeys the geofence.

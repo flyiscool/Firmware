@@ -67,7 +67,8 @@ _EXT_DTCM_EKF2 __EXPORT void pid_init(PID_t *pid, pid_mode_t mode, float dt_min)
 	pid->last_output = 0.0f;
 }
 
-_EXT_DTCM_EKF2 __EXPORT int pid_set_parameters(PID_t *pid, float kp, float ki, float kd, float integral_limit, float output_limit)
+_EXT_DTCM_EKF2 __EXPORT int pid_set_parameters(PID_t *pid, float kp, float ki, float kd, float integral_limit,
+		float output_limit)
 {
 	int ret = 0;
 

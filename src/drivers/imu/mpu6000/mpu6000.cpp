@@ -132,7 +132,7 @@ class MPU6000 : public device::CDev
 {
 public:
 	_EXT_ITCM MPU6000(device::Device *interface, const char *path_accel, const char *path_gyro, enum Rotation rotation,
-		int device_type);
+			  int device_type);
 	_EXT_ITCM virtual ~MPU6000();
 
 	_EXT_ITCM virtual int		init();

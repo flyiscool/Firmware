@@ -186,7 +186,7 @@ void shutdown_worker(void *arg)
 
 	if ((done && shutdown_lock_counter == 0) || ++shutdown_counter > shutdown_timeout_ms / 10) {
 		if (shutdown_args & SHUTDOWN_ARG_REBOOT) {
-			PX4_WARN("Reboot NOW1. = %d ",shutdown_args & SHUTDOWN_ARG_TO_BOOTLOADER);
+			PX4_WARN("Reboot NOW1. = %d ", shutdown_args & SHUTDOWN_ARG_TO_BOOTLOADER);
 			px4_systemreset(shutdown_args & SHUTDOWN_ARG_TO_BOOTLOADER);
 
 		} else {

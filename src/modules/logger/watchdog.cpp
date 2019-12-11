@@ -127,7 +127,8 @@ _EXT_ITCM bool watchdog_update(watchdog_data_t &watchdog_data)
 
 }
 
-_EXT_ITCM void watchdog_initialize(const pid_t pid_logger_main, const pthread_t writer_thread, watchdog_data_t &watchdog_data)
+_EXT_ITCM void watchdog_initialize(const pid_t pid_logger_main, const pthread_t writer_thread,
+				   watchdog_data_t &watchdog_data)
 {
 #ifdef __PX4_NUTTX
 

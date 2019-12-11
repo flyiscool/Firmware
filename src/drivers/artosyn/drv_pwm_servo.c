@@ -156,7 +156,7 @@ uint32_t up_pwm_servo_get_rate_group(unsigned group)
 {
 	/* only return the set of channels in the group which we own */
 	return (io_timer_get_mode_channels(IOTimerChanMode_PWMOut) |
-		    io_timer_get_mode_channels(IOTimerChanMode_OneShot)) &
+		io_timer_get_mode_channels(IOTimerChanMode_OneShot)) &
 	       io_timer_get_group(group);
 }
 

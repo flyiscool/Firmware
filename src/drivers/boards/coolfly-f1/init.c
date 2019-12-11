@@ -206,25 +206,23 @@ __EXPORT void board_on_reset(int status)
 {
 	/* configure the GPIO pins to outputs and keep them low */
 	// reset to boot loader
-	if(status >= 0)
-	{		
-		*((volatile uint32_t*)0xA0030088) = 1;
+	if (status >= 0) {
+		*((volatile uint32_t *)0xA0030088) = 1;
 
-		uint32_t *signal = (uint32_t * )SRAM_REBOOT_SIGNAL_ST_ADDR;
+		uint32_t *signal = (uint32_t *)SRAM_REBOOT_SIGNAL_ST_ADDR;
 
 		*signal = 0x12345678;
 
 		up_mdelay(1000);
 
-		if (*signal != 0x87654321)
-		{
-			PX4_INFO("CPU2 NOT RESPONSE");	
+		if (*signal != 0x87654321) {
+			PX4_INFO("CPU2 NOT RESPONSE");
 		}
 	}
 
 	const uint32_t gpio[] = PX4_GPIO_PWM_INIT_LIST;
 	board_gpio_init(gpio, arraySize(gpio));
-	
+
 	if (status >= 0) {
 		up_mdelay(6);
 	}
@@ -240,20 +238,20 @@ __EXPORT void board_on_reset(int status)
  *   and mapped but before any devices have been initialized.
  *	 cf: initialize the all GPIO
  ************************************************************************************/
- void
+void
 _EXT_ITCM ar_boardinitialize(void)
 {
 	board_on_reset(-1); /* Reset PWM first thing */
 
 	/* configure LEDs */
 
-	board_autoled_initialize();		
+	board_autoled_initialize();
 
 	/* configure pins */
 
 	const uint32_t gpio1[] = PX4_GPIO_INIT_LIST;
 	board_gpio_init(gpio1, arraySize(gpio1));
-	
+
 	const uint32_t gpio2[] = CF_GPIO_INIT_NOUSED_LIST;
 	board_gpio_init(gpio2, arraySize(gpio2));
 
@@ -324,7 +322,7 @@ _EXT_ITCM  int board_app_initialize(uintptr_t arg)
 
 	/* configure the high-resolution time/callout interface */
 	hrt_init();
-	
+
 	if (OK == board_determine_hw_info()) {
 		PX4_INFO("Rev 0x%1x : Ver 0x%1x %s", board_get_hw_revision(), board_get_hw_version(), board_get_hw_type_name());
 
@@ -344,7 +342,7 @@ _EXT_ITCM  int board_app_initialize(uintptr_t arg)
 #ifdef CONFIG_SCHED_INSTRUMENTATION
 	cpuload_initialize_once();
 #endif
-	
+
 
 #if defined(CONFIG_AR_BBSRAM)
 
@@ -355,7 +353,7 @@ _EXT_ITCM  int board_app_initialize(uintptr_t arg)
 	/* Using Battery Backed Up SRAM */
 
 	int filesizes[CONFIG_AR_BBSRAM_FILES + 1] = BSRAM_FILE_SIZES;
-					
+
 	ar_bbsraminitialize(BBSRAM_PATH, filesizes);
 
 #if defined(CONFIG_AR_SAVE_CRASHDUMP)
@@ -380,6 +378,7 @@ _EXT_ITCM  int board_app_initialize(uintptr_t arg)
 	 *  - this will be reset after a successful commit to SD
 	 */
 	int hadCrash = hardfault_check_status("boot");
+
 	if (hadCrash == OK) {
 
 		PX4_ERR("[boot] There is a hard fault logged. Hold down the SPACE BAR," \
@@ -494,7 +493,7 @@ _EXT_ITCM  int board_app_initialize(uintptr_t arg)
 #endif
 
 #ifdef CONFIG_MMCSD
-	
+
 	ret = ar_sdio_initialize();
 
 	if (ret != OK) {

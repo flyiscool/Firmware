@@ -55,29 +55,29 @@ typedef unsigned int UINT, uint, *PUINT, *puint ;
 //////////////////////////////////////////////////
 
 typedef enum _SYS_STATUS {
-    ER_SUCCESS = 0,
-    ER_FAIL,
-    ER_RESERVED
+	ER_SUCCESS = 0,
+	ER_FAIL,
+	ER_RESERVED
 } SYS_STATUS ;
 
 #define abs(x) (((x)>=0)?(x):(-(x)))
 
 typedef struct {
-    WORD HActive ;
-    WORD VActive ;
-    WORD HTotal ;
-    WORD VTotal ;
-    LONG PCLK ;
-    BYTE xCnt ;
-    WORD HFrontPorch ;
-    WORD HSyncWidth ;
-    WORD HBackPorch ;
-    USHORT VFrontPorch ;
-    USHORT VSyncWidth ;
-    USHORT VBackPorch ;
-    BYTE ScanMode:1 ;
-    BYTE VPolarity:1 ;
-    BYTE HPolarity:1 ;
+	WORD HActive ;
+	WORD VActive ;
+	WORD HTotal ;
+	WORD VTotal ;
+	LONG PCLK ;
+	BYTE xCnt ;
+	WORD HFrontPorch ;
+	WORD HSyncWidth ;
+	WORD HBackPorch ;
+	USHORT VFrontPorch ;
+	USHORT VSyncWidth ;
+	USHORT VBackPorch ;
+	BYTE ScanMode: 1 ;
+	BYTE VPolarity: 1 ;
+	BYTE HPolarity: 1 ;
 } VTiming ;
 
 #define PROG 1
@@ -101,73 +101,73 @@ typedef struct {
 // 2006/10/31 added by jjtseng
 // for customized uc
 typedef struct _REGPAIR {
-    BYTE ucAddr ;
-    BYTE ucValue ;
+	BYTE ucAddr ;
+	BYTE ucValue ;
 } REGPAIR ;
 //~jjtseng 2006/10/31
 
 typedef struct {
-    BYTE AudioFlag ;
-    BYTE AudSrcEnable ;
-    BYTE SampleFreq ;
-    BYTE ChStat[5] ;
+	BYTE AudioFlag ;
+	BYTE AudSrcEnable ;
+	BYTE SampleFreq ;
+	BYTE ChStat[5] ;
 } AUDIO_CAPS ;
 
 
 typedef enum _Audio_State_Type {
-    ASTATE_AudioOff = 0,
-    ASTATE_RequestAudio ,
-    ASTATE_ResetAudio,
-    ASTATE_WaitForReady,
-    ASTATE_AudioOn ,
-    ASTATE_Reserved
+	ASTATE_AudioOff = 0,
+	ASTATE_RequestAudio,
+	ASTATE_ResetAudio,
+	ASTATE_WaitForReady,
+	ASTATE_AudioOn,
+	ASTATE_Reserved
 } Audio_State_Type ;
 
 typedef enum _TXVideo_State_Type {
-    TXVSTATE_Unplug = 0,
-    TXVSTATE_HPD,
-    TXVSTATE_WaitForMode,
-    TXVSTATE_WaitForVStable,
-    TXVSTATE_VideoInit,
-    TXVSTATE_VideoSetup,
-    TXVSTATE_VideoOn,
-    TXVSTATE_Reserved
+	TXVSTATE_Unplug = 0,
+	TXVSTATE_HPD,
+	TXVSTATE_WaitForMode,
+	TXVSTATE_WaitForVStable,
+	TXVSTATE_VideoInit,
+	TXVSTATE_VideoSetup,
+	TXVSTATE_VideoOn,
+	TXVSTATE_Reserved
 } TXVideo_State_Type ;
 
 
 typedef enum _TXAudio_State_Type {
-    TXASTATE_AudioOff = 0,
-    TXASTATE_AudioPrepare,
-    TXASTATE_AudioOn,
-    TXASTATE_AudioFIFOFail,
-    TXASTATE_Reserved
+	TXASTATE_AudioOff = 0,
+	TXASTATE_AudioPrepare,
+	TXASTATE_AudioOn,
+	TXASTATE_AudioFIFOFail,
+	TXASTATE_Reserved
 } TXAudio_State_Type ;
 
 typedef enum _RXHDCP_State_Type {
-    RXHDCP_Reset = 0,
-    RXHDCP_AuthStart,
-    RXHDCP_AuthDone,
-    RXHDCP_UpdateKSVList,
+	RXHDCP_Reset = 0,
+	RXHDCP_AuthStart,
+	RXHDCP_AuthDone,
+	RXHDCP_UpdateKSVList,
 //    RXHDCP_Ready,
 	RXHDCP_CAP_REady,
-    RXHDCP_FailReady,
-    RXHDCP_Reserved
+	RXHDCP_FailReady,
+	RXHDCP_Reserved
 } RXHDCP_State_Type ;
 
 
 
 typedef enum _ADC_State_Type {
-	ADCSTATE_DetectVideo =0,
-    ADCSTATE_WaitVstable,
-    ADCSTATE_ConfigVideo,
+	ADCSTATE_DetectVideo = 0,
+	ADCSTATE_WaitVstable,
+	ADCSTATE_ConfigVideo,
 	ADCSTATE_Video_ON,
-    ADCSTATE_Reserved
+	ADCSTATE_Reserved
 } ADC_State_Type ;
 
 typedef enum {
-    PCLK_LOW = 0 ,
-    PCLK_MEDIUM,
-    PCLK_HIGH
+	PCLK_LOW = 0,
+	PCLK_MEDIUM,
+	PCLK_HIGH
 } VIDEOPCLKLEVEL ;
 
 ///////////////////////////////////////////////////////////////////////
@@ -192,18 +192,16 @@ typedef enum {
 #define F_MODE_EN_DITHER (1<<7) // output mode only, and loaded from EEPROM
 
 
-typedef union _VideoFormatCode
-{
-    struct _VFC
-    {
-        BYTE colorfmt:2 ;
-        BYTE interlace:1 ;
-        BYTE Colorimetry:1 ;
-        BYTE Quantization:1 ;
-        BYTE UpDownFilter:1 ;
-        BYTE Dither:1 ;
-    } VFCCode ;
-    unsigned char VFCByte ;
+typedef union _VideoFormatCode {
+	struct _VFC {
+		BYTE colorfmt: 2 ;
+		BYTE interlace: 1 ;
+		BYTE Colorimetry: 1 ;
+		BYTE Quantization: 1 ;
+		BYTE UpDownFilter: 1 ;
+		BYTE Dither: 1 ;
+	} VFCCode ;
+	unsigned char VFCByte ;
 } VideoFormatCode ;
 
 #define T_MODE_CCIR656 (1<<0)
@@ -273,117 +271,116 @@ typedef union _VideoFormatCode
 #define ISRC1_PKT_LEN 16
 #define ISRC2_PKT_LEN 16
 
-typedef union _AVI_InfoFrame
-{
-    struct {
-        BYTE Type ;
-        BYTE Ver ;
-        BYTE Len ;
+typedef union _AVI_InfoFrame {
+	struct {
+		BYTE Type ;
+		BYTE Ver ;
+		BYTE Len ;
 
-        BYTE Scan:2 ;
-        BYTE BarInfo:2 ;
-        BYTE ActiveFmtInfoPresent:1 ;
-        BYTE ColorMode:2 ;
-        BYTE FU1:1 ;
+		BYTE Scan: 2 ;
+		BYTE BarInfo: 2 ;
+		BYTE ActiveFmtInfoPresent: 1 ;
+		BYTE ColorMode: 2 ;
+		BYTE FU1: 1 ;
 
-        BYTE ActiveFormatAspectRatio:4 ;
-        BYTE PictureAspectRatio:2 ;
-        BYTE Colorimetry:2 ;
+		BYTE ActiveFormatAspectRatio: 4 ;
+		BYTE PictureAspectRatio: 2 ;
+		BYTE Colorimetry: 2 ;
 
-        BYTE Scaling:2 ;
-        BYTE FU2:6 ;
+		BYTE Scaling: 2 ;
+		BYTE FU2: 6 ;
 
-        BYTE VIC:7 ;
-        BYTE FU3:1 ;
+		BYTE VIC: 7 ;
+		BYTE FU3: 1 ;
 
-        BYTE PixelRepetition:4 ;
-        BYTE FU4:4 ;
+		BYTE PixelRepetition: 4 ;
+		BYTE FU4: 4 ;
 
-        SHORT Ln_End_Top ;
-        SHORT Ln_Start_Bottom ;
-        SHORT Pix_End_Left ;
-        SHORT Pix_Start_Right ;
-    } info ;
-    struct {
-        BYTE AVI_HB[3] ;
-        BYTE AVI_DB[AVI_INFOFRAME_LEN] ;
-    } pktbyte ;
+		SHORT Ln_End_Top ;
+		SHORT Ln_Start_Bottom ;
+		SHORT Pix_End_Left ;
+		SHORT Pix_Start_Right ;
+	} info ;
+	struct {
+		BYTE AVI_HB[3] ;
+		BYTE AVI_DB[AVI_INFOFRAME_LEN] ;
+	} pktbyte ;
 } AVI_InfoFrame ;
 
 typedef union _Audio_InfoFrame {
 
-    struct {
-        BYTE Type ;
-        BYTE Ver ;
-        BYTE Len ;
+	struct {
+		BYTE Type ;
+		BYTE Ver ;
+		BYTE Len ;
 
-        BYTE AudioChannelCount:3 ;
-        BYTE RSVD1:1 ;
-        BYTE AudioCodingType:4 ;
+		BYTE AudioChannelCount: 3 ;
+		BYTE RSVD1: 1 ;
+		BYTE AudioCodingType: 4 ;
 
-        BYTE SampleSize:2 ;
-        BYTE SampleFreq:3 ;
-        BYTE Rsvd2:3 ;
+		BYTE SampleSize: 2 ;
+		BYTE SampleFreq: 3 ;
+		BYTE Rsvd2: 3 ;
 
-        BYTE FmtCoding ;
+		BYTE FmtCoding ;
 
-        BYTE SpeakerPlacement ;
+		BYTE SpeakerPlacement ;
 
-        BYTE Rsvd3:3 ;
-        BYTE LevelShiftValue:4 ;
-        BYTE DM_INH:1 ;
-    } info ;
+		BYTE Rsvd3: 3 ;
+		BYTE LevelShiftValue: 4 ;
+		BYTE DM_INH: 1 ;
+	} info ;
 
-    struct {
-        BYTE AUD_HB[3] ;
-        BYTE AUD_DB[AUDIO_INFOFRAME_LEN] ;
-    } pktbyte ;
+	struct {
+		BYTE AUD_HB[3] ;
+		BYTE AUD_DB[AUDIO_INFOFRAME_LEN] ;
+	} pktbyte ;
 
 } Audio_InfoFrame ;
 
 typedef union _MPEG_InfoFrame {
-    struct {
-        BYTE Type ;
-        BYTE Ver ;
-        BYTE Len ;
+	struct {
+		BYTE Type ;
+		BYTE Ver ;
+		BYTE Len ;
 
-        ULONG MpegBitRate ;
+		ULONG MpegBitRate ;
 
-        BYTE MpegFrame:2 ;
-        BYTE Rvsd1:2 ;
-        BYTE FieldRepeat:1 ;
-        BYTE Rvsd2:3 ;
-    } info ;
-    struct {
-        BYTE MPG_HB[3] ;
-        BYTE MPG_DB[MPEG_INFOFRAME_LEN] ;
-    } pktbyte ;
+		BYTE MpegFrame: 2 ;
+		BYTE Rvsd1: 2 ;
+		BYTE FieldRepeat: 1 ;
+		BYTE Rvsd2: 3 ;
+	} info ;
+	struct {
+		BYTE MPG_HB[3] ;
+		BYTE MPG_DB[MPEG_INFOFRAME_LEN] ;
+	} pktbyte ;
 } MPEG_InfoFrame ;
 
 // Source Product Description
 typedef union _SPD_InfoFrame {
-    struct {
-        BYTE Type ;
-        BYTE Ver ;
-        BYTE Len ;
+	struct {
+		BYTE Type ;
+		BYTE Ver ;
+		BYTE Len ;
 
-        char VN[8] ; // vendor name character in 7bit ascii characters
-        char PD[16] ; // product description character in 7bit ascii characters
-        BYTE SourceDeviceInfomation ;
-    } info ;
-    struct {
-        BYTE SPD_HB[3] ;
-        BYTE SPD_DB[SPD_INFOFRAME_LEN] ;
-    } pktbyte ;
+		char VN[8] ; // vendor name character in 7bit ascii characters
+		char PD[16] ; // product description character in 7bit ascii characters
+		BYTE SourceDeviceInfomation ;
+	} info ;
+	struct {
+		BYTE SPD_HB[3] ;
+		BYTE SPD_DB[SPD_INFOFRAME_LEN] ;
+	} pktbyte ;
 } SPD_InfoFrame ;
 
 ///////////////////////////////////////////////////////////////////////////
 // Using for interface.
 ///////////////////////////////////////////////////////////////////////////
 struct VideoTiming {
-    ULONG VideoPixelClock ;
-    BYTE VIC ;
-    BYTE pixelrep ;
+	ULONG VideoPixelClock ;
+	BYTE VIC ;
+	BYTE pixelrep ;
 	BYTE outputVideoMode ;
 } ;
 
@@ -441,48 +438,48 @@ struct VideoTiming {
 
 
 typedef enum tagHDMI_Video_Type {
-    HDMI_Unkown = 0 ,
-    HDMI_640x480p60 = 1 ,
-    HDMI_480p60,
-    HDMI_480p60_16x9,
-    HDMI_720p60,
-    HDMI_1080i60,
-    HDMI_480i60,
-    HDMI_480i60_16x9,
-    HDMI_240p60,
-    HDMI_1440x480p60,
-    HDMI_1080p60 = 16,
-    HDMI_576p50,
-    HDMI_576p50_16x9,
-    HDMI_720p50,
-    HDMI_1080i50,
-    HDMI_576i50,
-    HDMI_576i50_16x9,
-    HDMI_288p50,
-    HDMI_1440x576p50,
-    HDMI_1080p50 = 31,
-    HDMI_1080p24,
-    HDMI_1080p25,
-    HDMI_1080p30
+	HDMI_Unkown = 0,
+	HDMI_640x480p60 = 1,
+	HDMI_480p60,
+	HDMI_480p60_16x9,
+	HDMI_720p60,
+	HDMI_1080i60,
+	HDMI_480i60,
+	HDMI_480i60_16x9,
+	HDMI_240p60,
+	HDMI_1440x480p60,
+	HDMI_1080p60 = 16,
+	HDMI_576p50,
+	HDMI_576p50_16x9,
+	HDMI_720p50,
+	HDMI_1080i50,
+	HDMI_576i50,
+	HDMI_576i50_16x9,
+	HDMI_288p50,
+	HDMI_1440x576p50,
+	HDMI_1080p50 = 31,
+	HDMI_1080p24,
+	HDMI_1080p25,
+	HDMI_1080p30
 } HDMI_Video_Type ;
 
 typedef enum tagHDMI_Aspec {
-    HDMI_4x3 ,
-    HDMI_16x9
+	HDMI_4x3,
+	HDMI_16x9
 } HDMI_Aspec;
 
 typedef enum tagHDMI_OutputColorMode {
-    HDMI_RGB444,
-    HDMI_YUV444,
-    HDMI_YUV422
+	HDMI_RGB444,
+	HDMI_YUV444,
+	HDMI_YUV422
 } HDMI_OutputColorMode ;
 
 typedef enum tagHDMI_Colorimetry {
-    HDMI_ITU601,
-    HDMI_ITU709
+	HDMI_ITU601,
+	HDMI_ITU709
 } HDMI_Colorimetry ;
 
-typedef enum tagMODE_ID{
+typedef enum tagMODE_ID {
 	CEA_640x480p60,
 	CEA_720x480p60,
 	CEA_1280x720p60,
@@ -569,27 +566,26 @@ typedef enum tagMODE_ID{
 
 
 
-typedef enum _IT6536_INTERFACE_
-{
+typedef enum _IT6536_INTERFACE_ {
 #ifdef _SUPPORT_ADC_
-   PORT_ADC0  ,
-   PORT_ADC1  ,
+	PORT_ADC0,
+	PORT_ADC1,
 #endif
 
-   PORT_HDMI  ,
-   PORT_DP    ,
-   PORT_Unknow
-}IT6536_INTERFACE;
+	PORT_HDMI,
+	PORT_DP,
+	PORT_Unknow
+} IT6536_INTERFACE;
 
 typedef enum HDCPState_Type {
-    HDCP_Reset = 0,
-    HDCP_AuthStart ,
-    HDCP_AuthDone,
-    HDCP_WaitKSV,
-    HDCP_CalcKSV,
-    HDCP_Ready,
-    HDCP_Fail,
-    HDCP_Unknown
+	HDCP_Reset = 0,
+	HDCP_AuthStart,
+	HDCP_AuthDone,
+	HDCP_WaitKSV,
+	HDCP_CalcKSV,
+	HDCP_Ready,
+	HDCP_Fail,
+	HDCP_Unknown
 } HDCPState;
 
 

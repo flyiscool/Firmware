@@ -79,5 +79,5 @@ protected:
 	Navigator *_navigator{nullptr};
 
 private:
-	 bool _active{false};
+	bool _active{false};
 };

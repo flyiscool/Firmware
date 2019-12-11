@@ -230,7 +230,7 @@ RGBLED_NPC5623C::led()
 			parameter_update_s pupdate;
 			orb_copy(ORB_ID(parameter_update), _param_sub, &pupdate);
 			update_params();
-			// Immediately update to change brightness	
+			// Immediately update to change brightness
 			send_led_rgb();
 		}
 	}

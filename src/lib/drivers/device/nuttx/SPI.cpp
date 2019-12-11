@@ -98,6 +98,7 @@ SPI::init()
 	if (_dev == nullptr) {
 		_dev = px4_spibus_initialize(get_device_bus());
 	}
+
 	if (_dev == nullptr) {
 		DEVICE_DEBUG("failed to init SPI");
 		ret = -ENOENT;

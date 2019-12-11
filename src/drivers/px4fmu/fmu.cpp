@@ -517,26 +517,26 @@ PX4FMU::init()
 	/* initialize PWM limit lib */
 	pwm_limit_init(&_pwm_limit);
 
-	#ifdef RC_SERIAL_PORT
+#ifdef RC_SERIAL_PORT
 
-		#ifdef RF_RADIO_POWER_CONTROL
-			// power radio on
-			RF_RADIO_POWER_CONTROL(true);
-		#endif
-			_vehicle_cmd_sub = orb_subscribe(ORB_ID(vehicle_command));
+#ifdef RF_RADIO_POWER_CONTROL
+	// power radio on
+	RF_RADIO_POWER_CONTROL(true);
+#endif
+	_vehicle_cmd_sub = orb_subscribe(ORB_ID(vehicle_command));
 
-		#ifndef COOLFLY_F1
-			// dsm_init sets some file static variables and returns a file descriptor
-			_rcs_fd = dsm_init(RC_SERIAL_PORT);
-			// assume SBUS input
-			sbus_config(_rcs_fd, false);
-		#endif
+#ifndef COOLFLY_F1
+	// dsm_init sets some file static variables and returns a file descriptor
+	_rcs_fd = dsm_init(RC_SERIAL_PORT);
+	// assume SBUS input
+	sbus_config(_rcs_fd, false);
+#endif
 
-		#ifdef GPIO_PPM_IN
-			// disable CPPM input by mapping it away from the timer capture input
-			px4_arch_unconfiggpio(GPIO_PPM_IN);
-		#endif
-	#endif
+#ifdef GPIO_PPM_IN
+	// disable CPPM input by mapping it away from the timer capture input
+	px4_arch_unconfiggpio(GPIO_PPM_IN);
+#endif
+#endif
 	// Getting initial parameter values
 	update_params();
 
@@ -809,7 +809,7 @@ PX4FMU::set_mode(Mode mode)
 int
 PX4FMU::set_pwm_rate(uint32_t rate_map, unsigned default_rate, unsigned alt_rate)
 {
-    // PX4_INFO("set_pwm_rate %x %u %u --------------------------\r\n", rate_map, default_rate, alt_rate);
+	// PX4_INFO("set_pwm_rate %x %u %u --------------------------\r\n", rate_map, default_rate, alt_rate);
 
 	for (unsigned pass = 0; pass < 2; pass++) {
 
@@ -831,7 +831,7 @@ PX4FMU::set_pwm_rate(uint32_t rate_map, unsigned default_rate, unsigned alt_rate
 
 			// get the channel mask for this rate group
 			uint32_t mask = up_pwm_servo_get_rate_group(group);
-		    // PX4_INFO("mask = 0x%08x-------------------\r\n",mask);
+			// PX4_INFO("mask = 0x%08x-------------------\r\n",mask);
 
 			if (mask == 0) {
 				continue;
@@ -1216,8 +1216,8 @@ PX4FMU::run()
 
 #include <chip/ar_config.h>
 
-static void retrieveRcMavlinkMsgFromSram(uint8_t *buffer, int *length) 
-{	
+static void retrieveRcMavlinkMsgFromSram(uint8_t *buffer, int *length)
+{
 	char *wr_pos;
 	char *rd_pos;
 	char *tail;
@@ -1228,37 +1228,32 @@ static void retrieveRcMavlinkMsgFromSram(uint8_t *buffer, int *length)
 
 	// uint16_t length;
 
-	msgBuffer = (STRU_SramBuffer*)SRAM_MAVLINK_RC_MSG_ST_ADDR;
+	msgBuffer = (STRU_SramBuffer *)SRAM_MAVLINK_RC_MSG_ST_ADDR;
 
 	wr_pos = (char *)msgBuffer->header.buf_wr_pos;
 	rd_pos = (char *)msgBuffer->header.buf_rd_pos;
 	head = (char *)msgBuffer->buf;
-    tail = (char *)SRAM_MAVLINK_RC_MSG_END_ADDR;
+	tail = (char *)SRAM_MAVLINK_RC_MSG_END_ADDR;
 
 	// length = 0;
 
-	if (wr_pos >= rd_pos) 	
-	{
+	if (wr_pos >= rd_pos) {
 		*length = wr_pos - rd_pos;
-	} 
-	else 
-	{
+
+	} else {
 		*length = wr_pos + (tail - head) - rd_pos;
 	}
 
-	for (uint16_t i = 0; i < *length; i++)
-	{
+	for (uint16_t i = 0; i < *length; i++) {
 		buffer[i] = *rd_pos;
 
-		if (rd_pos >= tail)
-        {
-            rd_pos = head;
-        } 
-        else
-        {
-            rd_pos++;
-        } 
-	}	
+		if (rd_pos >= tail) {
+			rd_pos = head;
+
+		} else {
+			rd_pos++;
+		}
+	}
 
 	msgBuffer->header.buf_rd_pos = (uint32_t)rd_pos;
 
@@ -1644,8 +1639,9 @@ PX4FMU::cycle()
 
 			} else if (_rc_scan_locked
 				   || _cycle_timestamp - _rc_scan_begin < rc_scan_max) {
-					
+
 				PX4_INFO("RC_SCAN_SBUS Bytes = %d", newBytes);
+
 				// parse new data
 				if (newBytes > 0) {
 					rc_updated = sbus_parse(_cycle_timestamp, &_rcs_buf[0], newBytes, &raw_rc_values[0], &raw_rc_count, &sbus_failsafe,
@@ -1655,7 +1651,7 @@ PX4FMU::cycle()
 						// we have a new SBUS frame. Publish it.
 						_rc_in.input_source = input_rc_s::RC_INPUT_SOURCE_PX4FMU_SBUS;
 						fill_rc_in(raw_rc_count, raw_rc_values, _cycle_timestamp,
- 							   sbus_frame_drop, sbus_failsafe, frame_drops, 100);
+							   sbus_frame_drop, sbus_failsafe, frame_drops, 100);
 						_rc_scan_locked = true;
 					}
 				}
@@ -1820,7 +1816,8 @@ PX4FMU::cycle()
 
 #endif  // HRT_PPM_CHANNEL
 
-			break;	
+			break;
+
 		case RC_SCAN_COOLFLY_SBUS:
 #ifdef COOLFLY_F1
 			if (_rc_scan_begin == 0) {
@@ -1828,8 +1825,8 @@ PX4FMU::cycle()
 				rc_io_invert(true);
 
 			} else if (_rc_scan_locked
-				|| _cycle_timestamp - _rc_scan_begin < rc_scan_max) {
-					
+				   || _cycle_timestamp - _rc_scan_begin < rc_scan_max) {
+
 				retrieveRcMavlinkMsgFromSram(&_rcs_buf[0], &newBytes);
 
 				// parse new data
@@ -1841,7 +1838,7 @@ PX4FMU::cycle()
 						// we have a new SBUS frame. Publish it.
 						_rc_in.input_source = input_rc_s::RC_INPUT_SOURCE_PX4FMU_SBUS;
 						fill_rc_in(raw_rc_count, raw_rc_values, _cycle_timestamp,
-							sbus_frame_drop, sbus_failsafe, frame_drops, 100);
+							   sbus_frame_drop, sbus_failsafe, frame_drops, 100);
 						_rc_scan_locked = true;
 					}
 				}
@@ -1849,9 +1846,10 @@ PX4FMU::cycle()
 			} else {
 				set_rc_scan_state(RC_SCAN_COOLFLY_SBUS);
 			}
+
 #else
 			set_rc_scan_state(RC_SCAN_SBUS);
-	
+
 
 #endif
 
@@ -1896,7 +1894,7 @@ PX4FMU::cycle()
 		} else {
 			if (should_exit()) {
 				exit_and_cleanup();
- 
+
 			} else {
 				/* schedule next cycle */
 				work_queue(HPWORK, &_work, (worker_t)&PX4FMU::cycle_trampoline, this, USEC2TICK(SCHEDULE_INTERVAL));

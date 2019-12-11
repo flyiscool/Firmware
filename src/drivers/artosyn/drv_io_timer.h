@@ -74,16 +74,16 @@ typedef uint16_t io_timer_channel_allocation_t; /* big enough to hold MAX_TIMER_
  *** the resulting PSC will be one and the timer will count at it's clock frequency.
  */
 
-				  
+
 // Timer == Channel == group
 typedef struct io_timers_t {
 	uint32_t	base;			// base address in chip
-	uint32_t	clock_freq;	
+	uint32_t	clock_freq;
 	uint32_t	vectorno;
 	xcpt_t      handler;
 	uint32_t	gpio_out;
 	uint32_t	gpio_in;
-	uint8_t 	channel_index; // index of channel, same to tinmer 
+	uint8_t 	channel_index; // index of channel, same to tinmer
 	io_timer_channel_mode_t channel_mode;
 	// channel_handler_t callback;
 	void			  *context;

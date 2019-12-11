@@ -14,13 +14,12 @@
 #define SRAM_INTERCORE_MSG_LENGTH           64
 #define SRAM_INTERCORE_EVENT_MAX_COUNT            (SRAM_INTERCORE_EVENT_CPU2T0_ST_SIZE / sizeof(AR_INTERCORE_EVENT))
 
-typedef struct
-{
-    uint16_t             length;
-    uint16_t             seq;
-    char                data[SRAM_INTERCORE_MSG_LENGTH];
-    uint32_t            type;
-    uint32_t             isUsed;
+typedef struct {
+	uint16_t             length;
+	uint16_t             seq;
+	char                data[SRAM_INTERCORE_MSG_LENGTH];
+	uint32_t            type;
+	uint32_t             isUsed;
 } AR_INTERCORE_EVENT;
 
 #define SYS_EVENT_ID_CPU2_LOG                        (SYS_EVENT_LEVEL_MIDIUM_MASK   | 0x001F)

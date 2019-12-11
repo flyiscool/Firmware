@@ -45,7 +45,7 @@ class FlightTaskManualAltitudeSmooth : public FlightTaskManualAltitude
 {
 public:
 	_EXT_ITCM FlightTaskManualAltitudeSmooth();
-	 virtual ~FlightTaskManualAltitudeSmooth() = default;
+	virtual ~FlightTaskManualAltitudeSmooth() = default;
 
 protected:
 	_EXT_ITCM virtual void _updateSetpoints() override;

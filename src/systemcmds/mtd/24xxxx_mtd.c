@@ -282,7 +282,7 @@ _EXT_ITCM void at24c_test(void)
  ************************************************************************************/
 
 _EXT_ITCM static ssize_t at24c_bread(FAR struct mtd_dev_s *dev, off_t startblock,
-			   size_t nblocks, FAR uint8_t *buffer)
+				     size_t nblocks, FAR uint8_t *buffer)
 {
 	FAR struct at24c_dev_s *priv = (FAR struct at24c_dev_s *)dev;
 	size_t blocksleft;
@@ -376,7 +376,7 @@ _EXT_ITCM static ssize_t at24c_bread(FAR struct mtd_dev_s *dev, off_t startblock
  ************************************************************************************/
 
 _EXT_ITCM static ssize_t at24c_bwrite(FAR struct mtd_dev_s *dev, off_t startblock, size_t nblocks,
-			    FAR const uint8_t *buffer)
+				      FAR const uint8_t *buffer)
 {
 	FAR struct at24c_dev_s *priv = (FAR struct at24c_dev_s *)dev;
 	size_t blocksleft;

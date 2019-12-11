@@ -51,7 +51,7 @@ namespace land_detector
 class RoverLandDetector : public LandDetector
 {
 public:
-	 RoverLandDetector() = default;
+	RoverLandDetector() = default;
 
 protected:
 	_EXT_ITCM virtual void _initialize_topics() override;

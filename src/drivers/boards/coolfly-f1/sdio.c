@@ -73,7 +73,7 @@
 
 static FAR struct sdio_dev_s *sdio_dev;
 #ifdef HAVE_NCD
-	static bool g_sd_inserted = 0xff; /* Impossible value */
+static bool g_sd_inserted = 0xff; /* Impossible value */
 #endif
 
 /****************************************************************************
@@ -95,7 +95,7 @@ static FAR struct sdio_dev_s *sdio_dev;
 
 _EXT_ITCM int ar_sdio_initialize(void)
 {
-int ret;
+	int ret;
 
 
 
@@ -105,8 +105,7 @@ int ret;
 
 	sdio_dev = ar_sdmmc_initialize(SDIO_SLOTNO);
 
-	if (!sdio_dev) 
-	{
+	if (!sdio_dev) {
 		PX4_ERR("[boot] Failed to initialize SDIO slot %d\n", SDIO_SLOTNO);
 		return -ENODEV;
 	}
@@ -117,8 +116,7 @@ int ret;
 
 	ret = mmcsd_slotinitialize(SDIO_MINOR, sdio_dev);
 
-	if (ret != OK) 
-	{
+	if (ret != OK) {
 		PX4_ERR("[boot] Failed to bind SDIO to the MMC/SD driver: %d\n", ret);
 		return ret;
 	}
