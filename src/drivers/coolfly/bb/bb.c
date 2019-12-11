@@ -219,20 +219,21 @@ static void bb_print(BB_STRU_WIRELESS_INFO_DISPLAY *pst_bbInfoAddr, int fd)
     cycleCnt = 0;
 
 	if (fd == 1) {
-		dprintf(fd, "\033[H"); /* move cursor home and clear screen */
+        // ref:http://www.termsys.demon.co.uk/vtansi.htm
+		dprintf(fd, "\033[2J\033[H");
 	}
 
     printf("\r\n------------------- BB INFO STATUS --------------------\r\n\r\n");
 
     printf("    %-20s    0x%x\r\n", "snr_vlaue[0]",   infoDisplay.snr_vlaue[0]);
     printf("    %-20s    0x%x\r\n", "snr_vlaue[1]",   infoDisplay.snr_vlaue[1]);
-    printf("    %-20s    0x%x\r\n", "agc_value[0]",   infoDisplay.agc_value[0]);
-    printf("    %-20s    0x%x\r\n", "agc_value[1]",   infoDisplay.agc_value[1]);
-    printf("    %-20s    0x%x\r\n", "agc_value[2]",   infoDisplay.agc_value[2]);
-    printf("    %-20s    0x%x\r\n", "agc_value[3]",   infoDisplay.agc_value[3]);
+    printf("    %-20s    0x%02x\r\n", "agc_value[0]",   infoDisplay.agc_value[0]);
+    printf("    %-20s    0x%02x\r\n", "agc_value[1]",   infoDisplay.agc_value[1]);
+    printf("    %-20s    0x%02x\r\n", "agc_value[2]",   infoDisplay.agc_value[2]);
+    printf("    %-20s    0x%02x\r\n", "agc_value[3]",   infoDisplay.agc_value[3]);
     printf("    %-20s    %s\r\n", "modulation_mode", modulationModeName(infoDisplay.modulation_mode));
-    printf("    %-20s    %d\r\n", "IT_channel",     infoDisplay.IT_channel);
-    printf("    %-20s    %d\r\n", "lock_status",    infoDisplay.lock_status);
+    printf("    %-20s    %2d\r\n", "IT_channel",     infoDisplay.IT_channel);
+    printf("    %-20s    %2d\r\n", "lock_status",    infoDisplay.lock_status);
     printf("    %-20s    %d\r\n", "video_width[0]", infoDisplay.video_width[0]);
     printf("    %-20s    %d\r\n", "video_width[1]", infoDisplay.video_width[1]);
     printf("    %-20s    %d\r\n", "video_height[0]",infoDisplay.video_height[0]);

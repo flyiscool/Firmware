@@ -15,6 +15,7 @@ set(config_module_list
 	drivers/it66021
 	drivers/coolfly/cpu2
 	drivers/coolfly/RFUart
+	drivers/coolfly/bb
 	
 	drivers/batt_smbus
 	# drivers/blinkm
@@ -47,7 +48,6 @@ set(config_module_list
 	#
 	# System commands
 	#
-	systemcmds/bb
 	systemcmds/config
 	systemcmds/dumpfile
 	systemcmds/esc_calib
