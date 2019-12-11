@@ -56,7 +56,8 @@ private:
 	/* Checks for all airframes */
 	_EXT_ITCM bool checkGeofence(const mission_s &mission, float home_alt, bool home_valid);
 
-	_EXT_ITCM bool checkHomePositionAltitude(const mission_s &mission, float home_alt, bool home_alt_valid, bool throw_error);
+	_EXT_ITCM bool checkHomePositionAltitude(const mission_s &mission, float home_alt, bool home_alt_valid,
+			bool throw_error);
 
 	_EXT_ITCM bool checkMissionItemValidity(const mission_s &mission);
 
@@ -82,8 +83,8 @@ public:
 	 * Returns true if mission is feasible and false otherwise
 	 */
 	_EXT_ITCM bool checkMissionFeasible(const mission_s &mission,
-				  float max_distance_to_1st_waypoint, float max_distance_between_waypoints,
-				  bool land_start_req);
+					    float max_distance_to_1st_waypoint, float max_distance_between_waypoints,
+					    bool land_start_req);
 
 };
 

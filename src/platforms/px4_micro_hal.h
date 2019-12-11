@@ -349,7 +349,7 @@ __BEGIN_DECLS
 #    define px4_arch_gpioread(pinset)               ar_gpioread(pinset)
 #    define px4_arch_gpiowrite(pinset, value)       ar_gpiowrite(pinset, value)
 #    define px4_arch_gpiosetevent(pinset,r,f,e,fp)  ar_gpiosetevent(pinset,r,f, e,fp)
-#    define px4_flash_init()                        ar_flash_init()  
+#    define px4_flash_init()                        ar_flash_init()
 #    define px4_flash_updateid(b, l, t)             ar_flash_update_id(b, l, t)
 
 #endif // defined(CONFIG_ARCH_CHIP_STM32) || defined(CONFIG_ARCH_CHIP_STM32F7)

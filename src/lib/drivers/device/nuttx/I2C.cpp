@@ -141,7 +141,7 @@ I2C::init()
 
 	if (ret != OK) {
 		DEVICE_DEBUG("probe failed");
-		
+
 		goto out;
 	}
 
@@ -174,7 +174,7 @@ I2C::transfer(const uint8_t *send, unsigned send_len, uint8_t *recv, unsigned re
 	unsigned msgs;
 	int ret = PX4_ERROR;
 	unsigned retry_count = 0;
-		
+
 	if (_dev == nullptr) {
 		PX4_ERR("I2C device not opened");
 		return 1;

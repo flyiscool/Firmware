@@ -244,7 +244,8 @@ protected:
 	 *
 	 * @return     next_state if succesfull, otherwise current_state
 	 */
-	_EXT_ITCM motor_state set_motor_state(const motor_state current_state, const motor_state next_state, const int value = 0);
+	_EXT_ITCM motor_state set_motor_state(const motor_state current_state, const motor_state next_state,
+					      const int value = 0);
 
 private:
 

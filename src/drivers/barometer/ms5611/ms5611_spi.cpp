@@ -119,7 +119,8 @@ MS5611_spi_interface(ms5611::prom_u &prom_buf, uint8_t busnum)
 {
 
 #ifdef PX4_SPI_BUS_EXT
-	if (busnum == (PX4_SPI_BUS_EXT + 1) ) {
+
+	if (busnum == (PX4_SPI_BUS_EXT + 1)) {
 #ifdef PX4_SPIDEV_EXT_BARO
 		return new MS5611_SPI(busnum - 1, PX4_SPIDEV_EXT_BARO, prom_buf);
 #else
@@ -267,6 +268,7 @@ MS5611_SPI::_read_prom()
 		if (_prom.c[i] != 0) {
 			all_zero = false;
 		}
+
 		//DEVICE_DEBUG("prom[%u]=0x%x", (unsigned)i, (unsigned)_prom.c[i]);
 	}
 

@@ -56,7 +56,7 @@
 #define MAVLINK_GET_CHANNEL_STATUS mavlink_get_channel_status
 
 
-/** sram address for  mavlink inter core */ 
+/** sram address for  mavlink inter core */
 #define SRAM_BASE_ADDRESS                             0x21000000     /* start address of SRAM */
 #define SRAM_SIZE                                     (60 * 1024)    /* size of SRAM */
 
@@ -67,11 +67,11 @@
 #define SRAM_MAVLINK_INTERCORE_WR_HEADER_ST_ADDR        SRAM_MAVLINK_INTERCORE_BUFFER_ST_ADDR
 #define SRAM_MAVLINK_INTERCORE_WR_HEADER_SIZE           100
 
-// 2k for write buffer 
+// 2k for write buffer
 #define SRAM_MAVLINK_INTERCORE_WR_BUFFER                (SRAM_MAVLINK_INTERCORE_WR_HEADER_ST_ADDR + SRAM_MAVLINK_INTERCORE_WR_HEADER_SIZE)
 #define SRAM_MAVLINK_INTERCORE_WR_SIZE                  0x800
 
-// 100 for read header 
+// 100 for read header
 #define SRAM_MAVLINK_INTERCORE_RD_HEADER_ST_ADDR        (SRAM_MAVLINK_INTERCORE_WR_BUFFER + SRAM_MAVLINK_INTERCORE_WR_SIZE)
 #define SRAM_MAVLINK_INTERCORE_RD_HEADER_SIZE           100
 
@@ -82,11 +82,10 @@
 #define MAVLINK_SERIAL_NAME "/dev/ttyS20"
 
 
-typedef struct
-{
-    volatile uint16_t buf_wr_pos;
-    volatile uint16_t buf_rd_pos;
-    volatile uint8_t in_use;
+typedef struct {
+	volatile uint16_t buf_wr_pos;
+	volatile uint16_t buf_rd_pos;
+	volatile uint8_t in_use;
 
 } STRU_MavlinkInterCoreHeader;
 

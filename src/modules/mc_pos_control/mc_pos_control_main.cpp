@@ -110,7 +110,7 @@ public:
 	_EXT_ITCM int		start();
 
 	_EXT_ITCM bool		cross_sphere_line(const matrix::Vector3f &sphere_c, const float sphere_r,
-					  const matrix::Vector3f &line_a, const matrix::Vector3f &line_b, matrix::Vector3f &res);
+			const matrix::Vector3f &line_a, const matrix::Vector3f &line_b, matrix::Vector3f &res);
 
 private:
 
@@ -378,7 +378,8 @@ private:
 
 	_EXT_ITCM bool in_auto_takeoff();
 
-	_EXT_ITCM float get_vel_close(const matrix::Vector2f &unit_prev_to_current, const matrix::Vector2f &unit_current_to_next);
+	_EXT_ITCM float get_vel_close(const matrix::Vector2f &unit_prev_to_current,
+				      const matrix::Vector2f &unit_current_to_next);
 
 	_EXT_ITCM void set_manual_acceleration_xy(matrix::Vector2f &stick_input_xy_NED);
 

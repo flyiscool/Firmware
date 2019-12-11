@@ -114,7 +114,7 @@ public:
 	 * @return           -1 for error, 0 for play one tone and 1 for continue a sequence
 	 */
 	_EXT_ITCM int get_next_tune(unsigned &frequency, unsigned &duration, unsigned &silence,
-			  uint8_t &strength);
+				    uint8_t &strength);
 
 	/**
 	 *  Get the number of default tunes. This is useful for when a tune is

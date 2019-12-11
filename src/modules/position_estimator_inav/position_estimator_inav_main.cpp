@@ -187,9 +187,9 @@ _EXT_ITCM int position_estimator_inav_main(int argc, char *argv[])
 
 #ifdef INAV_DEBUG
 _EXT_ITCM static void write_debug_log(const char *msg, float dt, float x_est[2], float y_est[2], float z_est[2],
-			    float x_est_prev[2], float y_est_prev[2], float z_est_prev[2],
-			    float acc[3], float corr_gps[3][2], float w_xy_gps_p, float w_xy_gps_v, float corr_mocap[3][1], float w_mocap_p,
-			    float corr_vision[3][2], float w_xy_vision_p, float w_z_vision_p, float w_xy_vision_v)
+				      float x_est_prev[2], float y_est_prev[2], float z_est_prev[2],
+				      float acc[3], float corr_gps[3][2], float w_xy_gps_p, float w_xy_gps_v, float corr_mocap[3][1], float w_mocap_p,
+				      float corr_vision[3][2], float w_xy_vision_p, float w_z_vision_p, float w_xy_vision_v)
 {
 	FILE *f = fopen(PX4_ROOTFSDIR"/fs/microsd/inav.log", "a");
 
@@ -1472,7 +1472,7 @@ _EXT_ITCM int inav_parameters_init(struct position_estimator_inav_param_handles 
 }
 
 _EXT_ITCM int inav_parameters_update(const struct position_estimator_inav_param_handles *h,
-			   struct position_estimator_inav_params *p)
+				     struct position_estimator_inav_params *p)
 {
 	param_get(h->w_z_baro, &(p->w_z_baro));
 	param_get(h->w_z_gps_p, &(p->w_z_gps_p));

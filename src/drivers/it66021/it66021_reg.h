@@ -307,7 +307,7 @@
 #define REG_RX_0FD 0xFD // REG_RX_0FD
 #define REG_RX_0FE 0xFE // REG_RX_0FE
 #define REG_RX_0FF 0xFF // REG_RX_0FF
-                        //
+//
 #define REG_RX_100 0x00 // REG_RX_100
 #define REG_RX_101 0x01 // REG_RX_101
 #define REG_RX_102 0x02 // REG_RX_102
@@ -603,7 +603,7 @@
 #define REG_RX_1FD 0xFD // REG_RX_1FD
 #define REG_RX_1FE 0xFE // REG_RX_1FE
 #define REG_RX_1FF 0xFF // REG_RX_1FF
-                        //
+//
 #define REG_RX_200 0x00 // REG_RX_200
 #define REG_RX_201 0x01 // REG_RX_201
 #define REG_RX_202 0x02 // REG_RX_202
@@ -926,9 +926,9 @@
 #define MHL_RX_1A 0x1A	//MHL_RX_1A
 #define MHL_RX_1B 0x1B	//MHL_RX_1B
 #define MHL_RX_1C 0x1C	//MHL_RX_1C
-	#define B_MSG_Busy 0x04 // bit2
-	#define B_MSC_Busy 0x02 // bit1
-	#define B_DDC_Busy 0x01 // bit0
+#define B_MSG_Busy 0x04 // bit2
+#define B_MSC_Busy 0x02 // bit1
+#define B_DDC_Busy 0x01 // bit0
 
 
 #define MHL_RX_1D 0x1D	//MHL_RX_1D
@@ -984,19 +984,19 @@
 #define MHL_RX_4F 0x4F	//MHL_RX_4F
 
 #define MHL_MSC_CtrlPacket0 0x50	//MHL_RX_50
-	#define B_WRITE_STAT_SET_INT 	0x80 // bit7
-	#define B_READ_DEVCAP 			0x40 // bit6
-	#define B_GET_MSC_ERRORCODE 	0x20 // bit5
-	#define B_GET_DDC_ERRORCODE 	0x10 // bit4
-	#define B_CLR_HPD 				0x08 // bit3
-	#define B_SET_HPD 				0x04 // bit2
-	#define B_GET_VENDOR_ID 		0x02 // bit1
-	#define B_GET_STATE 			0x01 // bit0
+#define B_WRITE_STAT_SET_INT 	0x80 // bit7
+#define B_READ_DEVCAP 			0x40 // bit6
+#define B_GET_MSC_ERRORCODE 	0x20 // bit5
+#define B_GET_DDC_ERRORCODE 	0x10 // bit4
+#define B_CLR_HPD 				0x08 // bit3
+#define B_SET_HPD 				0x04 // bit2
+#define B_GET_VENDOR_ID 		0x02 // bit1
+#define B_GET_STATE 			0x01 // bit0
 
 #define MHL_MSC_CtrlPacket1 0x51	//MHL_RX_51
-	#define B_FW_MODE 				0x80 // bit7
-	#define B_MSC_MSG 				0x02 // bit1
-	#define B_WRITE_BURST 			0x01 // bit0
+#define B_FW_MODE 				0x80 // bit7
+#define B_MSC_MSG 				0x02 // bit1
+#define B_WRITE_BURST 			0x01 // bit0
 
 #define MHL_RX_52 0x52	//MHL_RX_52
 #define MHL_RX_53 0x53	//MHL_RX_53
@@ -1178,250 +1178,250 @@
 /*****************************************************************************/
 /* Mask Definitions **********************************************************/
 /*****************************************************************************/
-	#define B_7 0x80 // bit7
-	#define B_6 0x40 // bit6
-	#define B_5 0x20 // bit5
-	#define B_4 0x10 // bit4
-	#define B_3 0x08 // bit3
-	#define B_2 0x04 // bit2
-	#define B_1 0x02 // bit1
-	#define B_0 0x01 // bit0
+#define B_7 0x80 // bit7
+#define B_6 0x40 // bit6
+#define B_5 0x20 // bit5
+#define B_4 0x10 // bit4
+#define B_3 0x08 // bit3
+#define B_2 0x04 // bit2
+#define B_1 0x02 // bit1
+#define B_0 0x01 // bit0
 
 
 #define REG_RX_P0_SYS_STATUS 0x0A
-	#define B_P0_SCDT 0x80 // bit7
-	#define B_P0_MHL_MODE 0x40 // bit6
-	#define B_P0_IPLL_LOCK 0x20 // bit5
-	#define B_P0_RXCK_SPEED 0x10 // bit4
-	#define B_P0_RXCK_VALID 0x08 // bit3
-	#define B_P0_VCLK_DET 0x04 // bit2
-	#define B_P0_HDMI_MODE 0x02 // bit1
-	#define B_P0_PWR5V_DET 0x01 // bit0
+#define B_P0_SCDT 0x80 // bit7
+#define B_P0_MHL_MODE 0x40 // bit6
+#define B_P0_IPLL_LOCK 0x20 // bit5
+#define B_P0_RXCK_SPEED 0x10 // bit4
+#define B_P0_RXCK_VALID 0x08 // bit3
+#define B_P0_VCLK_DET 0x04 // bit2
+#define B_P0_HDMI_MODE 0x02 // bit1
+#define B_P0_PWR5V_DET 0x01 // bit0
 
 #define REG_RX_P1_SYS_STATUS 0x0B
-	#define B_P1_SCDT 0x80 // bit7
-	#define B_P1_OPLL_LOCK 0x40 // bit6
-	#define B_P1_IPLL_LOCK 0x20 // bit5
-	#define B_P1_RXCK_SPEED 0x10 // bit4
-	#define B_P1_RXCK_VALID 0x08 // bit3
-	#define B_P1_VCLK_DET 0x04 // bit2
-	#define B_P1_HDMI_MODE 0x02 // bit1
-	#define B_P1_PWR5V_DET 0x01 // bit0
+#define B_P1_SCDT 0x80 // bit7
+#define B_P1_OPLL_LOCK 0x40 // bit6
+#define B_P1_IPLL_LOCK 0x20 // bit5
+#define B_P1_RXCK_SPEED 0x10 // bit4
+#define B_P1_RXCK_VALID 0x08 // bit3
+#define B_P1_VCLK_DET 0x04 // bit2
+#define B_P1_HDMI_MODE 0x02 // bit1
+#define B_P1_PWR5V_DET 0x01 // bit0
 
 #define REG_RX_RST_CTRL 0x10 // REG_RX_010
-	#define B_PWDACLK	0x80
-	#define B_PWDPCLK	0x40
-	#define B_EN_AUTO_AUDRST	0x20
-	#define B_EN_AUTO_VDORST	0x10
-	#define B_REGRST	0x08
-	#define B_EN_INTRST	0x04
-	#define B_AUDRST	0x02
-	#define B_VDORST	0x01
+#define B_PWDACLK	0x80
+#define B_PWDPCLK	0x40
+#define B_EN_AUTO_AUDRST	0x20
+#define B_EN_AUTO_VDORST	0x10
+#define B_REGRST	0x08
+#define B_EN_INTRST	0x04
+#define B_AUDRST	0x02
+#define B_VDORST	0x01
 
 #define REG_RX_RST2_CTRL 0x11 // REG_RX_011
-	#define B_P0_DCLKRST	0x08
-	#define B_P0_CDRRST		0x04
-	#define B_P0_HDCPRST	0x02
-	#define B_P0_SWRST		0x01
+#define B_P0_DCLKRST	0x08
+#define B_P0_CDRRST		0x04
+#define B_P0_HDCPRST	0x02
+#define B_P0_SWRST		0x01
 
 //#define REG_RX_018 0x18 // REG_RX_018
-	#define B_P1_DCLKRST	0x08
-	#define B_P1_CDRRST		0x04
-	#define B_P1_HDCPRST	0x02
-	#define B_P1_SWRST		0x01
+#define B_P1_DCLKRST	0x08
+#define B_P1_CDRRST		0x04
+#define B_P1_HDCPRST	0x02
+#define B_P1_SWRST		0x01
 
 //#define REG_RX_051 0x51 // REG_RX_051
-	#define B_PORT_SEL 0x01 // bit0
-	#define B_EN_DEBUG 0x02 // bit1
-	#define B_CCIR656 0x04 // bit2
-	#define B_DisPixRpt 0x08 // bit3
-	#define B_HALF_CLK 0x10 // bit4
-	#define B_OUT_DDR 0x20 // bit5
-	#define B_HALF_PCLKC 0x40 // bit6
-	#define B_PWD_CSC 0x80 // bit7
+#define B_PORT_SEL 0x01 // bit0
+#define B_EN_DEBUG 0x02 // bit1
+#define B_CCIR656 0x04 // bit2
+#define B_DisPixRpt 0x08 // bit3
+#define B_HALF_CLK 0x10 // bit4
+#define B_OUT_DDR 0x20 // bit5
+#define B_HALF_PCLKC 0x40 // bit6
+#define B_PWD_CSC 0x80 // bit7
 
 #define REG_RX_OUPT_CTRL1 0x52
-	#define B_HCLKSel        	0x80
-	#define B_EnSWHCLKSel 	0x40
-	#define B_DisVAutoMute    0x20
-	#define B_TriSPDIF   		0x10
-	#define B_TriI2SIO       	0x0F
+#define B_HCLKSel        	0x80
+#define B_EnSWHCLKSel 	0x40
+#define B_DisVAutoMute    0x20
+#define B_TriSPDIF   		0x10
+#define B_TriI2SIO       	0x0F
 
 #define REG_RX_OUPT_CTRL2  0x53 // REG_RX_053
-	#define B_VDGatting 0x80 // bit7 -> Enable output data gating to zero when no Video display
-	#define B_VIOSel 0x40 // bit6 -> 1: video IO enable depent on VIOenable
-	#define B_VDIOLLdisable 0x20 // bit5 -> 1: disable video IO QE0, QE1, QE12, QE13, QE24, QE25
-	#define B_VDIOLHdisable 0x10 // bit4 -> 1:  disable video IO QE2, QE3, QE14, QE15, QE26, QE27
-	#define B_TriVDIO 0x0E // bit2~1 -> 111: enable tri-state Video IO
-	#define B_TriSYNC 0x01 // bit0 ->1: Tristate video control signal IO
+#define B_VDGatting 0x80 // bit7 -> Enable output data gating to zero when no Video display
+#define B_VIOSel 0x40 // bit6 -> 1: video IO enable depent on VIOenable
+#define B_VDIOLLdisable 0x20 // bit5 -> 1: disable video IO QE0, QE1, QE12, QE13, QE24, QE25
+#define B_VDIOLHdisable 0x10 // bit4 -> 1:  disable video IO QE2, QE3, QE14, QE15, QE26, QE27
+#define B_TriVDIO 0x0E // bit2~1 -> 111: enable tri-state Video IO
+#define B_TriSYNC 0x01 // bit0 ->1: Tristate video control signal IO
 
 
 #define REG_RX_MCLK_CTRL    0x54
-	#define B_EnAsynRst	0x80
-	#define M_MCLKSel 	0x70
-	#define B_128FS 0x00
-	#define B_256FS 0x10
-	#define B_384FS 0x20
-	#define B_512FS 0x30
-	#define B_640FS 0x40
-	#define B_768FS 0x50
-	#define B_894FS 0x60
-	#define B_1024FS 0x70
+#define B_EnAsynRst	0x80
+#define M_MCLKSel 	0x70
+#define B_128FS 0x00
+#define B_256FS 0x10
+#define B_384FS 0x20
+#define B_512FS 0x30
+#define B_640FS 0x40
+#define B_768FS 0x50
+#define B_894FS 0x60
+#define B_1024FS 0x70
 
-	#define B_RCLKFreqSel	0x03
-	#define B_RCLKDIV2 0x0
-	#define B_RCLKDIV4 0x1
-	#define B_RCLKDIV8 0x2
-	#define B_RCLKDIV16 0x3
+#define B_RCLKFreqSel	0x03
+#define B_RCLKDIV2 0x0
+#define B_RCLKDIV4 0x1
+#define B_RCLKDIV8 0x2
+#define B_RCLKDIV16 0x3
 
 #define REG_RX_OUT_CSC_CTRL 0x65 // REG_RX_065
-	//#define B_OUT_CSCSel0 0x01 // bit0
-	//#define B_OUT_CSCSel1 0x02 // bit1
-	//#define B_OUT_COLOR_DEPTH0 0x04 // bit2
-	//#define B_OUT_COLOR_DEPTH1 0x08 // bit3
-	//#define B_OUT_COLOR_MODE0 0x10 // bit4
-	//#define B_OUT_COLOR_MODE1 0x20 // bit5
-	#define B_SyncEmb 0x40 // bit6
-	#define B_BTA1004Fmt 0x80 // bit7
+//#define B_OUT_CSCSel0 0x01 // bit0
+//#define B_OUT_CSCSel1 0x02 // bit1
+//#define B_OUT_COLOR_DEPTH0 0x04 // bit2
+//#define B_OUT_COLOR_DEPTH1 0x08 // bit3
+//#define B_OUT_COLOR_MODE0 0x10 // bit4
+//#define B_OUT_COLOR_MODE1 0x20 // bit5
+#define B_SyncEmb 0x40 // bit6
+#define B_BTA1004Fmt 0x80 // bit7
 
-	#define M_OUTPUT_COLOR_MASK 0x30
-	#define B_OUTPUT_RGB24      0x00
-	#define B_OUTPUT_YUV422     0x10
-	#define B_OUTPUT_YUV444     0x20
+#define M_OUTPUT_COLOR_MASK 0x30
+#define B_OUTPUT_RGB24      0x00
+#define B_OUTPUT_YUV422     0x10
+#define B_OUTPUT_YUV444     0x20
 
-	#define M_CD_SEL_MASK   0x0C
-	#define B_CD_8BIT        0x00
-	#define B_CD_10BIT      0x04
-	#define B_CD_12BIT      0x08
+#define M_CD_SEL_MASK   0x0C
+#define B_CD_8BIT        0x00
+#define B_CD_10BIT      0x04
+#define B_CD_12BIT      0x08
 
-	#define M_CSC_SEL_MASK   0x03
-	#define B_CSC_BYPASS        0x00
-	#define B_CSC_RGB2YUV      0x02	// for Andrew modify to 10
-	#define B_CSC_YUV2RGB      0x03
+#define M_CSC_SEL_MASK   0x03
+#define B_CSC_BYPASS        0x00
+#define B_CSC_RGB2YUV      0x02	// for Andrew modify to 10
+#define B_CSC_YUV2RGB      0x03
 
 #define REG_RX_OUPT_CTRL3 0x66
-	#define B_3DFreSeq		0x80
-	#define B_EnHW3DFreSeq	0x40
-	#define B_3DFldPol		0x20
-	#define B_DE3DFrame	0x10
-	#define B_EnSyncOut        	0x08
-	#define B_YCSwap       	0x04
-	#define B_STBMode_1       	0x02
-	#define B_STBMode_0		0x01
+#define B_3DFreSeq		0x80
+#define B_EnHW3DFreSeq	0x40
+#define B_3DFldPol		0x20
+#define B_DE3DFrame	0x10
+#define B_EnSyncOut        	0x08
+#define B_YCSwap       	0x04
+#define B_STBMode_1       	0x02
+#define B_STBMode_0		0x01
 
 #define REG_RX_VIDEO_CTRL1 0x67 // REG_RX_067
-	#define B_RX_EN_UDFILTER 0x01 // bit0
-	#define B_RX_EN_DITHER 0x02 // bit1
-	#define B_RX_DNFREE_GO 0x04 // bit2
-	//#define B_3 0x08 // bit3
-	//#define B_4 0x10 // bit4
-	//#define B_5 0x20 // bit5
-	//#define B_6 0x40 // bit6
-	#define B_AutoCSCSel 0x80 // bit7
+#define B_RX_EN_UDFILTER 0x01 // bit0
+#define B_RX_EN_DITHER 0x02 // bit1
+#define B_RX_DNFREE_GO 0x04 // bit2
+//#define B_3 0x08 // bit3
+//#define B_4 0x10 // bit4
+//#define B_5 0x20 // bit5
+//#define B_6 0x40 // bit6
+#define B_AutoCSCSel 0x80 // bit7
 
 #define REG_RX_IN_CSC_CTRL 0x71 // REG_RX_071
-	//#define B_IN_ColMod_Set0 0x01 // bit0
-	//#define B_IN_ColMod_Set1 0x02 // bit1
-	#define B_IN_FORCE_COLOR_MODE 0x04 // bit2
-	//#define B_3 0x08 // bit3
-	//#define B_4 0x10 // bit4
-	//#define B_5 0x20 // bit5
-	//#define B_6 0x40 // bit6
-	//#define B_7 0x80 // bit7
+//#define B_IN_ColMod_Set0 0x01 // bit0
+//#define B_IN_ColMod_Set1 0x02 // bit1
+#define B_IN_FORCE_COLOR_MODE 0x04 // bit2
+//#define B_3 0x08 // bit3
+//#define B_4 0x10 // bit4
+//#define B_5 0x20 // bit5
+//#define B_6 0x40 // bit6
+//#define B_7 0x80 // bit7
 
-	#define M_INPUT_COLOR_MASK 0x03
-	#define B_INPUT_RGB24      0x00
-	#define B_INPUT_YUV422     0x01
-	#define B_INPUT_YUV444     0x02
+#define M_INPUT_COLOR_MASK 0x03
+#define B_INPUT_RGB24      0x00
+#define B_INPUT_YUV422     0x01
+#define B_INPUT_YUV444     0x02
 
 //#define REG_RX_074 0x74 // REG_RX_074
-	#define B_I2SCEn 0x80 // bit7
-	#define B_Force_FS 0x40 // bit6
-	#define B_Dis_False_DE 0x20 // bit5
-	#define B_Aud_Info_Force 0x10 // bit4
-	#define B_AVMute_Value 0x08 // bit3
-	#define B_Force_AVMute 0x04 // bit2
-	#define B_Dien 0x02 // bit1
-	#define B_Dis_sdm 0x01 // bit0
+#define B_I2SCEn 0x80 // bit7
+#define B_Force_FS 0x40 // bit6
+#define B_Dis_False_DE 0x20 // bit5
+#define B_Aud_Info_Force 0x10 // bit4
+#define B_AVMute_Value 0x08 // bit3
+#define B_Force_AVMute 0x04 // bit2
+#define B_Dien 0x02 // bit1
+#define B_Dis_sdm 0x01 // bit0
 
 //#define REG_RX_07A 0x7A // REG_RX_07A
-	#define B_CTS_RES 0x70 // bit6~4
+#define B_CTS_RES 0x70 // bit6~4
 
 //#define REG_RX_07B 0x7B // REG_RX_07B
-	#define M_FS 0x0F
-	#define B_192K 	0x0E
-	#define B_176P4K 0x0C
-	#define B_96K 	0x0A
-	#define B_88P2K 	0x08
-	#define B_48K 	0x02
-	#define B_44P1K 	0x00
-	#define B_32K 	0x03
+#define M_FS 0x0F
+#define B_192K 	0x0E
+#define B_176P4K 0x0C
+#define B_96K 	0x0A
+#define B_88P2K 	0x08
+#define B_48K 	0x02
+#define B_44P1K 	0x00
+#define B_32K 	0x03
 
 #define REG_RX_HWMuteRate 0x7C
 
 #define REG_RX_HWMuteCtrl 0x7D
-	#define B_ARAM_BIST_EN 0x80 // bit7
-	#define B_HWForceMute 0x40 // bit6
-	#define B_HWAudMuteClrMode 0x20 // bit5
-	#define B_HWMuteClr 0x10 // bit4
-	#define B_HWMuteEn 0x08 // bit3
-	#define B_HWMuteRate 0x07 // bit0
+#define B_ARAM_BIST_EN 0x80 // bit7
+#define B_HWForceMute 0x40 // bit6
+#define B_HWAudMuteClrMode 0x20 // bit5
+#define B_HWMuteClr 0x10 // bit4
+#define B_HWMuteEn 0x08 // bit3
+#define B_HWMuteRate 0x07 // bit0
 
 //#define REG_RX_07E 0x7E // REG_RX_07E
-	#define B_BiPhaseMode 0x80 // bit7
-	#define B_HBRSel 0x40 // bit6
-	#define B_I2SOut_Fmt 0x20 // bit5
-	#define B_Force_I2SOut 0x10 // bit4
+#define B_BiPhaseMode 0x80 // bit7
+#define B_HBRSel 0x40 // bit6
+#define B_I2SOut_Fmt 0x20 // bit5
+#define B_Force_I2SOut 0x10 // bit4
 
 #define REG_RX_PIXCLK_SPEED 0x9A // REG_RX_09A
 
 //#define REG_RX_0A8 0xA8 // REG_RX_0A8
-	//#define B_7 0x80 // bit7
-	//#define B_6 0x40 // bit6
-	//#define B_5 0x20 // bit5
-	#define B_P1_AVMUTE 0x10 // bit4
-	//#define B_3 0x08 // bit3
-	//#define B_2 0x04 // bit2
-	//#define B_1 0x02 // bit1
-	#define B_P0_AVMUTE 0x01 // bit0
+//#define B_7 0x80 // bit7
+//#define B_6 0x40 // bit6
+//#define B_5 0x20 // bit5
+#define B_P1_AVMUTE 0x10 // bit4
+//#define B_3 0x08 // bit3
+//#define B_2 0x04 // bit2
+//#define B_1 0x02 // bit1
+#define B_P0_AVMUTE 0x01 // bit0
 
 #define REG_RX_AUDIO_CH_STAT 0xAA
-    #define B_AUDIO_ON 0x80
-    #define B_HBRAUDIO 0x40
-    #define B_DSDAUDIO 0x20
-    #define B_AUDIO_LAYOUT 0x10
-    #define M_AUDIO_CH         0xF
-    #define B_AUDIO_SRC_VALID_3 0x08
-    #define B_AUDIO_SRC_VALID_2 0x04
-    #define B_AUDIO_SRC_VALID_1 0x02
-    #define B_AUDIO_SRC_VALID_0 0x01
+#define B_AUDIO_ON 0x80
+#define B_HBRAUDIO 0x40
+#define B_DSDAUDIO 0x20
+#define B_AUDIO_LAYOUT 0x10
+#define M_AUDIO_CH         0xF
+#define B_AUDIO_SRC_VALID_3 0x08
+#define B_AUDIO_SRC_VALID_2 0x04
+#define B_AUDIO_SRC_VALID_1 0x02
+#define B_AUDIO_SRC_VALID_0 0x01
 
 #define REG_RX_AUD_CHSTAT0 0xAB
-	#define B_AUD_NLPCM 0x01
-	#define B_NLPCM 0x01
-	#define B_SW_COPYRIGHT_ASSERT 0x02
+#define B_AUD_NLPCM 0x01
+#define B_NLPCM 0x01
+#define B_SW_COPYRIGHT_ASSERT 0x02
 
 #define REG_RX_AUD_CHSTAT1 0xAC
 
 #define REG_RX_AUD_CHSTAT2 0xAD
-	#define M_CH_NUM    0xF0
-	#define O_CH_NUM    4
-	#define M_SRC_NUM   0x0F
-	#define O_SRC_NUM   0
+#define M_CH_NUM    0xF0
+#define O_CH_NUM    4
+#define M_SRC_NUM   0x0F
+#define O_SRC_NUM   0
 
 #define REG_RX_AUD_CHSTAT3 0xAE
-	#define M_FS              0x0F /* mask - sample frequency */
-	#define B_FS_44100        (0<<0)  /* 44.1kHz */
-	#define B_FS_NOTID        (1<<0)  /* non indicated */
-	#define B_FS_48000        (2<<0)  /* 48kHz */
-	#define B_FS_32000        (3<<0)  /* 32kHz */
-	#define B_FS_22050        (4<<0)  /* 22.05kHz */
-	#define B_FS_24000        (6<<0)  /* 24kHz */
-	#define B_FS_88200        (8<<0)  /* 88.2kHz */
-	#define B_FS_768000       (9<<0)  /* 768kHz */
-	#define B_FS_96000        (10<<0) /* 96kHz */
-	#define B_FS_176400       (12<<0) /* 176.4kHz */
-	#define B_FS_192000       (14<<0) /* 192kHz */
+#define M_FS              0x0F /* mask - sample frequency */
+#define B_FS_44100        (0<<0)  /* 44.1kHz */
+#define B_FS_NOTID        (1<<0)  /* non indicated */
+#define B_FS_48000        (2<<0)  /* 48kHz */
+#define B_FS_32000        (3<<0)  /* 32kHz */
+#define B_FS_22050        (4<<0)  /* 22.05kHz */
+#define B_FS_24000        (6<<0)  /* 24kHz */
+#define B_FS_88200        (8<<0)  /* 88.2kHz */
+#define B_FS_768000       (9<<0)  /* 768kHz */
+#define B_FS_96000        (10<<0) /* 96kHz */
+#define B_FS_176400       (12<<0) /* 176.4kHz */
+#define B_FS_192000       (14<<0) /* 192kHz */
 
 #define REG_RX_CSC_YOFF 0x70 // REG_RX_170
 #define REG_RX_CSC_COFF 0x71 // REG_RX_171
@@ -1450,60 +1450,60 @@
 #define REG_RX_AVI_LENGTH 0x12 // REG_RX_212
 #define REG_RX_AVI_VER 0x13 // REG_RX_213
 #define REG_RX_AVI_DB0 0x14 // REG_RX_214
-	#define O_AVI_COLOR_MODE 5
-	#define M_AVI_COLOR_MASK   3
-	#define B_AVI_COLOR_RGB24  0
-	#define B_AVI_COLOR_YUV422 1
-	#define B_AVI_COLOR_YUV444 2
+#define O_AVI_COLOR_MODE 5
+#define M_AVI_COLOR_MASK   3
+#define B_AVI_COLOR_RGB24  0
+#define B_AVI_COLOR_YUV422 1
+#define B_AVI_COLOR_YUV444 2
 
-	#define B_AVI_PRESENT (1<<4)
+#define B_AVI_PRESENT (1<<4)
 
-	#define O_AVI_BAR_INFO 2
-	#define M_AVI_BAR_INFO_MASK 3
-	#define B_AVI_BAR_NOT_VALID 0
-	#define B_AVI_BAR_VINFO_VALID 1
-	#define B_AVI_BAR_HINFO_VALID 2
-	#define B_AVI_BAR_VHINFO_VALID 3
+#define O_AVI_BAR_INFO 2
+#define M_AVI_BAR_INFO_MASK 3
+#define B_AVI_BAR_NOT_VALID 0
+#define B_AVI_BAR_VINFO_VALID 1
+#define B_AVI_BAR_HINFO_VALID 2
+#define B_AVI_BAR_VHINFO_VALID 3
 
-	#define O_AVI_SCAN_INFO 0
-	#define M_AVI_SCAN_INFO_MASK 3
-	#define M_AVI_SCAN_NODATA    0
-	#define M_AVI_SCAN_OVER_SCAN 1
-	#define M_AVI_SCAN_UNDER_SCAN 2
+#define O_AVI_SCAN_INFO 0
+#define M_AVI_SCAN_INFO_MASK 3
+#define M_AVI_SCAN_NODATA    0
+#define M_AVI_SCAN_OVER_SCAN 1
+#define M_AVI_SCAN_UNDER_SCAN 2
 #define REG_RX_AVI_DB1 0x15 // REG_RX_215
-	// D[7:6] C1C0 Colorimetry
-	#define O_AVI_CLRMET 6
-	#define M_AVI_CLRMET_MASK 3
-	#define B_AVI_CLRMET_NODATA 0
-	#define B_AVI_CLRMET_ITU601  1
-	#define B_AVI_CLRMET_ITU709  2
-	#define B_AVI_CLRMET_Extend  3	// _SupportXVYcc_ --> indicated in bits EC0~EC2
-	// D[5:4] M1M0 Picture Aspect Ratio
-	#define O_AVI_PIC_ASRATIO 4
-	#define M_AVI_PIC_ASRATIO_MASK 3
-	#define B_AVI_PIC_ASRATIO_NODATA 0
-	#define B_AVI_PIC_ASRATIO_4_3    1
-	#define B_AVI_PIC_ASRATIO_16_9   2
-	// D[3:0] R3R2R1R0 Active Format Aspect Ratio
-	#define O_AVI_FMT_ASRATIO 0
-	#define M_AVI_FMT_ASRATIO_MASK  0xF
-	#define M_AVI_FMT_ASRATIO_EQPIC 0x8
-	#define M_AVI_FMT_ASRATIO_4_3 0x9
-	#define M_AVI_FMT_ASRATIO_16_9 0xA
-	#define M_AVI_FMT_ASRATIO_14_9 0xB
+// D[7:6] C1C0 Colorimetry
+#define O_AVI_CLRMET 6
+#define M_AVI_CLRMET_MASK 3
+#define B_AVI_CLRMET_NODATA 0
+#define B_AVI_CLRMET_ITU601  1
+#define B_AVI_CLRMET_ITU709  2
+#define B_AVI_CLRMET_Extend  3	// _SupportXVYcc_ --> indicated in bits EC0~EC2
+// D[5:4] M1M0 Picture Aspect Ratio
+#define O_AVI_PIC_ASRATIO 4
+#define M_AVI_PIC_ASRATIO_MASK 3
+#define B_AVI_PIC_ASRATIO_NODATA 0
+#define B_AVI_PIC_ASRATIO_4_3    1
+#define B_AVI_PIC_ASRATIO_16_9   2
+// D[3:0] R3R2R1R0 Active Format Aspect Ratio
+#define O_AVI_FMT_ASRATIO 0
+#define M_AVI_FMT_ASRATIO_MASK  0xF
+#define M_AVI_FMT_ASRATIO_EQPIC 0x8
+#define M_AVI_FMT_ASRATIO_4_3 0x9
+#define M_AVI_FMT_ASRATIO_16_9 0xA
+#define M_AVI_FMT_ASRATIO_14_9 0xB
 #define REG_RX_AVI_DB2 0x16 // REG_RX_216
-	#define O_AVI_NUNI_SCALE 0
-	#define M_AVI_NUNI_SCALE_MASK 3
-	#define B_AVI_NUNI_SCALE_NODATA 0
-	#define B_AVI_NUNI_SCALE_HORZ 1
-	#define B_AVI_NUNI_SCALE_VERT 2
-	#define B_AVI_NUNI_SCALE_HORZVERT 3
+#define O_AVI_NUNI_SCALE 0
+#define M_AVI_NUNI_SCALE_MASK 3
+#define B_AVI_NUNI_SCALE_NODATA 0
+#define B_AVI_NUNI_SCALE_HORZ 1
+#define B_AVI_NUNI_SCALE_VERT 2
+#define B_AVI_NUNI_SCALE_HORZVERT 3
 #define REG_RX_AVI_DB3 0x17 // REG_RX_217
-	#define O_AVI_VIDCODE 0
-	#define O_AVI_VIDCODE_MASK 0x7f
+#define O_AVI_VIDCODE 0
+#define O_AVI_VIDCODE_MASK 0x7f
 #define REG_RX_AVI_DB4 0x18 // REG_RX_218
-	#define O_AVI_PIXREPT 0
-	#define M_AVI_PIXREPT_MASK 0xF
+#define O_AVI_PIXREPT 0
+#define M_AVI_PIXREPT_MASK 0xF
 #define REG_RX_AVI_DB5 0x19 // REG_RX_219
 #define REG_RX_AVI_DB6 0x1A // REG_RX_21A
 #define REG_RX_AVI_DB7 0x1B // REG_RX_21B

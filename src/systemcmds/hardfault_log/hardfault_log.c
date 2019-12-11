@@ -234,7 +234,7 @@ _EXT_ITCM static int hardfault_get_desc(char *caller, struct bbsramd_s *desc, bo
  * write_stack_detail
  ****************************************************************************/
 _EXT_ITCM static int write_stack_detail(bool inValid, _stack_s *si, char *sp_name,
-			      char *buffer, int max, int fd)
+					char *buffer, int max, int fd)
 {
 
 	int n = 0;
@@ -283,8 +283,8 @@ _EXT_ITCM static int read_stack(int fd, stack_word_t *words, int num)
 	return bytes;
 }
 _EXT_ITCM static int  write_stack(bool inValid, int winsize, uint32_t wtopaddr,
-			uint32_t topaddr, uint32_t spaddr, uint32_t botaddr,
-			char *sp_name, char *buffer, int max, int infd, int outfd)
+				  uint32_t topaddr, uint32_t spaddr, uint32_t botaddr,
+				  char *sp_name, char *buffer, int max, int infd, int outfd)
 {
 	char marker[30];
 	stack_word_t stack[32];
@@ -415,7 +415,7 @@ _EXT_ITCM static int write_registers_info(int fdout, info_s *pi, char *buffer, i
  * write_interrupt_stack_info
  ****************************************************************************/
 _EXT_ITCM static int write_interrupt_stack_info(int fdout, info_s *pi, char *buffer,
-				      unsigned int sz)
+		unsigned int sz)
 {
 	int ret = ENOENT;
 
@@ -432,7 +432,7 @@ _EXT_ITCM static int write_interrupt_stack_info(int fdout, info_s *pi, char *buf
  * write_user_stack_info
  ****************************************************************************/
 _EXT_ITCM static int write_user_stack_info(int fdout, info_s *pi, char *buffer,
-				 unsigned int sz)
+		unsigned int sz)
 {
 	int ret = ENOENT;
 
@@ -448,7 +448,7 @@ _EXT_ITCM static int write_user_stack_info(int fdout, info_s *pi, char *buffer,
  * write_dump_info
  ****************************************************************************/
 _EXT_ITCM static int write_dump_info(int fdout, info_s *info, struct bbsramd_s *desc,
-			   char *buffer, unsigned int sz)
+				     char *buffer, unsigned int sz)
 {
 	char fmtbuff[ TIME_FMT_LEN + 1];
 	format_fault_time(HEADER_TIME_FMT, &desc->lastwrite, fmtbuff, sizeof(fmtbuff));
@@ -509,7 +509,7 @@ _EXT_ITCM static int write_dump_info(int fdout, info_s *info, struct bbsramd_s *
  * write_dump_time
  ****************************************************************************/
 _EXT_ITCM static int write_dump_time(char *caller, char *tag, int fdout,
-			   struct timespec *ts, char *buffer, unsigned int sz)
+				     struct timespec *ts, char *buffer, unsigned int sz)
 {
 	int ret = OK;
 	char fmtbuff[ TIME_FMT_LEN + 1];
@@ -526,7 +526,7 @@ _EXT_ITCM static int write_dump_time(char *caller, char *tag, int fdout,
  * write_dump_footer
  ****************************************************************************/
 _EXT_ITCM static int write_dump_header(char *caller, int fdout, struct timespec *ts,
-			     char *buffer, unsigned int sz)
+				       char *buffer, unsigned int sz)
 {
 	return write_dump_time(caller, "Begin", fdout, ts, buffer, sz);
 }
@@ -534,7 +534,7 @@ _EXT_ITCM static int write_dump_header(char *caller, int fdout, struct timespec 
  * write_dump_footer
  ****************************************************************************/
 _EXT_ITCM static int write_dump_footer(char *caller, int fdout, struct timespec *ts,
-			     char *buffer, unsigned int sz)
+				       char *buffer, unsigned int sz)
 {
 	return write_dump_time(caller, "END", fdout, ts, buffer, sz);
 }
@@ -542,7 +542,7 @@ _EXT_ITCM static int write_dump_footer(char *caller, int fdout, struct timespec 
  * write_intterupt_satck
  ****************************************************************************/
 _EXT_ITCM static int write_intterupt_stack(int fdin, int fdout, info_s *pi, char *buffer,
-				 unsigned int sz)
+		unsigned int sz)
 {
 	int ret = ENOENT;
 
@@ -565,7 +565,7 @@ _EXT_ITCM static int write_intterupt_stack(int fdin, int fdout, info_s *pi, char
  * write_user_stack
  ****************************************************************************/
 _EXT_ITCM static int write_user_stack(int fdin, int fdout, info_s *pi, char *buffer,
-			    unsigned int sz)
+				      unsigned int sz)
 {
 	int ret = ENOENT;
 
@@ -860,7 +860,7 @@ _EXT_ITCM static int hardfault_commit(char *caller)
  * hardfault_dowrite
  ****************************************************************************/
 _EXT_ITCM static int hardfault_dowrite(char *caller, int infd, int outfd,
-			     struct bbsramd_s *desc, int format)
+				       struct bbsramd_s *desc, int format)
 {
 	int ret = -ENOMEM;
 	char *line = zalloc(OUT_BUFFER_LEN);
@@ -961,7 +961,7 @@ _EXT_ITCM static int hardfault_dowrite(char *caller, int infd, int outfd,
 /****************************************************************************
  * hardfault_rearm
  ****************************************************************************/
- __EXPORT int hardfault_rearm(char *caller)
+__EXPORT int hardfault_rearm(char *caller)
 {
 	int ret = OK;
 	int rv = unlink(HARDFAULT_PATH);
@@ -982,7 +982,7 @@ _EXT_ITCM static int hardfault_dowrite(char *caller, int infd, int outfd,
 /****************************************************************************
  * hardfault_check_status
  ****************************************************************************/
- __EXPORT int hardfault_check_status(char *caller)
+__EXPORT int hardfault_check_status(char *caller)
 {
 	int state = -1;
 	struct bbsramd_s desc;
@@ -1035,7 +1035,7 @@ _EXT_ITCM static int hardfault_dowrite(char *caller, int infd, int outfd,
 /****************************************************************************
  * hardfault_increment_reboot
  ****************************************************************************/
- __EXPORT int hardfault_increment_reboot(char *caller, bool reset)
+__EXPORT int hardfault_increment_reboot(char *caller, bool reset)
 {
 	int ret = -EIO;
 	int count = 0;
@@ -1082,7 +1082,7 @@ _EXT_ITCM static int hardfault_dowrite(char *caller, int infd, int outfd,
  * hardfault_write
  ****************************************************************************/
 
- __EXPORT int hardfault_write(char *caller, int fd, int format, bool rearm)
+__EXPORT int hardfault_write(char *caller, int fd, int format, bool rearm)
 {
 	struct bbsramd_s desc;
 
@@ -1159,7 +1159,7 @@ _EXT_ITCM static void print_usage(void)
 /****************************************************************************
  * Name: hardfault_log_main
  ****************************************************************************/
- __EXPORT int hardfault_log_main(int argc, char *argv[])
+__EXPORT int hardfault_log_main(int argc, char *argv[])
 {
 	char *self = "hardfault_log";
 

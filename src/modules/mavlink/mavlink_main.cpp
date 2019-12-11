@@ -890,13 +890,11 @@ Mavlink::set_hil_enabled(bool hil_enabled)
 
 bool Mavlink::isUserCustomUart()
 {
-	if (std::strcmp(_device_name, MAVLINK_SERIAL_NAME) == 0)
-	{
+	if (std::strcmp(_device_name, MAVLINK_SERIAL_NAME) == 0) {
 		return true;
-	}
-	else 
-	{
-		return false; 
+
+	} else {
+		return false;
 	}
 }
 
@@ -904,10 +902,10 @@ bool Mavlink::isUserCustomUart()
 unsigned
 Mavlink::get_free_tx_buf()
 {
-	if (isUserCustomUart())
-	{
+	if (isUserCustomUart()) {
 		return 1500;
 	}
+
 	/*
 	 * Check if the OS buffer is full and disable HW
 	 * flow control if it continues to be full
@@ -1014,14 +1012,13 @@ void
 Mavlink::send_bytes(const uint8_t *buf, unsigned packet_len)
 {
 	size_t ret = -1;
+
 	/* send message to UART */
-	if (isUserCustomUart())
-	{
+	if (isUserCustomUart()) {
 		volatile STRU_MavlinkInterCoreHeader *header = (STRU_MavlinkInterCoreHeader *)SRAM_MAVLINK_INTERCORE_WR_HEADER_ST_ADDR;
 		volatile uint8_t *wr_buffer = (uint8_t *)SRAM_MAVLINK_INTERCORE_WR_BUFFER;
 
-		for (unsigned i = 0; i < packet_len; i++)
-		{
+		for (unsigned i = 0; i < packet_len; i++) {
 			wr_buffer[header->buf_wr_pos++] = buf[i];
 
 			if (header->buf_wr_pos == SRAM_MAVLINK_INTERCORE_WR_SIZE) {
@@ -1030,7 +1027,7 @@ Mavlink::send_bytes(const uint8_t *buf, unsigned packet_len)
 
 			if (header->buf_rd_pos == header->buf_wr_pos) {
 				// PX4_ERR("mavlink rd_pos ==  wr_pos");
-			}	
+			}
 		}
 
 		ret = packet_len;
@@ -1061,12 +1058,11 @@ Mavlink::send_bytes(const uint8_t *buf, unsigned packet_len)
 		}
 
 		/* send message to UART */
-		if (get_protocol() == SERIAL) 
-		{
+		if (get_protocol() == SERIAL) {
 			ret = ::write(_uart_fd, buf, packet_len);
 		}
 
-	#ifdef __PX4_POSIX
+#ifdef __PX4_POSIX
 
 		else {
 			if (_network_buf_len + packet_len < sizeof(_network_buf) / sizeof(_network_buf[0])) {
@@ -1077,7 +1073,7 @@ Mavlink::send_bytes(const uint8_t *buf, unsigned packet_len)
 			}
 		}
 
-	#endif
+#endif
 
 	}
 
@@ -1974,12 +1970,10 @@ Mavlink::task_main(int argc, char *argv[])
 		/* flush stdout in case MAVLink is about to take it over */
 		fflush(stdout);
 
-		if (isUserCustomUart()) 
-		{
+		if (isUserCustomUart()) {
 			_flow_control_mode = FLOW_CONTROL_AUTO;
-		}
-		else 
-		{
+
+		} else {
 			/* default values for arguments */
 			_uart_fd = mavlink_open_uart(_baudrate, _device_name, _force_flow_control);
 

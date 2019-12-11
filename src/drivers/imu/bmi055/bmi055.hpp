@@ -300,8 +300,9 @@ protected:
 
 public:
 
-	_EXT_ITCM BMI055(const char *name, const char *devname, int bus, uint32_t device, enum spi_mode_e mode, uint32_t frequency,
-	       enum Rotation rotation);
+	_EXT_ITCM BMI055(const char *name, const char *devname, int bus, uint32_t device, enum spi_mode_e mode,
+			 uint32_t frequency,
+			 enum Rotation rotation);
 	_EXT_ITCM virtual ~BMI055();
 
 

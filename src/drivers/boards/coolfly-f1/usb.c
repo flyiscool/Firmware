@@ -78,7 +78,7 @@
  *
  ************************************************************************************/
 
- __EXPORT void ar_usbinitialize(void)
+__EXPORT void ar_usbinitialize(void)
 {
 	/* The OTG FS has an internal soft pull-up */
 
@@ -97,7 +97,7 @@
  *
  ************************************************************************************/
 
- __EXPORT void ar_usbsuspend(FAR struct usbdev_s *dev, bool resume)
+__EXPORT void ar_usbsuspend(FAR struct usbdev_s *dev, bool resume)
 {
 	uinfo("resume: %d\n", resume);
 }

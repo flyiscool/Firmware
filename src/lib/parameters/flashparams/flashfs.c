@@ -182,7 +182,7 @@ _EXT_ITCM static inline int blank_flash(uint32_t *pf)
  ****************************************************************************/
 
 _EXT_ITCM static bool blank_check(flash_entry_header_t *pf,
-			size_t new_size)
+				  size_t new_size)
 {
 	bool rv = true;
 	uint32_t *pm = (uint32_t *) pf;
@@ -738,7 +738,7 @@ _EXT_ITCM static sector_descriptor_t *check_free_space_in_sector(flash_entry_hea
  ****************************************************************************/
 
 _EXT_ITCM int parameter_flashfs_read(flash_file_token_t token, uint8_t **buffer, size_t
-			   *buf_size)
+				     *buf_size)
 {
 	int rv = -ENXIO;
 

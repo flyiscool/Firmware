@@ -37,25 +37,22 @@
 //xxxxx 2014-0421
 //FIX_ID_033 xxxxx
 
-enum
-{
-  MHD_RAP_CMD_POLL         	= 0x00,
-  MHD_RAP_CMD_CHG_ACTIVE_PWR  = 0x10,
-  MHD_RAP_CMD_CHG_QUIET       = 0x11,
-  MHD_RAP_CMD_END             = 0x12
+enum {
+	MHD_RAP_CMD_POLL         	= 0x00,
+	MHD_RAP_CMD_CHG_ACTIVE_PWR  = 0x10,
+	MHD_RAP_CMD_CHG_QUIET       = 0x11,
+	MHD_RAP_CMD_END             = 0x12
 };
 
 //RAPK sub commands
-enum
-{
-    MHD_MSC_MSG_RAP_NO_ERROR        		= 0x00,     // RAP No Error
-    MHD_MSC_MSG_RAP_UNRECOGNIZED_ACT_CODE  	= 0x01,
-    MHD_MSC_MSG_RAP_UNSUPPORTED_ACT_CODE  	= 0x02,
-    MHD_MSC_MSG_RAP_RESPONDER_BUSY   		= 0x03
+enum {
+	MHD_MSC_MSG_RAP_NO_ERROR        		= 0x00,     // RAP No Error
+	MHD_MSC_MSG_RAP_UNRECOGNIZED_ACT_CODE  	= 0x01,
+	MHD_MSC_MSG_RAP_UNSUPPORTED_ACT_CODE  	= 0x02,
+	MHD_MSC_MSG_RAP_RESPONDER_BUSY   		= 0x03
 };
 
-enum
-{
+enum {
 	RCP_SELECT          = 0x00,
 	RCP_UP              = 0x01,
 	RCP_DOWN            = 0x02,
@@ -148,9 +145,8 @@ enum
 };
 
 //FIX_ID_003 xxxxx	//Add IT6602 Video Output Configure setting
-typedef enum _Video_Output_Configure
-{
-	eRGB444_SDR=0,
+typedef enum _Video_Output_Configure {
+	eRGB444_SDR = 0,
 	eYUV444_SDR,
 	eRGB444_DDR,
 	eYUV444_DDR,
@@ -167,55 +163,53 @@ typedef enum _Video_Output_Configure
 	eBTA1004_SDR,
 	eBTA1004_DDR,
 	eVOMreserve
-}Video_Output_Configure;
+} Video_Output_Configure;
 
-typedef enum _Video_OutputDataTrigger_Mode
-{
-	eSDR=0,
+typedef enum _Video_OutputDataTrigger_Mode {
+	eSDR = 0,
 	eHalfPCLKDDR,
 	eHalfBusDDR,
 	eSDR_BTA1004,
 	eDDR_BTA1004
-}Video_DataTrigger_Mode;
+} Video_DataTrigger_Mode;
 
-typedef enum _Video_OutputSync_Mode
-{
-	eSepSync=0,
+typedef enum _Video_OutputSync_Mode {
+	eSepSync = 0,
 	eEmbSync,
 	eCCIR656SepSync,
 	eCCIR656EmbSync
-}Video_OutputSync_Mode;
+} Video_OutputSync_Mode;
 
 //FIX_ID_003 xxxxx
 
 typedef enum _Video_State_Type {
-    VSTATE_Off=0,
-    VSTATE_TerminationOff,
-    VSTATE_TerminationOn,
-    VSTATE_5VOff,
-    VSTATE_SyncWait,
-    VSTATE_SWReset,
-    VSTATE_SyncChecking,
-    VSTATE_HDCPSet,
-    VSTATE_HDCP_Reset,
-    VSTATE_ModeDetecting,
-    VSTATE_VideoOn,
-    VSTATE_ColorDetectReset,
-    VSTATE_HDMI_OFF,
-    VSTATE_Reserved
+	VSTATE_Off = 0,
+	VSTATE_TerminationOff,
+	VSTATE_TerminationOn,
+	VSTATE_5VOff,
+	VSTATE_SyncWait,
+	VSTATE_SWReset,
+	VSTATE_SyncChecking,
+	VSTATE_HDCPSet,
+	VSTATE_HDCP_Reset,
+	VSTATE_ModeDetecting,
+	VSTATE_VideoOn,
+	VSTATE_ColorDetectReset,
+	VSTATE_HDMI_OFF,
+	VSTATE_Reserved
 } Video_State_Type;
 
 typedef enum _RxHDCP_State_Type {
-    RxHDCP_PwrOff=0,
-    RxHDCP_ModeCheck,
-    RxHDCP_Receiver,
-    RxHDCP_Repeater,
-    RxHDCP_SetKSVFifoList,
-    RxHDCP_GenVR,
-    RxHDCP_WriteVR,
-    RxHDCP_Auth_WaitRi,
-    RxHDCP_Authenticated,
-    RxHDCP_Reserved
+	RxHDCP_PwrOff = 0,
+	RxHDCP_ModeCheck,
+	RxHDCP_Receiver,
+	RxHDCP_Repeater,
+	RxHDCP_SetKSVFifoList,
+	RxHDCP_GenVR,
+	RxHDCP_WriteVR,
+	RxHDCP_Auth_WaitRi,
+	RxHDCP_Authenticated,
+	RxHDCP_Reserved
 } RxHDCP_State_Type;
 
 typedef enum  {
@@ -225,7 +219,7 @@ typedef enum  {
 	RCP_Transfer,
 	RCP_Empty,
 	RCP_Unknown
-}RCPState_Type;
+} RCPState_Type;
 
 typedef enum  {
 	RCP_Result_OK = 0,
@@ -234,7 +228,7 @@ typedef enum  {
 	RCP_Result_Transfer,
 	RCP_Result_Finish,
 	RCP_Result_Unknown
-}RCPResult_Type;
+} RCPResult_Type;
 
 
 
@@ -355,82 +349,85 @@ typedef enum  {
 /*****************************************************************************/
 /* Type defs struct **********************************************************/
 /*****************************************************************************/
-struct IT6602_REG_INI
-{
-    unsigned char ucAddr;
-    unsigned char andmask;
-    unsigned char ucValue;
+struct IT6602_REG_INI {
+	unsigned char ucAddr;
+	unsigned char andmask;
+	unsigned char ucValue;
 };
 
 
-struct IT6602_VIDEO_CONFIGURE_REG
-{
-    unsigned char ucReg51;
-    unsigned char ucReg65;
+struct IT6602_VIDEO_CONFIGURE_REG {
+	unsigned char ucReg51;
+	unsigned char ucReg65;
 };
 
-typedef struct _3D_SourceConfiguration
-{
-    unsigned char          Format;              /**< Type of 3D source format expected or found.                                                        */
-    unsigned char    LR_Reference;        /**< Source of the 3D L/R reference.                                                                    */
-    unsigned char FrameDominance;      /**< Left or Right Eye is first in L/R image pair.                                                      */
-    unsigned char     LR_Encoding;         /**< Type of 3D L/R encoding expected or detected.                                                      */
-    unsigned char    TB_Reference;        /**< Top/Bottom reference for vertically sub-sampled sources.                                           */
-    unsigned char    OE_Reference;        /**< Odd/Even reference for horizontally sub-sampled sources.                                           */
-    unsigned char NumActiveBlankLines;                 /**< Number of lines separating vertically packed L/R data to be removed (cropped)
+typedef struct _3D_SourceConfiguration {
+	unsigned char
+	Format;              /**< Type of 3D source format expected or found.                                                        */
+	unsigned char
+	LR_Reference;        /**< Source of the 3D L/R reference.                                                                    */
+	unsigned char
+	FrameDominance;      /**< Left or Right Eye is first in L/R image pair.                                                      */
+	unsigned char
+	LR_Encoding;         /**< Type of 3D L/R encoding expected or detected.                                                      */
+	unsigned char
+	TB_Reference;        /**< Top/Bottom reference for vertically sub-sampled sources.                                           */
+	unsigned char
+	OE_Reference;        /**< Odd/Even reference for horizontally sub-sampled sources.                                           */
+	unsigned char
+	NumActiveBlankLines;                 /**< Number of lines separating vertically packed L/R data to be removed (cropped)
                                                   *  before being displayed. Does not include any embedded encoding.                                    */
-    unsigned char NumberOfEncodedLines;                /**< Number of encoded lines in one L/R eye frame of the display data
+	unsigned char NumberOfEncodedLines;                /**< Number of encoded lines in one L/R eye frame of the display data
                                                   *  to be blanked out with "Blanking Color". (assumed same number in second eye frame)                 */
-    unsigned int  LeftEncodedLineLocation;             /**< Active line number of 1st encoded line in one Left eye frame of the display data (-1=unknown).     */
-    unsigned int  RightEncodedLineLocation;            /**< Active line number of 1st encoded line in one Right eye frame of the display data (-1=unknown).
+	unsigned int
+	LeftEncodedLineLocation;             /**< Active line number of 1st encoded line in one Left eye frame of the display data (-1=unknown).     */
+	unsigned int
+	RightEncodedLineLocation;            /**< Active line number of 1st encoded line in one Right eye frame of the display data (-1=unknown).
                                                   *  If format is Horizontally Packed, set RightEncodedLineLocation=LeftEncodedLineLocation             */
-    unsigned char BlankingColor;                 /**< Color to use when blanking (or masking off) any embedded L/R encoding.                             */
+	unsigned char
+	BlankingColor;                 /**< Color to use when blanking (or masking off) any embedded L/R encoding.                             */
 } SRC_3D_SOURCE_CONFIG;
 
-typedef struct _de3dframe
-{
-    unsigned char VIC;
-    unsigned char HB0;
-    unsigned char HB1;
-    unsigned char HB2;
-    unsigned char PB0;
-    unsigned char PB1;
-    unsigned char PB2;
-    unsigned char PB3;
-    unsigned char PB4;
-    unsigned char PB5;
-    unsigned char PB6;
-    unsigned char PB7;
+typedef struct _de3dframe {
+	unsigned char VIC;
+	unsigned char HB0;
+	unsigned char HB1;
+	unsigned char HB2;
+	unsigned char PB0;
+	unsigned char PB1;
+	unsigned char PB2;
+	unsigned char PB3;
+	unsigned char PB4;
+	unsigned char PB5;
+	unsigned char PB6;
+	unsigned char PB7;
 } DE3DFRAME ;
 
-typedef struct _set_de3d_frame
-{
-    unsigned char Vic;
-    unsigned int V_total;        // Vtotal -1
-    unsigned int V_act_start;    // VTotal -1 + Vactive_start -1
-    unsigned int V_act_end;      // Vactive end -1
-    unsigned int V_sync_end;     // LSB(Vtotal -1 + sync With)
-    unsigned int V_2D_active_total;     // V_2D_active_total
+typedef struct _set_de3d_frame {
+	unsigned char Vic;
+	unsigned int V_total;        // Vtotal -1
+	unsigned int V_act_start;    // VTotal -1 + Vactive_start -1
+	unsigned int V_act_end;      // Vactive end -1
+	unsigned int V_sync_end;     // LSB(Vtotal -1 + sync With)
+	unsigned int V_2D_active_total;     // V_2D_active_total
 
 } SET_DE3D_FRAME;
 
-typedef enum
-{
-    VSYNC_SEPARATED_HALF,       /**< VSync separated (field sequential) format.                         */
-    VSYNC_SEPARATED_FULL,       /**< VSync separated (frame sequential progressive) format.             */
-    VERT_PACKED_HALF,           /**< Over Under (vertically packed) half resolution format.             */
-    VERT_PACKED_FULL,           /**< Over Under (vertically packed) full resolution format.             */
-    HORIZ_PACKED_HALF,          /**< Side by Side (horizontally packed) half resolution format.         */
-    HORIZ_PACKED_FULL,          /**< Side by Side (horizontally packed) full resolution format.         */
-    UNDEFINED_FORMAT            /**< Undefined format.                                                  */
+typedef enum {
+	VSYNC_SEPARATED_HALF,       /**< VSync separated (field sequential) format.                         */
+	VSYNC_SEPARATED_FULL,       /**< VSync separated (frame sequential progressive) format.             */
+	VERT_PACKED_HALF,           /**< Over Under (vertically packed) half resolution format.             */
+	VERT_PACKED_FULL,           /**< Over Under (vertically packed) full resolution format.             */
+	HORIZ_PACKED_HALF,          /**< Side by Side (horizontally packed) half resolution format.         */
+	HORIZ_PACKED_FULL,          /**< Side by Side (horizontally packed) full resolution format.         */
+	UNDEFINED_FORMAT            /**< Undefined format.                                                  */
 } SRC_3D_FORMAT;
 
-typedef enum _pixel_mode
-{
-    SINGLE_PIXEL,
-    DUAL_PIXEL  ,
-    MODE_UNKNOWN
-}PIXEL_MODE;
+typedef enum _pixel_mode {
+	SINGLE_PIXEL,
+	DUAL_PIXEL,
+	MODE_UNKNOWN
+} PIXEL_MODE;
 
 
 //FIX_ID_010 xxxxx 	//Add JudgeBestEQ to avoid wrong EQ setting
@@ -439,17 +436,16 @@ typedef enum _pixel_mode
 
 //FIX_ID_001 xxxxx Add Auto EQ with Manual EQ
 #ifdef _SUPPORT_EQ_ADJUST_
-struct it6602_eq_data
-{
-unsigned char ucEQState;
-unsigned char ucAuthR0;								//20130327 for R0 fail issue
-unsigned char ucECCvalue;								//20130328 for acc ecc error
-unsigned char ucECCfailCount;							//20130328 for acc ecc error
-unsigned char ucPkt_Err;
-unsigned char ucPortID;
-unsigned char f_manualEQadjust;
+struct it6602_eq_data {
+	unsigned char ucEQState;
+	unsigned char ucAuthR0;								//20130327 for R0 fail issue
+	unsigned char ucECCvalue;								//20130328 for acc ecc error
+	unsigned char ucECCfailCount;							//20130328 for acc ecc error
+	unsigned char ucPkt_Err;
+	unsigned char ucPortID;
+	unsigned char f_manualEQadjust;
 //FIX_ID_010 xxxxx 	//Add JudgeBestEQ to avoid wrong EQ setting
-unsigned char ErrorCount[MaxEQIndex];
+	unsigned char ErrorCount[MaxEQIndex];
 //FIX_ID_010 xxxxx
 };
 #endif
@@ -458,27 +454,27 @@ unsigned char ErrorCount[MaxEQIndex];
 
 
 //FIX_ID_005 xxxxx	//Add Cbus Event Handler
-	#define B_MSC_Waiting 		0x10
-	#define B_DevCapChange 		0x08
-	#define B_3DSupporpt 		0x04 // bit2 B_3DSupporpt
-	#define B_ReadDevCap 		0x02 // bit1 B_ReadDevCap
-	#define B_DiscoveryDone 		0x01 // bit0 B_DiscoveryDone
+#define B_MSC_Waiting 		0x10
+#define B_DevCapChange 		0x08
+#define B_3DSupporpt 		0x04 // bit2 B_3DSupporpt
+#define B_ReadDevCap 		0x02 // bit1 B_ReadDevCap
+#define B_DiscoveryDone 		0x01 // bit0 B_DiscoveryDone
 //FIX_ID_005 xxxxx
 
 //FIX_ID_014 xxxxx
-	#define B_PORT1_TimingChgEvent	0x40
-	#define B_PORT1_TMDSEvent	0x20
-	#define B_PORT1_Waiting		0x10
-	#define B_PORT0_TimingChgEvent	0x04
-	#define B_PORT0_TMDSEvent	0x02
-	#define B_PORT0_Waiting		0x01
+#define B_PORT1_TimingChgEvent	0x40
+#define B_PORT1_TMDSEvent	0x20
+#define B_PORT1_Waiting		0x10
+#define B_PORT0_TimingChgEvent	0x04
+#define B_PORT0_TMDSEvent	0x02
+#define B_PORT0_Waiting		0x01
 //FIX_ID_014 xxxxx
 
 //FIX_ID_013	xxxxx	//For MSC 3D request issue
 #define MSC_3D_VIC		(0x0010)
 #define MSC_3D_DTD		(0x0011)
 
-typedef enum _PARSE3D_STA{
+typedef enum _PARSE3D_STA {
 	PARSE3D_START,
 	PARSE3D_LEN,
 	PARSE3D_STRUCT_H,
@@ -487,18 +483,17 @@ typedef enum _PARSE3D_STA{
 	PARSE3D_MASK_L,
 	PARSE3D_VIC,
 	PARSE3D_DONE
-}PARSE3D_STA;
+} PARSE3D_STA;
 
-typedef enum _MHL3D_STATE{
+typedef enum _MHL3D_STATE {
 	MHL3D_REQ_START,
 	MHL3D_REQ_WRT,
 	MHL3D_GNT_WRT,
 	MHL3D_WRT_BURST,
 	MHL3D_REQ_DONE
-}MHL3D_STATE;
+} MHL3D_STATE;
 
-struct PARSE3D_STR
-{
+struct PARSE3D_STR {
 	unsigned char	uc3DEdidStart;
 	unsigned char	uc3DBlock;
 	unsigned char	uc3DInfor[32];
@@ -511,71 +506,69 @@ struct PARSE3D_STR
 //FIX_ID_013	xxxxx
 
 
-struct AVI_info
-{
-    unsigned char ColorMode;
-    unsigned char Colorimetry;
-    unsigned char ExtendedColorimetry;
-    unsigned char RGBQuantizationRange;
-    unsigned char YCCQuantizationRange;
-    unsigned char VIC;
-    //unsigned char PixelRepetition;
+struct AVI_info {
+	unsigned char ColorMode;
+	unsigned char Colorimetry;
+	unsigned char ExtendedColorimetry;
+	unsigned char RGBQuantizationRange;
+	unsigned char YCCQuantizationRange;
+	unsigned char VIC;
+	//unsigned char PixelRepetition;
 };
 
 
-struct it6602_dev_data
-{
-    Video_State_Type m_VState;
-    Audio_State_Type m_AState;
-    RxHDCP_State_Type m_RxHDCPState;
-    AUDIO_CAPS m_RxAudioCaps;
-    unsigned short m_SWResetTimeOut;
-    unsigned short m_VideoCountingTimer;
-    unsigned short m_AudioCountingTimer;
-    unsigned char m_ucCurrentHDMIPort;
-    unsigned char m_bOutputVideoMode;
-    unsigned char m_bInputVideoMode;
+struct it6602_dev_data {
+	Video_State_Type m_VState;
+	Audio_State_Type m_AState;
+	RxHDCP_State_Type m_RxHDCPState;
+	AUDIO_CAPS m_RxAudioCaps;
+	unsigned short m_SWResetTimeOut;
+	unsigned short m_VideoCountingTimer;
+	unsigned short m_AudioCountingTimer;
+	unsigned char m_ucCurrentHDMIPort;
+	unsigned char m_bOutputVideoMode;
+	unsigned char m_bInputVideoMode;
 //FIX_ID_039 xxxxx fix image flick when enable RGB limited / Full range convert
 #ifdef _AVOID_REDUNDANCE_CSC_
-    unsigned char m_Backup_OutputVideoMode;
-    unsigned char m_Backup_InputVideoMode;
+	unsigned char m_Backup_OutputVideoMode;
+	unsigned char m_Backup_InputVideoMode;
 #endif
 //FIX_ID_039 xxxxx
 
 
-    unsigned char m_ucSCDTOffCount;
-    unsigned char m_ucEccCount_P0;
-    unsigned char m_ucEccCount_P1;
-    unsigned char m_ucDeskew_P0;
-    unsigned char m_ucDeskew_P1;
+	unsigned char m_ucSCDTOffCount;
+	unsigned char m_ucEccCount_P0;
+	unsigned char m_ucEccCount_P1;
+	unsigned char m_ucDeskew_P0;
+	unsigned char m_ucDeskew_P1;
 
-    SRC_3D_SOURCE_CONFIG de3dframe_config;
-    DE3DFRAME s_Current3DFr;
+	SRC_3D_SOURCE_CONFIG de3dframe_config;
+	DE3DFRAME s_Current3DFr;
 
-    unsigned char oldVIC;
-    unsigned char newVIC;
-    unsigned char  f_de3dframe_hdmi;
+	unsigned char oldVIC;
+	unsigned char newVIC;
+	unsigned char  f_de3dframe_hdmi;
 
 //FIX_ID_001 xxxxx Add Auto EQ with Manual EQ
-    #ifdef _SUPPORT_EQ_ADJUST_
-    struct it6602_eq_data EQPort[2];
-    #endif
+#ifdef _SUPPORT_EQ_ADJUST_
+	struct it6602_eq_data EQPort[2];
+#endif
 //FIX_ID_001 xxxxx
 
-    //FIX_ID_003 xxxxx	//Add IT6602 Video Output Configure setting
-    Video_Output_Configure m_VidOutConfigMode;
-    Video_DataTrigger_Mode m_VidOutDataTrgger;
-    Video_OutputSync_Mode m_VidOutSyncMode;
-    //FIX_ID_003 xxxxx
+	//FIX_ID_003 xxxxx	//Add IT6602 Video Output Configure setting
+	Video_Output_Configure m_VidOutConfigMode;
+	Video_DataTrigger_Mode m_VidOutDataTrgger;
+	Video_OutputSync_Mode m_VidOutSyncMode;
+	//FIX_ID_003 xxxxx
 //FIX_ID_005 xxxxx	//Add Cbus Event Handler
-    unsigned char CBusIntEvent;
-    unsigned char CBusSeqNo;
-    unsigned char CBusWaitNo;
+	unsigned char CBusIntEvent;
+	unsigned char CBusSeqNo;
+	unsigned char CBusWaitNo;
 //FIX_ID_005 xxxxx
 
 //FIX_ID_014 xxxxx	//Add Cbus Event Handler
-    unsigned char HDMIIntEvent;
-    unsigned char HDMIWaitNo[2];
+	unsigned char HDMIIntEvent;
+	unsigned char HDMIWaitNo[2];
 //FIX_ID_014 xxxxx
 
 //FIX_ID_021 xxxxx		//To use CP_100ms for CBus_100ms and CEC_100m
@@ -589,43 +582,43 @@ struct it6602_dev_data
 //FIX_ID_021 xxxxx
 
 	//AVI_info m_avi;
-    unsigned char ColorMode;
-    unsigned char Colorimetry;
-    unsigned char ExtendedColorimetry;
-    unsigned char RGBQuantizationRange;
-    unsigned char YCCQuantizationRange;
-    unsigned char VIC;
+	unsigned char ColorMode;
+	unsigned char Colorimetry;
+	unsigned char ExtendedColorimetry;
+	unsigned char RGBQuantizationRange;
+	unsigned char YCCQuantizationRange;
+	unsigned char VIC;
 
 
 
 //FIX_ID_034 xxxxx //Add MHL HPD Control by it6602HPDCtrl( )
-    unsigned char m_DiscoveryDone;
+	unsigned char m_DiscoveryDone;
 //FIX_ID_034 xxxxx
 
 //FIX_ID_037 xxxxx //Allion MHL compliance issue !!!
 //xxxxx 2014-0529 //Manual Content On/Off
-    unsigned char m_RAP_ContentOff;
-    unsigned char m_HDCP_ContentOff;
+	unsigned char m_RAP_ContentOff;
+	unsigned char m_HDCP_ContentOff;
 //xxxxx
 //FIX_ID_037 xxxxx
 
-    PIXEL_MODE pixelMode;	//Output TTL Pixel mode
-    unsigned char GCP_CD;	//Output Color Depth
-    unsigned char  DE3DFormat_HDMIFlag:1;
-    unsigned char  FramePacking_Flag:1;
-    unsigned char  TopAndBottom_Flag:1;
-    unsigned char  SideBySide_Flag:1;
+	PIXEL_MODE pixelMode;	//Output TTL Pixel mode
+	unsigned char GCP_CD;	//Output Color Depth
+	unsigned char  DE3DFormat_HDMIFlag: 1;
+	unsigned char  FramePacking_Flag: 1;
+	unsigned char  TopAndBottom_Flag: 1;
+	unsigned char  SideBySide_Flag: 1;
 
 
 
 
-    #ifdef _IT6607_GeNPacket_Usage_
-    BYTE m_PollingPacket;
-    BYTE m_PacketState;
-    BYTE m_ACPState;
-    BYTE m_GeneralRecPackType;
-    BYTE m_GamutPacketRequest:1;
-    #endif
+#ifdef _IT6607_GeNPacket_Usage_
+	BYTE m_PollingPacket;
+	BYTE m_PacketState;
+	BYTE m_ACPState;
+	BYTE m_GeneralRecPackType;
+	BYTE m_GamutPacketRequest: 1;
+#endif
 
 //#if(_SUPPORT_HDCP_)
 //    //HDCP
@@ -634,34 +627,34 @@ struct it6602_dev_data
 //    unsigned int HDCPFireCnt ;
 //#endif
 
-    //CBUS MSC
-    unsigned char Mhl_devcap[16];
-    unsigned char txmsgdata[2];
-    unsigned char rxmsgdata[2];
-    unsigned char txscrpad[16];
-    unsigned char rxscrpad[16];
-    unsigned char RCPTxArray[MAXRCPINDEX];
-    unsigned char	RCPhead;
-    unsigned char	RCPtail;
-    RCPState_Type RCPState;
-    RCPResult_Type RCPResult;
+	//CBUS MSC
+	unsigned char Mhl_devcap[16];
+	unsigned char txmsgdata[2];
+	unsigned char rxmsgdata[2];
+	unsigned char txscrpad[16];
+	unsigned char rxscrpad[16];
+	unsigned char RCPTxArray[MAXRCPINDEX];
+	unsigned char	RCPhead;
+	unsigned char	RCPtail;
+	RCPState_Type RCPState;
+	RCPResult_Type RCPResult;
 //FIX_ID_015	xxxxx peer device no response
-    unsigned char RCPCheckResponse;
+	unsigned char RCPCheckResponse;
 //FIX_ID_015	xxxxx
 
 //FIX_ID_024	xxxxx Fixed for RCP compliance issue
-    unsigned char m_bRCPTimeOut:1;
-    unsigned char m_bRCPError:1;
+	unsigned char m_bRCPTimeOut: 1;
+	unsigned char m_bRCPError: 1;
 //FIX_ID_024	xxxxx
-    unsigned char m_bRxAVmute:1;
-    unsigned char m_bVideoOnCountFlag:1;
-    unsigned char m_MuteAutoOff:1;
-    unsigned char m_bUpHDMIMode:1;
-    unsigned char m_bUpHDCPMode:1;
-    unsigned char m_NewAVIInfoFrameF:1;
-    unsigned char m_NewAUDInfoFrameF:1;
-    unsigned char m_HDCPRepeater:1;
-    unsigned char m_MuteByPKG:1;
+	unsigned char m_bRxAVmute: 1;
+	unsigned char m_bVideoOnCountFlag: 1;
+	unsigned char m_MuteAutoOff: 1;
+	unsigned char m_bUpHDMIMode: 1;
+	unsigned char m_bUpHDCPMode: 1;
+	unsigned char m_NewAVIInfoFrameF: 1;
+	unsigned char m_NewAUDInfoFrameF: 1;
+	unsigned char m_HDCPRepeater: 1;
+	unsigned char m_MuteByPKG: 1;
 
 };
 
@@ -688,7 +681,7 @@ struct it6602_dev_data
 char IT6602_fsm_init(void);
 /* HDMI RX functions   *********************************************************/
 void it6602PortSelect(unsigned char ucPortSel);
-void it6602HPDCtrl(unsigned char ucport,unsigned char ucEnable)	;
+void it6602HPDCtrl(unsigned char ucport, unsigned char ucEnable)	;
 /* HDMI Audio function    *********************************************************/
 /* HDMI Video function    *********************************************************/
 /* HDMI Interrupt function    *********************************************************/
@@ -729,23 +722,24 @@ class IT66021 : public device::I2C
 public:
 	IT66021(I2CARG arg);
 	virtual ~IT66021();
-	
+
 	EDID *edid;
 
 	work_s work;
-	
+
 	struct it6602_dev_data it6602DEV;
 
 	STRU_HDMI_RX_STATUS s_st_hdmiRxStatus;
 
 	uint8_t HDMI_RX_MapToDeviceIndex(ENUM_HAL_HDMI_RX e_hdmiIndex);
 
-	uint32_t HDMI_RX_CheckVideoFormatChangeOrNot(ENUM_HAL_HDMI_RX e_hdmiIndex, 
-                                                      uint16_t u16_width, 
-                                                      uint16_t u16_hight, 
-                                                      uint8_t u8_framerate);
+	uint32_t HDMI_RX_CheckVideoFormatChangeOrNot(ENUM_HAL_HDMI_RX e_hdmiIndex,
+			uint16_t u16_width,
+			uint16_t u16_hight,
+			uint8_t u8_framerate);
 
-	uint8_t IT_66021_GetVideoFormat(uint8_t index, uint16_t* widthPtr, uint16_t* hightPtr, uint8_t* framteratePtr, uint8_t* vic);
+	uint8_t IT_66021_GetVideoFormat(uint8_t index, uint16_t *widthPtr, uint16_t *hightPtr, uint8_t *framteratePtr,
+					uint8_t *vic);
 
 	void HDMI_RX_CheckFormatStatus(ENUM_HAL_HDMI_RX e_hdmiIndex, uint32_t b_noDiffCheck);
 
@@ -762,7 +756,7 @@ public:
 
 	unsigned char mhlrxrd(unsigned char offset);
 	unsigned char mhlrxwr(unsigned char offset, unsigned char ucdata);
-	
+
 	int read(unsigned address, void *data, unsigned count);
 	int write(unsigned address, void *data, unsigned count);
 
@@ -870,7 +864,7 @@ public:
 #endif
 
 
-/* EDID RAM  functions    *******************************************************/
+	/* EDID RAM  functions    *******************************************************/
 #ifdef _SUPPORT_EDID_RAM_
 	unsigned char UpdateEDIDRAM(unsigned char *pEDID, unsigned char BlockNUM);
 
@@ -880,7 +874,8 @@ public:
 	void EDIDRAMInitial(unsigned char *pIT6602EDID);
 	// unsigned char Find_Phyaddress_Location(_CODE unsigned char *pEDID,unsigned char Block_Number);
 	unsigned char Find_Phyaddress_Location(unsigned char *pEDID, unsigned char Block_Number);
-	void UpdateEDIDReg(unsigned char u8_VSDB_Addr, unsigned char CEC_AB, unsigned char CEC_CD, unsigned char Block1_CheckSum);
+	void UpdateEDIDReg(unsigned char u8_VSDB_Addr, unsigned char CEC_AB, unsigned char CEC_CD,
+			   unsigned char Block1_CheckSum);
 	void PhyAdrSet(void);
 #endif
 

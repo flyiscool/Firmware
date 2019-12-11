@@ -5,12 +5,12 @@
 
 #define MS_TimeOut(x) (x+1)
 
-#ifndef TRUE 
-	#define TRUE  (1)
+#ifndef TRUE
+#define TRUE  (1)
 #endif
 
 #ifndef FALSE
-	#define FALSE (0)
+#define FALSE (0)
 #endif
 
 // #define IT66021DEBUG

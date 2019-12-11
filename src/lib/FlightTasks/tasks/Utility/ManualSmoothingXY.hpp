@@ -55,7 +55,7 @@ public:
 	 * @param dt: time delta in seconds
 	 */
 	_EXT_ITCM void smoothVelocity(matrix::Vector2f &vel_sp, const matrix::Vector2f &vel,  const float &yaw,
-			    const float &yawrate_sp, const float dt);
+				      const float &yawrate_sp, const float dt);
 
 	/* User intention: brake or acceleration */
 	enum class Intention {
@@ -79,11 +79,12 @@ public:
 
 private:
 	_EXT_ITCM void _updateAcceleration(matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const float &yaw,
-				 const float &yawrate_sp, const float dt);
+					   const float &yawrate_sp, const float dt);
 	_EXT_ITCM Intention _getIntention(const matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const float &yaw,
-				const float &yawrate_sp);
-	_EXT_ITCM void _getStateAcceleration(const matrix::Vector2f &vel_sp, const matrix::Vector2f &vel, const Intention &intention,
-				   const float dt);
+					  const float &yawrate_sp);
+	_EXT_ITCM void _getStateAcceleration(const matrix::Vector2f &vel_sp, const matrix::Vector2f &vel,
+					     const Intention &intention,
+					     const float dt);
 	_EXT_ITCM void _velocitySlewRate(matrix::Vector2f &vel_sp, const float dt);
 	_EXT_ITCM matrix::Vector2f _getWorldToHeadingFrame(const matrix::Vector2f &vec, const float &yaw);
 	_EXT_ITCM matrix::Vector2f _getHeadingToWorldFrame(const matrix::Vector2f &vec, const float &yaw);

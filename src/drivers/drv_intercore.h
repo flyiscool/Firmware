@@ -55,25 +55,23 @@ __BEGIN_DECLS
 #define SYS_EVENT_ID_USB_SWITCH_HOST_DEVICE           (SYS_EVENT_LEVEL_HIGH_MASK   | 0x0007)
 
 
-typedef enum
-{
-    ENCODER_INPUT_SRC_HDMI_0 = 1,
-    ENCODER_INPUT_SRC_HDMI_1,
-    ENCODER_INPUT_SRC_DVP_0,
-    ENCODER_INPUT_SRC_DVP_1,
-    ENCODER_INPUT_SRC_MIPI,
+typedef enum {
+	ENCODER_INPUT_SRC_HDMI_0 = 1,
+	ENCODER_INPUT_SRC_HDMI_1,
+	ENCODER_INPUT_SRC_DVP_0,
+	ENCODER_INPUT_SRC_DVP_1,
+	ENCODER_INPUT_SRC_MIPI,
 } ENUM_ENCODER_INPUT_SRC;
 
 
-typedef struct _SysEvent_H264InputFormatChangeParameter
-{
-    uint8_t  index;
-    uint16_t width;
-    uint16_t hight;
-    uint8_t  framerate;
-    uint8_t  vic;
-    ENUM_ENCODER_INPUT_SRC  e_h264InputSrc;
-    uint8_t  reserve[SYS_EVENT_HANDLER_PARAMETER_LENGTH - 9];
+typedef struct _SysEvent_H264InputFormatChangeParameter {
+	uint8_t  index;
+	uint16_t width;
+	uint16_t hight;
+	uint8_t  framerate;
+	uint8_t  vic;
+	ENUM_ENCODER_INPUT_SRC  e_h264InputSrc;
+	uint8_t  reserve[SYS_EVENT_HANDLER_PARAMETER_LENGTH - 9];
 } STRU_SysEvent_H264InputFormatChangeParameter;
 
 

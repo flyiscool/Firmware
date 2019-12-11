@@ -41,13 +41,13 @@
 class EDID : public device::I2C
 {
 public:
-    EDID(I2CARG arg);
-    ~EDID();
+	EDID(I2CARG arg);
+	~EDID();
 
-    virtual int init();
-    virtual int probe();
+	virtual int init();
+	virtual int probe();
 
-    int read(unsigned address, void *data, unsigned count);
+	int read(unsigned address, void *data, unsigned count);
 	int write(unsigned address, void *data, unsigned count);
 };
 

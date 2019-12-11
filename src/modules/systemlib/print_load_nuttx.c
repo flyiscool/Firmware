@@ -114,7 +114,7 @@ tstate_name(const tstate_t s)
 }
 
 _EXT_ITCM void print_load_buffer(uint64_t t, char *buffer, int buffer_length, print_load_callback_f cb, void *user,
-		       struct print_load_s *print_state)
+				 struct print_load_s *print_state)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat" // NuttX uses a different printf format

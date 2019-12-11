@@ -81,16 +81,14 @@ static char hw_info[] = HW_INFO_INIT;
 _EXT_ITCM static int dn_to_ordinal(uint16_t dn)
 {
 
-	const struct 
-    {
-		uint16_t low;  
-		uint16_t high; 
-	} dn2o[] = 
-    {
-		                //    R1(up) R2(down) V tpy   V min   V Max   DN Min  DN Max
-		{0   ,  205 },  //0   NC     0R       0.000   0.000   0.125   0       205                                    
-		{206 ,  615 },  //1   180K   20K      0.025   0.125   0.375   206     615 
-		{616 ,  1024},  //2   82K    20K      0.490   0.375   0.625   616     1024
+	const struct {
+		uint16_t low;
+		uint16_t high;
+	} dn2o[] = {
+		//    R1(up) R2(down) V tpy   V min   V Max   DN Min  DN Max
+		{0,  205 },     //0   NC     0R       0.000   0.000   0.125   0       205
+		{206,  615 },   //1   180K   20K      0.025   0.125   0.375   206     615
+		{616,  1024},   //2   82K    20K      0.490   0.375   0.625   616     1024
 		{1025,  1434},  //3   120K   51K      0.756   0.625   0.875   1025    1434
 		{1435,  1843},  //4   150K   100K     1.000   0.875   1.125   1435    1843
 		{1844,  2253},  //5   100K   100K     1.250   1.125   1.375   1844    2253
@@ -101,10 +99,8 @@ _EXT_ITCM static int dn_to_ordinal(uint16_t dn)
 		{3892,  4095},  //10  0R     NC       2.500   2.375   2.500   3892    4095
 	};
 
-	for (unsigned int i = 0; i < arraySize(dn2o); i++) 
-    {
-		if (dn >= dn2o[i].low && dn <= dn2o[i].high) 
-        {
+	for (unsigned int i = 0; i < arraySize(dn2o); i++) {
+		if (dn >= dn2o[i].low && dn <= dn2o[i].high) {
 			return i;
 		}
 	}
@@ -144,7 +140,7 @@ _EXT_ITCM static int dn_to_ordinal(uint16_t dn)
  *
  ************************************************************************************/
 
-_EXT_ITCM static int read_id_dn( int *id, int adc_channel)
+_EXT_ITCM static int read_id_dn(int *id, int adc_channel)
 {
 	int rv = -EIO;
 	const unsigned int samples  = 16;
@@ -152,45 +148,41 @@ _EXT_ITCM static int read_id_dn( int *id, int adc_channel)
 	uint32_t dn_sum = 0;
 	uint16_t dn = 0;
 
-	if (board_adc_init() == OK) 
-	{
+	if (board_adc_init() == OK) {
 		/* Read the value */
-		for (unsigned av = 0; av < samples; av++) 
-		{
+		for (unsigned av = 0; av < samples; av++) {
 			dn = board_adc_sample(adc_channel);
-			hwinfo("dn = %d\r\n",dn);
+			hwinfo("dn = %d\r\n", dn);
+
 			if (dn == 0xffff) { break; }
 
 			dn_sum  += dn;
 		}
 
-		if (dn != 0xffff) 
-		{
+		if (dn != 0xffff) {
 			*id = dn_sum / samples;
 			rv = OK;
 		}
 	}
-	
+
 	return rv;
 }
 
 
 _EXT_ITCM static int determine_hw_info(int *revision, int *version)
 {
-    int dn;
-    int rv = read_id_dn(&dn, ADC_HW_REV_SENSE_CHANNEL);
+	int dn;
+	int rv = read_id_dn(&dn, ADC_HW_REV_SENSE_CHANNEL);
 
-    if (rv == OK) 
-    {
-        *revision =  dn_to_ordinal(dn);
-    }
+	if (rv == OK) {
+		*revision =  dn_to_ordinal(dn);
+	}
 
-    rv = read_id_dn(&dn, ADC_HW_VER_SENSE_CHANNEL);
+	rv = read_id_dn(&dn, ADC_HW_VER_SENSE_CHANNEL);
 
-    if (rv == OK) 
-    {
-        *version =  dn_to_ordinal(dn);
-    }
+	if (rv == OK) {
+		*version =  dn_to_ordinal(dn);
+	}
 
 	return rv;
 }
@@ -285,8 +277,7 @@ int board_determine_hw_info()
 {
 	int rv = determine_hw_info(&hw_revision, &hw_version);
 
-	if (rv == OK) 
-	{
+	if (rv == OK) {
 		hw_info[HW_INFO_INIT_REV] = board_get_hw_revision() + '0';
 		hw_info[HW_INFO_INIT_VER] = board_get_hw_version() + '0';
 	}

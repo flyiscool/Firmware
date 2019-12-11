@@ -82,9 +82,9 @@ public:
 	 * @param throttle_normalized: throttle from 0 to 1
 	 */
 	_EXT_ITCM void updateBatteryStatus(hrt_abstime timestamp, float voltage_v, float current_a,
-				 bool connected, bool selected_source, int priority,
-				 float throttle_normalized,
-				 bool armed, battery_status_s *status);
+					   bool connected, bool selected_source, int priority,
+					   float throttle_normalized,
+					   bool armed, battery_status_s *status);
 
 private:
 	_EXT_ITCM void filterVoltage(float voltage_v);

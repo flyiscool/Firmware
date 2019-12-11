@@ -88,7 +88,7 @@ static uint32_t g_ledmap[] = {
 
 #endif
 
- __EXPORT void led_init(void)
+__EXPORT void led_init(void)
 {
 	/* Configure LED GPIOs for output */
 	for (size_t l = 0; l < (sizeof(g_ledmap) / sizeof(g_ledmap[0])); l++) {
@@ -109,19 +109,19 @@ _EXT_ITCM static bool phy_get_led(int led)
 	return !ar_gpioread(g_ledmap[led]);
 }
 
- __EXPORT void led_on(int led)
+__EXPORT void led_on(int led)
 {
 	phy_set_led(xlat(led), true);
 }
 
- __EXPORT void led_off(int led)
+__EXPORT void led_off(int led)
 {
 	phy_set_led(xlat(led), false);
 }
 
- __EXPORT void led_toggle(int led)
+__EXPORT void led_toggle(int led)
 {
-	
+
 	phy_set_led(xlat(led), !phy_get_led(xlat(led)));
 }
 

@@ -25,82 +25,73 @@
 #define IT66021_DEFAULT_BUS_SPEED 100000
 
 
-typedef struct 
-{   
-    const char *name;
-    const char *devname;
-    uint8_t bus;
-    uint32_t address;
-    uint32_t frequency;
+typedef struct {
+	const char *name;
+	const char *devname;
+	uint8_t bus;
+	uint32_t address;
+	uint32_t frequency;
 
 } I2CARG; // I2C parameter
 
-typedef enum
-{
+typedef enum {
 	IT66021TYPE_A,
 	IT66021TYPE_B,
 } IT66021TYPE;
 
 
-class IT66021; 
+class IT66021;
 
-typedef struct
-{
-    I2CARG *it66021arg;
-	
+typedef struct {
+	I2CARG *it66021arg;
+
 	I2CARG *edidarg;
 
 	IT66021TYPE type;
 
-    IT66021 *dev;
+	IT66021 *dev;
 
 } IT66021_BUS_ARG;
 
 typedef void (*HAL_HDMI_RxHandle)(void *pu8_rxBuf);
 
-typedef struct
-{
-    uint16_t u16_width;
-    uint16_t u16_hight;
-    uint8_t  u8_framerate;
-    uint8_t  u8_vic;
+typedef struct {
+	uint16_t u16_width;
+	uint16_t u16_hight;
+	uint8_t  u8_framerate;
+	uint8_t  u8_vic;
 } STRU_HDMI_RX_OUTPUT_FORMAT;
 
 
-typedef enum
-{
-    HAL_HDMI_POLLING = 0,
-    HAL_HDMI_INTERRUPT,
+typedef enum {
+	HAL_HDMI_POLLING = 0,
+	HAL_HDMI_INTERRUPT,
 } ENUM_HAL_HDMI_GETFORMATMETHOD;
 
 
-typedef enum
-{
-    HAL_HDMI_RX_16BIT = 0,
-    HAL_HDMI_RX_8BIT,
+typedef enum {
+	HAL_HDMI_RX_16BIT = 0,
+	HAL_HDMI_RX_8BIT,
 } ENUM_HAL_HDMI_COLOR_DEPTH;
 
 
-typedef struct
-{
-    ENUM_HAL_HDMI_GETFORMATMETHOD e_getFormatMethod;
-    ENUM_HAL_HDMI_COLOR_DEPTH e_colorDepth;
-    // STRU_HDMI_GPIOCONFIGURE st_interruptGpio;
-    uint8_t u8_hdmiToEncoderCh;
+typedef struct {
+	ENUM_HAL_HDMI_GETFORMATMETHOD e_getFormatMethod;
+	ENUM_HAL_HDMI_COLOR_DEPTH e_colorDepth;
+	// STRU_HDMI_GPIOCONFIGURE st_interruptGpio;
+	uint8_t u8_hdmiToEncoderCh;
 } STRU_HDMI_CONFIGURE;
 
-typedef struct
-{
-    uint8_t u8_devEnable;
-    STRU_HDMI_RX_OUTPUT_FORMAT st_videoFormat;
-    STRU_HDMI_CONFIGURE        st_configure;
+typedef struct {
+	uint8_t u8_devEnable;
+	STRU_HDMI_RX_OUTPUT_FORMAT st_videoFormat;
+	STRU_HDMI_CONFIGURE        st_configure;
 } STRU_HDMI_RX_STATUS;
 
-typedef enum
-{
-    HAL_HDMI_RX_1 = 0,
-    HAL_HDMI_RX_0,
-    HAL_HDMI_RX_MAX
+typedef enum {
+	HAL_HDMI_RX_1 = 0,
+	HAL_HDMI_RX_0,
+	HAL_HDMI_RX_MAX
 } ENUM_HAL_HDMI_RX;
 
 

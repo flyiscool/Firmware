@@ -288,7 +288,7 @@ MS5611::init()
 	bool autodetect = false;
 
 	ret = CDev::init();
-	
+
 	if (ret != OK) {
 		DEVICE_DEBUG("CDev init failed");
 		goto out;
@@ -325,6 +325,7 @@ MS5611::init()
 		}
 
 		usleep(MS5611_CONVERSION_INTERVAL);
+
 		if (OK != collect()) {
 			ret = -EIO;
 			break;
@@ -383,16 +384,14 @@ MS5611::init()
 		brp.device_id = _device_id.devid;
 
 		ret = OK;
-		
-		if (_interface->get_device_address() == PX4_SPIDEV_EXT_BARO)
-		{
+
+		if (_interface->get_device_address() == PX4_SPIDEV_EXT_BARO) {
 			_baro_topic = orb_advertise_multi(ORB_ID(sensor_baro), &brp,
-						  &_orb_class_instance, ORB_PRIO_HIGH );
-		}
-		else 
-		{
+							  &_orb_class_instance, ORB_PRIO_HIGH);
+
+		} else {
 			_baro_topic = orb_advertise_multi(ORB_ID(sensor_baro), &brp,
-						  &_orb_class_instance, ORB_PRIO_DEFAULT );
+							  &_orb_class_instance, ORB_PRIO_DEFAULT);
 		}
 
 		if (_baro_topic == nullptr) {
@@ -867,7 +866,7 @@ struct ms5611_bus_option {
 	MS5611 *dev;
 } bus_options[] = {
 #if defined(PX4_SPIDEV_EXT_BARO) && defined(PX4_SPI_BUS_EXT)
-	{ MS5611_BUS_SPI_EXTERNAL, "/dev/ms5611_spi_ext", &MS5611_spi_interface, PX4_SPI_BUS_EXT + 1 , NULL }, // due to  PX4_SPI_BUS_EXT == PX4_SPI_BUS_BARO
+	{ MS5611_BUS_SPI_EXTERNAL, "/dev/ms5611_spi_ext", &MS5611_spi_interface, PX4_SPI_BUS_EXT + 1, NULL },  // due to  PX4_SPI_BUS_EXT == PX4_SPI_BUS_BARO
 #endif
 #ifdef PX4_SPIDEV_BARO
 	{ MS5611_BUS_SPI_INTERNAL, "/dev/ms5611_spi_int", &MS5611_spi_interface, PX4_SPI_BUS_BARO, NULL },
@@ -941,7 +940,7 @@ start_bus(struct ms5611_bus_option &bus, enum MS56XX_DEVICE_TYPES device_type)
 	if (bus.dev != nullptr) {
 		errx(1, "bus option already started");
 	}
-	
+
 	prom_u prom_buf;
 	device::Device *interface = bus.interface_constructor(prom_buf, bus.busnum);
 

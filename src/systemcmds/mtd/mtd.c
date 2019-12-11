@@ -377,7 +377,7 @@ mtd_start(char *partition_names[], unsigned n_partitions)
 }
 
 _EXT_ITCM int mtd_get_geometry(unsigned long *blocksize, unsigned long *erasesize, unsigned long *neraseblocks,
-		     unsigned *blkpererase, unsigned *nblocks, unsigned *partsize, unsigned n_partitions)
+			       unsigned *blkpererase, unsigned *nblocks, unsigned *partsize, unsigned n_partitions)
 {
 	/* Get the geometry of the FLASH device */
 

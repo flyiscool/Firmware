@@ -127,8 +127,9 @@ public:
 	 * @param hor_velocity Horizontal velocity of traffic, in m/s
 	 * @param ver_velocity Vertical velocity of traffic, in m/s
 	 */
-	_EXT_ITCM void		fake_traffic(const char *callsign, float distance, float direction, float traffic_heading, float altitude_diff,
-				     float hor_velocity, float ver_velocity);
+	_EXT_ITCM void		fake_traffic(const char *callsign, float distance, float direction, float traffic_heading,
+					     float altitude_diff,
+					     float hor_velocity, float ver_velocity);
 
 	/**
 	 * Check nearby traffic for potential collisions

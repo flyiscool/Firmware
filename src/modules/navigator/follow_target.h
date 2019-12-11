@@ -143,5 +143,6 @@ private:
 	/**
 	 * Set follow_target item
 	 */
-	_EXT_ITCM void set_follow_target_item(struct mission_item_s *item, float min_clearance, follow_target_s &target, float yaw);
+	_EXT_ITCM void set_follow_target_item(struct mission_item_s *item, float min_clearance, follow_target_s &target,
+					      float yaw);
 };

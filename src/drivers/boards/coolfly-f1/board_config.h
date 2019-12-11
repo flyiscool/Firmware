@@ -60,7 +60,7 @@
  */
 //#define PX4_FMUV5_RC00
 
-#define COOLFLY_F1						
+#define COOLFLY_F1
 
 #define PX4_FMUV5_RC01
 #define BOARD_HAS_LTC4417
@@ -161,10 +161,10 @@
 // #define PX4_SPIDEV_AUX_MEM          PX4_MK_SPI_SEL(PX4_SPI_BUS_SENSORS,4)
 
 #define PX4_SENSOR_BUS_CS_GPIO      {	GPIO_SPI6_CS1_ICM20689, 	\
-										GPIO_SPI6_CS2_ICM20602, 	\
-										GPIO_SPI6_CS3_BMI055_GYRO, 	\
-										GPIO_SPI6_CS4_BMI055_ACC	\
-									}
+		GPIO_SPI6_CS2_ICM20602, 	\
+		GPIO_SPI6_CS3_BMI055_GYRO, 	\
+		GPIO_SPI6_CS4_BMI055_ACC	\
+	}
 
 #define PX4_SENSORS_BUS_FIRST_CS    PX4_SPIDEV_ICM_20689
 #define PX4_SENSORS_BUS_LAST_CS     GPIO_SPI6_CS4_BMI055_ACC
@@ -175,9 +175,9 @@
 #define PX4_SPIDEV_EXT_BARO					PX4_SPIDEV_BARO_ONBOARD
 
 #define PX4_BARO_BUS_CS_GPIO            {\
-											GPIO_SPI4_CS1_MS5611, 		  \
-											GPIO_SPI4_CS2_MS5611_ONBOARD  \
-										}
+		GPIO_SPI4_CS1_MS5611, 		  \
+		GPIO_SPI4_CS2_MS5611_ONBOARD  \
+	}
 
 
 #define PX4_BARO_BUS_FIRST_CS       PX4_SPIDEV_BARO
@@ -265,8 +265,8 @@
 	 (1 << ADC_HW_VER_SENSE_CHANNEL)           | \
 	 (1 << ADC_HW_REV_SENSE_CHANNEL)           | \
 	 (1 << ADC1_SPARE_1_CHANNEL)               | \
-     (1 << ADC_TEMPERATURE_AR8020_CHANNEL)     | \
-     (1 << ADC_TEMPERATURE_PA_A_CHANNEL)       | \
+	 (1 << ADC_TEMPERATURE_AR8020_CHANNEL)     | \
+	 (1 << ADC_TEMPERATURE_PA_A_CHANNEL)       | \
 	 (1 << ADC_TEMPERATURE_PA_B_CHANNEL))
 
 
@@ -283,7 +283,7 @@
 
 /* HW Version and Revision drive signals Default to 1 to detect */
 
-#define BOARD_HAS_HW_VERSIONING				
+#define BOARD_HAS_HW_VERSIONING
 
 
 #define HW_INFO_INIT         {'V','2','x', 'x',0}
@@ -552,7 +552,7 @@
 
 
 #define PX4_GPIO_PWM_INIT_LIST { \
-        GPIO_GPIO9_INPUT, \
+		GPIO_GPIO9_INPUT, \
 		GPIO_GPIO8_INPUT, \
 		GPIO_GPIO7_INPUT, \
 		GPIO_GPIO6_INPUT, \
@@ -578,7 +578,7 @@
 		GPIO_CAN0_RX,       \
 		GPIO_CAN1_TX,       \
 		GPIO_CAN1_RX,       \
-        GPIO_LNA_BYPASS,    \
+		GPIO_LNA_BYPASS,    \
 		GPIO_nPOWER_IN_A,                 	\
 		GPIO_nPOWER_IN_B,                 	\
 		GPIO_nPOWER_IN_C,                 	\
@@ -633,15 +633,15 @@
 #define GPIO_SPI3_MISO     	(GPIO_OUTPUT|GPIO_OUTRESET|GPIO_PIN61)
 
 #define CF_GPIO_INIT_NOUSED_LIST {    \
-        GPIO_SPI2_CS,  		\
-        GPIO_SPI2_SCK, 		\
-        GPIO_SPI2_MOSI,		\
-        GPIO_SPI2_MISO,     \
-        GPIO_SPI3_CS,  		\
-        GPIO_SPI3_SCK, 		\
-        GPIO_SPI3_MOSI,		\
-        GPIO_SPI3_MISO      \
-    }
+		GPIO_SPI2_CS,  		\
+		GPIO_SPI2_SCK, 		\
+		GPIO_SPI2_MOSI,		\
+		GPIO_SPI2_MISO,     \
+		GPIO_SPI3_CS,  		\
+		GPIO_SPI3_SCK, 		\
+		GPIO_SPI3_MOSI,		\
+		GPIO_SPI3_MISO      \
+	}
 
 
 #define GPIO_DVP0_DATA0     (GPIO_DEFAULT|GPIO_PIN16)
@@ -674,32 +674,32 @@
 #define GPIO_ITE_INT1     	(GPIO_INPUT|GPIO_PIN27)
 
 #define CF_GPIO_INIT_DVP_LIST {    \
-        GPIO_DVP0_DATA0,    \
-        GPIO_DVP0_DATA1,    \
-        GPIO_DVP0_DATA2,    \
-        GPIO_DVP0_DATA3,    \
-        GPIO_DVP0_DATA4,    \
-        GPIO_DVP0_DATA5,    \
-        GPIO_DVP0_DATA6,    \
-        GPIO_DVP0_DATA7,    \
-        GPIO_DVP0_VS,       \
-        GPIO_DVP0_HS,       \
-        GPIO_DVP0_DE,       \
-        GPIO_DVP1_DATA0,    \
-        GPIO_DVP1_DATA1,    \
-        GPIO_DVP1_DATA2,    \
-        GPIO_DVP1_DATA3,    \
-        GPIO_DVP1_DATA4,    \
-        GPIO_DVP1_DATA5,    \
-        GPIO_DVP1_DATA6,    \
-        GPIO_DVP1_DATA7,    \
-        GPIO_DVP1_VS , 	 	\
-        GPIO_DVP1_HS ,  	\
-        GPIO_DVP1_DE,		\
+		GPIO_DVP0_DATA0,    \
+		GPIO_DVP0_DATA1,    \
+		GPIO_DVP0_DATA2,    \
+		GPIO_DVP0_DATA3,    \
+		GPIO_DVP0_DATA4,    \
+		GPIO_DVP0_DATA5,    \
+		GPIO_DVP0_DATA6,    \
+		GPIO_DVP0_DATA7,    \
+		GPIO_DVP0_VS,       \
+		GPIO_DVP0_HS,       \
+		GPIO_DVP0_DE,       \
+		GPIO_DVP1_DATA0,    \
+		GPIO_DVP1_DATA1,    \
+		GPIO_DVP1_DATA2,    \
+		GPIO_DVP1_DATA3,    \
+		GPIO_DVP1_DATA4,    \
+		GPIO_DVP1_DATA5,    \
+		GPIO_DVP1_DATA6,    \
+		GPIO_DVP1_DATA7,    \
+		GPIO_DVP1_VS , 	 	\
+		GPIO_DVP1_HS ,  	\
+		GPIO_DVP1_DE,		\
 		GPIO_ITE_RST0,      \
 		GPIO_ITE_RST1,      \
-        GPIO_ITE_INT0,      \
-        GPIO_ITE_INT1      	\
+		GPIO_ITE_INT0,      \
+		GPIO_ITE_INT1      	\
 	}
 
 

@@ -36,9 +36,9 @@
 #include "px4_log.h"
 
 
-EDID::EDID(I2CARG arg) : I2C(arg.name, arg.devname, arg.bus, arg.address,  arg.frequency) 
+EDID::EDID(I2CARG arg) : I2C(arg.name, arg.devname, arg.bus, arg.address,  arg.frequency)
 {
-    PX4_INFO("EDID INIT \r\n");
+	PX4_INFO("EDID INIT \r\n");
 }
 
 EDID::~EDID()
@@ -53,8 +53,7 @@ int EDID::init()
 	int ret;
 	ret = I2C::init();
 
-	if (ret != OK)
-	{
+	if (ret != OK) {
 		PX4_INFO("ret != OK\r\n");
 		return ret;
 	}
@@ -92,10 +91,10 @@ int EDID::write(unsigned address, void *data, unsigned count)
 {
 	uint8_t buf[32];
 
-	if (sizeof(buf) < (count + 1))
-	{
+	if (sizeof(buf) < (count + 1)) {
 		return -EIO;
 	}
+
 	buf[0] = address;
 
 	memcpy(&buf[1], data, count);
