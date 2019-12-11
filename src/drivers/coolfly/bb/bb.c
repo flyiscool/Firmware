@@ -221,7 +221,6 @@ static void bb_print(BB_STRU_WIRELESS_INFO_DISPLAY *pst_bbInfoAddr, int fd)
 		dprintf(fd, "\033[2J\033[H");
 	}
 
-<<<<<<< 42466c03ef493b4fbea7ea998b881a11b1fd5539:src/drivers/coolfly/bb/bb.c
     printf("\r\n------------------- BB INFO STATUS --------------------\r\n\r\n");
 
     printf("    %-20s    0x%x\r\n", "snr_vlaue[0]",   infoDisplay.snr_vlaue[0]);
@@ -248,34 +247,6 @@ static void bb_print(BB_STRU_WIRELESS_INFO_DISPLAY *pst_bbInfoAddr, int fd)
     printf("\r\n\r\n");
 
     fflush(stdout);
-=======
-	printf("\r\n------------------- BB INFO STATUS --------------------\r\n\r\n");
-
-	printf("    %-20s    0x%x\r\n", "snr_vlaue[0]",   infoDisplay.snr_vlaue[0]);
-	printf("    %-20s    0x%x\r\n", "snr_vlaue[1]",   infoDisplay.snr_vlaue[1]);
-	printf("    %-20s    0x%x\r\n", "agc_value[0]",   infoDisplay.agc_value[0]);
-	printf("    %-20s    0x%x\r\n", "agc_value[1]",   infoDisplay.agc_value[1]);
-	printf("    %-20s    0x%x\r\n", "agc_value[2]",   infoDisplay.agc_value[2]);
-	printf("    %-20s    0x%x\r\n", "agc_value[3]",   infoDisplay.agc_value[3]);
-	printf("    %-20s    %s\r\n", "modulation_mode", modulationModeName(infoDisplay.modulation_mode));
-	printf("    %-20s    %d\r\n", "IT_channel",     infoDisplay.IT_channel);
-	printf("    %-20s    %d\r\n", "lock_status",    infoDisplay.lock_status);
-	printf("    %-20s    %d\r\n", "video_width[0]", infoDisplay.video_width[0]);
-	printf("    %-20s    %d\r\n", "video_width[1]", infoDisplay.video_width[1]);
-	printf("    %-20s    %d\r\n", "video_height[0]", infoDisplay.video_height[0]);
-	printf("    %-20s    %d\r\n", "video_height[1]", infoDisplay.video_height[1]);
-	printf("    %-20s    %d\r\n", "frameRate[0]",   infoDisplay.frameRate[0]);
-	printf("    %-20s    %d\r\n", "frameRate[1]",   infoDisplay.frameRate[1]);
-	printf("    %-20s    %d\r\n", "encoder_bitrate[0]",  infoDisplay.encoder_bitrate[0]);
-	printf("    %-20s    %d\r\n", "encoder_bitrate[1]",  infoDisplay.encoder_bitrate[1]);
-	printf("    %-20s    %d\r\n", "rc_modulation_mode",  infoDisplay.rc_modulation_mode);
-	printf("    %-20s    %d/%d\r\n", "u8_rclock",      lockCnt, unlockCnt);
-	printf("    %-20s    %d\r\n", "sky_snr",        infoDisplay.sky_snr);
-
-	printf("\r\n\r\n");
-
-	fflush(stdout);
->>>>>>> update the format:src/systemcmds/bb/bb.c
 }
 
 /**
