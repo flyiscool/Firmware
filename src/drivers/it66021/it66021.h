@@ -5,12 +5,6 @@
 #include <stdint.h>
 #include "it66021_define.h"
 
-
-
-
-
-
-// #define IT66021A_HDMI_ADDR (0x98 >> 1)
 #define IT66021B_HDMI_ADDR (0x90)
 
 
@@ -708,6 +702,7 @@ extern unsigned char m_UartCmd;
 #include <drivers/device/i2c.h>
 #include <px4_workqueue.h>
 #include "edid.h"
+#include "px4_module.h"
 
 #ifndef _CODE
 #define _CODE
@@ -717,11 +712,17 @@ extern unsigned char m_UartCmd;
 #define HAL_HDMI_RX_FALSE                           (HAL_HDMI_RX_ERR_MASK | 0x9)
 
 
-class IT66021 : public device::I2C
+class IT66021: public device::I2C, public ModuleBase<IT66021> 
 {
 public:
 	IT66021(I2CARG arg);
 	virtual ~IT66021();
+
+	_EXT_ITCM static int custom_command(int argc, char *argv[]);
+
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
+
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
 	EDID *edid;
 

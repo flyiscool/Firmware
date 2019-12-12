@@ -31,14 +31,6 @@
  *
  ****************************************************************************/
 
-/**
- * @file rgbled_ncp5623c.cpp
- *
- * Driver for the onboard RGB LED controller (NCP5623C) connected via I2C.
- *
- * @author CUAVcaijie <caijie@cuav.net>
- */
-
 #include <px4_config.h>
 #include <sys/types.h>
 #include <stdint.h>
@@ -4623,10 +4615,9 @@ void IT66021::it6602HPDCtrl(unsigned char ucport, unsigned char ucEnable)
 // #endif
 }
 
-char IT66021::	it66021_init(void)
+char IT66021::it66021_init(void)
 {
 	char ret = false;
-
 
 	it6602HPDCtrl(1, 0); // HDMI port , set HPD = 0
 
