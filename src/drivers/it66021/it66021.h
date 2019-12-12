@@ -512,6 +512,7 @@ struct AVI_info {
 
 
 struct it6602_dev_data {
+
 	Video_State_Type m_VState;
 	Audio_State_Type m_AState;
 	RxHDCP_State_Type m_RxHDCPState;
@@ -532,9 +533,7 @@ struct it6602_dev_data {
 
 	unsigned char m_ucSCDTOffCount;
 	unsigned char m_ucEccCount_P0;
-	unsigned char m_ucEccCount_P1;
 	unsigned char m_ucDeskew_P0;
-	unsigned char m_ucDeskew_P1;
 
 	SRC_3D_SOURCE_CONFIG de3dframe_config;
 	DE3DFRAME s_Current3DFr;
@@ -748,7 +747,6 @@ public:
 	virtual int init();
 	virtual int probe();
 
-	static void cycletest(void);
 	static void cycle_trampoline(void *arg);
 
 	void get_vid_info(void);
@@ -849,9 +847,7 @@ public:
 	/* HDMI Interrupt function    *********************************************************/
 	void hdmirx_INT_5V_Pwr_Chg(struct it6602_dev_data *it6602, unsigned char ucport);
 	void hdmirx_INT_P0_ECC(struct it6602_dev_data *it6602);
-	void hdmirx_INT_P1_ECC(struct it6602_dev_data *it6602);
 	void hdmirx_INT_P0_Deskew(struct it6602_dev_data *it6602);
-	void hdmirx_INT_P1_Deskew(struct it6602_dev_data *it6602);
 	//FIX_ID_009 xxxxx	//verify interrupt event with reg51[0] select port
 	void hdmirx_INT_HDMIMode_Chg(struct it6602_dev_data *it6602, unsigned char ucport);
 	//FIX_ID_009 xxxxx

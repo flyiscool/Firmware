@@ -13,7 +13,7 @@
 #define FALSE (0)
 #endif
 
-// #define IT66021DEBUG
+#define IT66021DEBUG
 
 #ifdef IT66021DEBUG
 #define  IT_INFO(...) PX4_INFO(__VA_ARGS__)

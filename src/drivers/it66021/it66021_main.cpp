@@ -69,43 +69,21 @@ static IT66021 *it66021_A 	= new IT66021(*IT66021_BUS_ARG_A.it66021arg);
 static EDID *it66021_A_EDID = new EDID(*IT66021_BUS_ARG_A.edidarg);
 static bool it66021_i2c_intialized = false;
 
-/////////////////// TODO //////////////////////
 unsigned char IT66021::mhlrxrd(unsigned char offset)
 {
 	return 0;
-	// uint8_t value = 0;
-	// // (*(this->ring))->read(offset, &value, 1);
-	// if (it66021_A_RING->read(offset, &value, 1) != OK)
-	// {
-	// 	IT_INFO("ring read failure");
-	// }
-	// return value;
 }
 
 unsigned char IT66021::mhlrxwr(unsigned char offset, unsigned char ucdata)
 {
 	return 0;
-
-	// if (it66021_A_RING->write(offset, &ucdata, 1) != OK)
-	// {
-	// 	IT_INFO("mhl writ offset = %02x, data = %d failure", offset, ucdata);
-	// }
-	// // return (*this->ring)->write(offset, &ucdata, 1);
-	// return OK;
-	// return IT_66021_WriteByte(MHL_ADDR, offset, ucdata);
 }
-
-
-//////////////////////////////////////////////////////////////////
-
 
 IT66021::IT66021(I2CARG arg) : I2C(arg.name, arg.devname, arg.bus, arg.address,  arg.frequency), work{}
 {
 	this->s_st_hdmiRxStatus.st_configure.e_getFormatMethod = HAL_HDMI_INTERRUPT;
 	this->s_st_hdmiRxStatus.st_configure.e_colorDepth = HAL_HDMI_RX_8BIT;
 	this->s_st_hdmiRxStatus.st_configure.u8_hdmiToEncoderCh = 1;
-	// this->devtype = dev;
-	// memset(&work, 0, sizeof(work));
 }
 
 IT66021::~IT66021()
@@ -115,34 +93,23 @@ IT66021::~IT66021()
 
 int IT66021::init()
 {
-	// PX4_LOG("IT66021::init");
 	int ret;
-	ret = I2C::init();
 
-	if (ret != OK) {
+	if ((ret = I2C::init()) != OK) {
 		IT_INFO("ret != OK\r\n");
 		return ret;
 	}
-
 	// 100 Microseconds Timer Calibration
 	usleep(100 * 1000);
-
 	return OK;
 }
 
 int IT66021::probe()
 {
-	// PX4_LOG("IT66021::probe");
-
+	uint8_t res;
 	uint8_t data[1] = {0};
 
-	_retries = 4;
-
-	uint8_t res;
-
 	res = read(REG_RX_000, &data[0], 1);
-	IT_INFO("res = %d, data = %02x", res, data[0]);
-
 
 	if (res != OK || data[0] != 0x54) {
 		IT_INFO("read_reg1 fail \r\n");
@@ -169,27 +136,6 @@ int IT66021::probe()
 		IT_INFO("read_reg4 fail \r\n");
 		return -EIO;
 	}
-
-	// if (read(REG_RX_034, &data[0], 1))
-	// {
-	// 	IT_INFO("read_re6g fail \r\n");
-	// 	return -EIO;
-	// }
-	// PX4_LOG("reg = 0%02x value = 0x%02x", REG_RX_034, data[0]);
-
-	// if (read(REG_RX_086, &data[0], 1))
-	// {
-	// 	IT_INFO("read_reg fail \r\n");
-	// 	return -EIO;
-	// }
-	// PX4_LOG("reg = 0%02x value = 0x%02x", REG_RX_086, data[0]);
-
-	// if (read(REG_RX_087, &data[0], 1))
-	// {
-	// 	IT_INFO("read_reg fail \r\n");
-	// 	return -EIO;
-	// }
-	// PX4_LOG("reg = 0%02x value = 0x%02x", REG_RX_087, data[0]);
 
 	_retries = 10;
 
@@ -219,7 +165,6 @@ int IT66021::read(unsigned address, void *data, unsigned count)
 
 SYS_STATUS IT66021::EDID_RAM_Write(unsigned char offset, unsigned char byteno, _CODE unsigned char *p_data)
 {
-	// EDID *edit= *this->edid;
 	EDID *edit = it66021_A_EDID;
 
 	if (edit->write(offset, p_data, byteno) == OK) {
@@ -232,23 +177,16 @@ SYS_STATUS IT66021::EDID_RAM_Write(unsigned char offset, unsigned char byteno, _
 		return ER_SUCCESS;
 	};
 
-	PX4_LOG("edit write address = 0x%02x, value = 0x%02x \n", offset, p_data[0]);
-
-	// TODO：
-	// IT_66021_WriteBytes(RX_I2C_EDID_MAP_ADDR, offset, byteno, p_data);
 	return ER_FAIL;
 }
 
 unsigned char IT66021::EDID_RAM_Read(unsigned char offset)
 {
 	uint8_t value = 0;
-	EDID *edit = it66021_A_EDID; //*this->edid;
+	EDID *edit = it66021_A_EDID; 
 	edit->read(offset, &value, 1);
 
 	return value;
-	// TODO：
-	// return IT_66021_ReadByte(RX_I2C_EDID_MAP_ADDR,offset);
-	// return 0;
 }
 
 unsigned char IT66021::hdmirxrd(unsigned char address)
@@ -267,14 +205,7 @@ unsigned char IT66021::hdmirxrd(unsigned char address)
 
 unsigned char IT66021::hdmirxwr(unsigned char address, unsigned char data)
 {
-	unsigned char wres = write(address, &data, 1);
-	unsigned char rdrew = hdmirxrd(address);
-
-	if (rdrew != data) {
-		IT_INFO("address = %x, write data = %02x, rddata = %02x", address, data, rdrew);
-	}
-
-	return wres;
+	return write(address, &data, 1);
 }
 
 unsigned char IT66021::hdmirxset(unsigned char offset, unsigned char mask, unsigned char ucdata)
@@ -290,8 +221,6 @@ void IT66021::cycle_trampoline(void *arg)
 {
 	IT66021 *dev = (IT66021 *)arg;
 	if (ar_gpioread(27) == 0) {
-		IT_INFO("\r\n------------------------------\r\n");
-
 		dev->IT6602_Interrupt();
 		dev->IT6602_fsm();
 		dev->HDMI_RX_CheckFormatStatus(HAL_HDMI_RX_1, HAL_HDMI_RX_FALSE);
