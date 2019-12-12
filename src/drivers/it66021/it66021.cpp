@@ -352,7 +352,7 @@ static _CODE struct IT6602_REG_INI  IT6602_HDMI_INIT_TABLE[] = {
 	{REG_RX_054,	0xFF,	(1 << 4) + RCLKFreqSel},	//[1:0]RCLK frequency select
 	{REG_RX_06A,	0xFF,	GenPktRecType},			//Decide which kind of packet to be fully recorded on General PKT register
 	{REG_RX_074,	0xFF,	0xA0},	//[7]Enable i2s and SPDIFoutput [5]Disable false DE output
-	{REG_RX_050,	0x1F,	0x12},	//[4]1: Invert output DCLK and DCLK DELAY 2 Step
+	{REG_RX_050,	0x1F,	0x11},	//[4]1: Invert output DCLK and DCLK DELAY 2 Step
 //2013-0606	{REG_RX_050,	0x13,	0x00},	//[4]1: Invert output DCLK and DCLK DELAY 2 Step
 
 //	{REG_RX_065,	0x0C,	0x00},	//[3:2]0=8bits Output color depth
