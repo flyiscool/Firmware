@@ -49,8 +49,13 @@
 #include <uORB/uORB.h>
 #include <uORB/topics/h264_input_format.h>
 #include <uORB/topics/input_rc.h>
+#include <uORB/topics/led_control.h>
+#include <drivers/drv_hrt.h>
+#include <drivers/drv_led.h>
+
 #include "cpu2.h"
 #include <board_config.h>
+
 
 static void cycle_trampoline(void *arg);
 
@@ -62,14 +67,15 @@ int htoi(char s[]);
 
 static uint8_t needlogging = 0;
 
-
 static struct work_s _work = {};
 
-static struct work_s h264_work = {};
+// static struct work_s h264_work = {};
 
 static int h264_fd = 0;
 
 static struct h264_input_format_s att = {0};
+
+static orb_advert_t led_control_pub = nullptr;
 
 
 class CPU2 : public device::CDev, public ModuleBase<CPU2>
@@ -87,54 +93,28 @@ public:
 
 	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
+	_EXT_ITCM static CPU2 *instantiate(int argc, char *argv[]);
+
+	_EXT_ITCM void run() override;
+
+	_EXT_ITCM void h264_cycle(void *arg);
+
 private:
 	_EXT_ITCM static void intercore_event_msg_cycle_trampoline(void *arg);
 
 	_EXT_ITCM static void cycle_trampoline(void *arg);
 
-	_EXT_ITCM static void h264_cycle(void *arg);
 
 	// _EXT_ITCM static void clog();
 
 };
 
 
-// _EXT_ITCM void CPU2::clog()
-// {
-// 	if (shouldLog == false) {
-// 		return;
-// 	}
-
-// 	PX4_INFO("clog info in cpu2");
-// }
-
-void CPU2::cycle_trampoline(void *arg)
-{
-	CPU2 *dev = reinterpret_cast<CPU2 *>(arg);
-
-	if (dev == nullptr) {
-
-		if ((dev = new CPU2()) == NULL) {
-			PX4_ERR("alloc failed");
-			return;
-		}
-
-		if (dev->init() != PX4_OK) {
-			return;
-		}
-
-		_object = dev;
-	}
-
-	dev->intercore_event_msg_cycle_trampoline(NULL);
-	dev->h264_cycle(NULL);
-}
 
 
 void CPU2::intercore_event_msg_cycle_trampoline(void *arg)
 {
 	uint8_t i = 0;
-
 	volatile AR_INTERCORE_EVENT *msgPtr = (AR_INTERCORE_EVENT *)SRAM_INTERCORE_EVENT_CPU2T0_ST_STARTADDR;
 
 	for (i = 0; i < SRAM_INTERCORE_EVENT_MAX_COUNT; i++) {
@@ -177,7 +157,58 @@ _EXT_ITCM static void initSram()
 	sramBuffer->header.buf_rd_pos = (uint32_t)sramBuffer->buf;
 }
 
+_EXT_ITCM static void publish_led_control(led_control_s &led_control)
+{
+	led_control.timestamp = hrt_absolute_time();
 
+	if (led_control_pub == nullptr) {
+		led_control_pub = orb_advertise_queue(ORB_ID(led_control), &led_control, LED_UORB_QUEUE_LENGTH);
+
+	} else {
+		orb_publish(ORB_ID(led_control), led_control_pub, &led_control);
+	}
+}
+
+
+_EXT_ITCM static void led(uint8_t color)
+{
+	led_control_s led_control = {};
+	led_control.led_mask = 0xff;
+	led_control.mode = led_control_s::MODE_OFF;
+	led_control.priority = led_control_s::MAX_PRIORITY;
+	publish_led_control(led_control);
+
+	usleep(20 * 1000);
+	
+	// generate some pattern
+	for (int round = 0; round <= 10; ++round) {
+		for (int led = 0; led < BOARD_MAX_LEDS; ++led) {
+			led_control.led_mask = 1 << led;
+			led_control.mode = led_control_s::MODE_ON;
+			led_control.color = color;
+			publish_led_control(led_control);
+			usleep(20 * 1000);
+		}
+
+		led_control.led_mask = 0xff;
+		for (int i = 0; i < 3; ++i) {
+			led_control.mode = led_control_s::MODE_ON;
+			publish_led_control(led_control);
+			usleep(20 * 1000);
+			led_control.mode = led_control_s::MODE_OFF;
+			publish_led_control(led_control);
+			usleep(20 * 1000);
+		}
+	}
+
+	usleep(500 * 1000);
+
+	// reset
+	led_control.led_mask = 0xff;
+	led_control.mode = led_control_s::MODE_DISABLED;
+	publish_led_control(led_control);
+
+}
 
 _EXT_ITCM void CPU2::h264_cycle(void *arg)
 {
@@ -207,21 +238,19 @@ _EXT_ITCM void CPU2::h264_cycle(void *arg)
 		msg.type = SYS_EVENT_ID_H264_INPUT_FORMAT_CHANGE;
 
 		bool needIndicator = (att.width != 0 && att.hight != 0 && att.framerate != 0);
-		px4_arch_gpiowrite(GPIO_HDMI_VIDEO_INDICATOR, !needIndicator);
 
-		PX4_INFO("-----------------------------------------");
-		PX4_INFO("index = %d ", att.index);
-		PX4_INFO("width = %d ", att.width);
-		PX4_INFO("hight = %d ", att.hight);
-		PX4_INFO("framerate = %d", att.framerate);
-		PX4_INFO("vic = %d", att.vic);
-		PX4_INFO("e_h264InputSrc = %d", att.e_h264InputSrc);
-		PX4_INFO("-----------------------------------------\n");
+		if (needIndicator) 
+		{
+			PX4_INFO("\r\n ----- Resolution: %d * %d p%d -----\r\n", att.width, att.hight, att.framerate);
+			led(led_control_s::COLOR_GREEN);
+		}
+		else 
+		{
+			led(led_control_s::COLOR_CYAN);
+		}
 
 		arsys_event_cpu0t2_append(&msg);
 	}
-
-	(void)work_queue(LPWORK, &h264_work, (worker_t)&CPU2::h264_cycle, nullptr, USEC2TICK(1000 * 1000));
 }
 
 CPU2::CPU2(): CDev("cpu2", "/dev/cpu2")
@@ -315,15 +344,55 @@ int htoi(char s[])
 
 int CPU2::task_spawn(int argc, char *argv[])
 {
-	int ret;
+	// int ret;
 
-	if ((ret = work_queue(LPWORK, &_work, (worker_t)&CPU2::cycle_trampoline, nullptr, 0)) < 0) {
-		return ret;
+	_task_id = px4_task_spawn_cmd("fmu",
+					      SCHED_DEFAULT,
+					      SCHED_PRIORITY_ACTUATOR_OUTPUTS,
+					      1800,
+					      (px4_main_t)&run_trampoline,
+					      nullptr);
+
+	if (_task_id < 0) {
+		_task_id = -1;
+		return -errno;
 	}
 
-	_task_id = task_id_is_work_queue;
+	if (wait_until_running() < 0) {
+		_task_id = -1;
+		return -1;
+	}
+
+	// if ((ret = work_queue(LPWORK, &_work, (worker_t)&CPU2::cycle_trampoline, nullptr, 0)) < 0) {
+	// 	return ret;
+	// }
+
+	// _task_id = task_id_is_work_queue;
 
 	return PX4_OK;
+}
+
+void CPU2::run()
+{
+	if (init() != 0) {
+		PX4_ERR("init failed");
+		exit_and_cleanup();
+		return;
+	}
+
+	intercore_event_msg_cycle_trampoline(NULL);
+
+	while(true) 
+	{
+		h264_cycle(NULL);
+		
+		usleep(1000 * 1000);
+	}
+}
+
+
+_EXT_ITCM  CPU2 *CPU2::instantiate(int argc, char *argv[]) {
+	return new CPU2();
 }
 
 
@@ -374,6 +443,7 @@ int CPU2::custom_command(int argc, char *argv[])
 		needlogging = 0;
 
 	} else {
+
 		print_usage();
 	}
 
