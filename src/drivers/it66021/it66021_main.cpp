@@ -220,6 +220,7 @@ unsigned char IT66021::hdmirxset(unsigned char offset, unsigned char mask, unsig
 void IT66021::cycle_trampoline(void *arg)
 {
 	IT66021 *dev = (IT66021 *)arg;
+	
 	if (ar_gpioread(27) == 0) {
 		dev->IT6602_Interrupt();
 		dev->IT6602_fsm();
