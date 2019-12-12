@@ -69,44 +69,21 @@ static IT66021 *it66021_A 	= new IT66021(*IT66021_BUS_ARG_A.it66021arg);
 static EDID *it66021_A_EDID = new EDID(*IT66021_BUS_ARG_A.edidarg);
 static bool it66021_i2c_intialized = false;
 
-/////////////////// TODO //////////////////////
 unsigned char IT66021::mhlrxrd(unsigned char offset)
 {
 	return 0;
-	// uint8_t value = 0;
-	// // (*(this->ring))->read(offset, &value, 1);
-	// if (it66021_A_RING->read(offset, &value, 1) != OK)
-	// {
-	// 	IT_INFO("ring read failure");
-	// }
-	// return value;
 }
 
 unsigned char IT66021::mhlrxwr(unsigned char offset, unsigned char ucdata)
 {
 	return 0;
-
-	// if (it66021_A_RING->write(offset, &ucdata, 1) != OK)
-	// {
-	// 	IT_INFO("mhl writ offset = %02x, data = %d failure", offset, ucdata);
-	// }
-	// // return (*this->ring)->write(offset, &ucdata, 1);
-	// return OK;
-	// return IT_66021_WriteByte(MHL_ADDR, offset, ucdata);
 }
-
-
-//////////////////////////////////////////////////////////////////
-
-extern "C" __EXPORT int it66021_main(int argc, char *argv[]);
 
 IT66021::IT66021(I2CARG arg) : I2C(arg.name, arg.devname, arg.bus, arg.address,  arg.frequency), work{}
 {
 	this->s_st_hdmiRxStatus.st_configure.e_getFormatMethod = HAL_HDMI_INTERRUPT;
 	this->s_st_hdmiRxStatus.st_configure.e_colorDepth = HAL_HDMI_RX_8BIT;
 	this->s_st_hdmiRxStatus.st_configure.u8_hdmiToEncoderCh = 1;
-	// this->devtype = dev;
-	// memset(&work, 0, sizeof(work));
 }
 
 IT66021::~IT66021()
@@ -116,34 +93,23 @@ IT66021::~IT66021()
 
 int IT66021::init()
 {
-	// PX4_LOG("IT66021::init");
 	int ret;
-	ret = I2C::init();
 
-	if (ret != OK) {
+	if ((ret = I2C::init()) != OK) {
 		IT_INFO("ret != OK\r\n");
 		return ret;
 	}
-
 	// 100 Microseconds Timer Calibration
 	usleep(100 * 1000);
-
 	return OK;
 }
 
 int IT66021::probe()
 {
-	// PX4_LOG("IT66021::probe");
-
+	uint8_t res;
 	uint8_t data[1] = {0};
 
-	_retries = 4;
-
-	uint8_t res;
-
 	res = read(REG_RX_000, &data[0], 1);
-	IT_INFO("res = %d, data = %02x", res, data[0]);
-
 
 	if (res != OK || data[0] != 0x54) {
 		IT_INFO("read_reg1 fail \r\n");
@@ -170,27 +136,6 @@ int IT66021::probe()
 		IT_INFO("read_reg4 fail \r\n");
 		return -EIO;
 	}
-
-	// if (read(REG_RX_034, &data[0], 1))
-	// {
-	// 	IT_INFO("read_re6g fail \r\n");
-	// 	return -EIO;
-	// }
-	// PX4_LOG("reg = 0%02x value = 0x%02x", REG_RX_034, data[0]);
-
-	// if (read(REG_RX_086, &data[0], 1))
-	// {
-	// 	IT_INFO("read_reg fail \r\n");
-	// 	return -EIO;
-	// }
-	// PX4_LOG("reg = 0%02x value = 0x%02x", REG_RX_086, data[0]);
-
-	// if (read(REG_RX_087, &data[0], 1))
-	// {
-	// 	IT_INFO("read_reg fail \r\n");
-	// 	return -EIO;
-	// }
-	// PX4_LOG("reg = 0%02x value = 0x%02x", REG_RX_087, data[0]);
 
 	_retries = 10;
 
@@ -220,7 +165,6 @@ int IT66021::read(unsigned address, void *data, unsigned count)
 
 SYS_STATUS IT66021::EDID_RAM_Write(unsigned char offset, unsigned char byteno, _CODE unsigned char *p_data)
 {
-	// EDID *edit= *this->edid;
 	EDID *edit = it66021_A_EDID;
 
 	if (edit->write(offset, p_data, byteno) == OK) {
@@ -233,23 +177,16 @@ SYS_STATUS IT66021::EDID_RAM_Write(unsigned char offset, unsigned char byteno, _
 		return ER_SUCCESS;
 	};
 
-	PX4_LOG("edit write address = 0x%02x, value = 0x%02x \n", offset, p_data[0]);
-
-	// TODO：
-	// IT_66021_WriteBytes(RX_I2C_EDID_MAP_ADDR, offset, byteno, p_data);
 	return ER_FAIL;
 }
 
 unsigned char IT66021::EDID_RAM_Read(unsigned char offset)
 {
 	uint8_t value = 0;
-	EDID *edit = it66021_A_EDID; //*this->edid;
+	EDID *edit = it66021_A_EDID; 
 	edit->read(offset, &value, 1);
 
 	return value;
-	// TODO：
-	// return IT_66021_ReadByte(RX_I2C_EDID_MAP_ADDR,offset);
-	// return 0;
 }
 
 unsigned char IT66021::hdmirxrd(unsigned char address)
@@ -268,14 +205,7 @@ unsigned char IT66021::hdmirxrd(unsigned char address)
 
 unsigned char IT66021::hdmirxwr(unsigned char address, unsigned char data)
 {
-	unsigned char wres = write(address, &data, 1);
-	unsigned char rdrew = hdmirxrd(address);
-
-	if (rdrew != data) {
-		IT_INFO("address = %x, write data = %02x, rddata = %02x", address, data, rdrew);
-	}
-
-	return wres;
+	return write(address, &data, 1);
 }
 
 unsigned char IT66021::hdmirxset(unsigned char offset, unsigned char mask, unsigned char ucdata)
@@ -286,72 +216,59 @@ unsigned char IT66021::hdmirxset(unsigned char offset, unsigned char mask, unsig
 	return hdmirxwr(offset, temp);
 }
 
-/////////////////////////// loop irq ////////////////////////////////
-
-// static int index = 0;
 
 void IT66021::cycle_trampoline(void *arg)
 {
 	IT66021 *dev = (IT66021 *)arg;
-
+	
 	if (ar_gpioread(27) == 0) {
-		IT_INFO("\r\n------------------------------\r\n");
-
 		dev->IT6602_Interrupt();
-
 		dev->IT6602_fsm();
-
-
-
 		dev->HDMI_RX_CheckFormatStatus(HAL_HDMI_RX_1, HAL_HDMI_RX_FALSE);
-
-		// if (index++ == 2) {
-		// 	index = 0;
-		// 	dev->Dump_ITEHDMIReg();
-		// }
-
 	}
-
-	// else if (ar_gpioread(68) == 0)
-	// {
-	// 	IT_INFO("read gpio  68 zero");
-
-	// 	dev->IT6602_Interrupt();
-
-	// 	dev->IT6602_fsm();
-
-	// 	dev->IT6602_fsm();
-
-	// 	dev->HDMI_RX_CheckFormatStatus(HAL_HDMI_RX_0, HAL_HDMI_RX_FALSE);
-	// }
+	else if (ar_gpioread(68) == 0) { }
 
 	work_queue(LPWORK, &dev->work, (worker_t)&IT66021::cycle_trampoline, dev, USEC2TICK(1000 * 1000));
 }
 
 
-
-/* for now, we only support one g_it66021 */
-namespace it66021
+int IT66021::task_spawn(int argc, char *argv[])
 {
-void usage(void);
-int start(IT66021_BUS_ARG &bus_op);
+	char dev = NULL;
+	bool error_flag = false;
+	IT66021_BUS_ARG bus_option;
 
-_EXT_ITCM void usage()
-{
-	IT_INFO("missing command: try 'start");
-	IT_INFO("options:");
-	IT_INFO("    -d I2C device (a or b)");
-}
+	int myoptind = 1;
+	int ch;
+	const char *myoptarg = nullptr;
 
-_EXT_ITCM int start(IT66021_BUS_ARG &bus_op)
-{
-	if (bus_op.dev != nullptr && it66021_i2c_intialized) {
-		errx(1, "bus option already started");
-		return false;
+	while ((ch = px4_getopt(argc, argv, "d:", &myoptind, &myoptarg)) != EOF) {
+		switch (ch) {
+		case 'd':
+			dev = *myoptarg;
+			break;
+			
+		default:
+			PX4_WARN("unrecognized flag");
+			error_flag = true;
+			break;
+		}
 	}
 
-	it66021_i2c_intialized = true;
-	IT66021 *interface = bus_op.dev;
+	if (error_flag)  {
+		return -1;
+	}
+
+	if (dev == 'a') {
+		bus_option = IT66021_BUS_ARG_A;
+		bus_option.dev = it66021_A;
+		it66021_A->edid = it66021_A_EDID;
+
+	} else {
+		return -1;
+	}
+
+	IT66021 *interface = bus_option.dev;
 
 	if (interface->init() != OK) {
 		return false;
@@ -359,7 +276,7 @@ _EXT_ITCM int start(IT66021_BUS_ARG &bus_op)
 
 	// EDID
 	interface->hdmirxset(REG_RX_0C0, 0x43, 0x40);
-	interface->hdmirxset(REG_RX_087, 0xFF, bus_op.edidarg->address | 0x01);
+	interface->hdmirxset(REG_RX_087, 0xFF, bus_option.edidarg->address | 0x01);
 
 	EDID *edid = interface->edid;
 
@@ -371,64 +288,42 @@ _EXT_ITCM int start(IT66021_BUS_ARG &bus_op)
 
 	interface->it66021_init();
 
-	work_queue(LPWORK, &interface->work, (worker_t)&IT66021::cycle_trampoline, interface, USEC2TICK(1000));
+	int ret = work_queue(LPWORK, &interface->work, (worker_t)&IT66021::cycle_trampoline, interface, USEC2TICK(1000));
 
+	if (ret < 0) {
+		return ret;
+	}
+
+	_task_id = task_id_is_work_queue;
+	
 	return true;
 }
-} // namespace it66021
 
 
+int IT66021::print_usage(const char *reason)
+{
+	if (reason) {
+		PX4_WARN("%s\n", reason);
+	}
+
+	PRINT_MODULE_USAGE_NAME("it66021", "driver");
+
+	PRINT_MODULE_USAGE_COMMAND("start");
+
+	return OK;
+}
+
+
+int IT66021::custom_command(int argc, char *argv[])
+{
+	print_usage();
+
+	return PX4_OK;
+}
+
+
+extern "C" __EXPORT int it66021_main(int argc, char *argv[]);
 _EXT_ITCM int it66021_main(int argc, char *argv[])
 {
-	char dev = NULL;
-
-	int myoptind = 1;
-	int ch;
-	const char *myoptarg = nullptr;
-	IT66021_BUS_ARG bus_option;
-
-	while ((ch = px4_getopt(argc, argv, "d:", &myoptind, &myoptarg)) != EOF) {
-		switch (ch) {
-		case 'd':
-			dev = *myoptarg;
-			break;
-
-		default:
-			it66021::usage();
-			exit(0);
-		}
-	}
-
-	if (myoptind >= argc) {
-		it66021::usage();
-		return false;
-	}
-
-	if (dev == 'a') {
-		// link relationship
-		bus_option = IT66021_BUS_ARG_A;
-		bus_option.dev = it66021_A;
-		it66021_A->edid = it66021_A_EDID;
-	}
-
-	// else if (dev == 'b')
-	// {
-	// 	bus_option = BUS_IT66021_B;
-	// }
-	else {
-		it66021::usage();
-		return false;
-	}
-
-	const char *verb = argv[myoptind];
-
-	IT_INFO("verb = %s", verb);
-
-	if (!strcmp(verb, "start")) {
-		it66021::start(bus_option);
-		return true;
-	}
-
-	it66021::usage();
-	return false;
+	return IT66021::main(argc, argv);
 }

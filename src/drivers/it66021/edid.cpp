@@ -37,24 +37,17 @@
 
 
 EDID::EDID(I2CARG arg) : I2C(arg.name, arg.devname, arg.bus, arg.address,  arg.frequency)
-{
-	PX4_INFO("EDID INIT \r\n");
-}
+{}
 
 EDID::~EDID()
-{
-	PX4_INFO("~deinit for it66021_EDID \r\n");
-}
+{}
 
 int EDID::init()
 {
-	PX4_LOG("EDID::init");
-
 	int ret;
 	ret = I2C::init();
 
 	if (ret != OK) {
-		PX4_INFO("ret != OK\r\n");
 		return ret;
 	}
 
@@ -64,28 +57,9 @@ int EDID::init()
 }
 
 int EDID::probe()
-{
-	PX4_LOG("EDID::probe");
-
-
-	// default OK
-	// uint8_t data[1] = {0};
-
-	// _retries = 4;
-
-	// if (read(0x00, &data[0], 1))
-	// {
-	// 	PX4_INFO("read_reg fail \r\n");
-	// 	return -EIO;
-	// }
-	// PX4_LOG("reg = 0%02x value = 0x%02x", REG_RX_000, data[0]);
-
-	_retries = 10;
-
+{	
 	return OK;
 }
-
-
 
 int EDID::write(unsigned address, void *data, unsigned count)
 {
@@ -96,7 +70,6 @@ int EDID::write(unsigned address, void *data, unsigned count)
 	}
 
 	buf[0] = address;
-
 	memcpy(&buf[1], data, count);
 
 	return transfer(&buf[0], count + 1, nullptr, 0);

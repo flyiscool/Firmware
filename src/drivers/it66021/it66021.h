@@ -5,12 +5,6 @@
 #include <stdint.h>
 #include "it66021_define.h"
 
-
-
-
-
-
-// #define IT66021A_HDMI_ADDR (0x98 >> 1)
 #define IT66021B_HDMI_ADDR (0x90)
 
 
@@ -518,6 +512,7 @@ struct AVI_info {
 
 
 struct it6602_dev_data {
+
 	Video_State_Type m_VState;
 	Audio_State_Type m_AState;
 	RxHDCP_State_Type m_RxHDCPState;
@@ -538,9 +533,7 @@ struct it6602_dev_data {
 
 	unsigned char m_ucSCDTOffCount;
 	unsigned char m_ucEccCount_P0;
-	unsigned char m_ucEccCount_P1;
 	unsigned char m_ucDeskew_P0;
-	unsigned char m_ucDeskew_P1;
 
 	SRC_3D_SOURCE_CONFIG de3dframe_config;
 	DE3DFRAME s_Current3DFr;
@@ -708,6 +701,7 @@ extern unsigned char m_UartCmd;
 #include <drivers/device/i2c.h>
 #include <px4_workqueue.h>
 #include "edid.h"
+#include "px4_module.h"
 
 #ifndef _CODE
 #define _CODE
@@ -717,11 +711,17 @@ extern unsigned char m_UartCmd;
 #define HAL_HDMI_RX_FALSE                           (HAL_HDMI_RX_ERR_MASK | 0x9)
 
 
-class IT66021 : public device::I2C
+class IT66021: public device::I2C, public ModuleBase<IT66021> 
 {
 public:
 	IT66021(I2CARG arg);
 	virtual ~IT66021();
+
+	_EXT_ITCM static int custom_command(int argc, char *argv[]);
+
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
+
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
 	EDID *edid;
 
@@ -747,7 +747,6 @@ public:
 	virtual int init();
 	virtual int probe();
 
-	static void cycletest(void);
 	static void cycle_trampoline(void *arg);
 
 	void get_vid_info(void);
@@ -848,9 +847,7 @@ public:
 	/* HDMI Interrupt function    *********************************************************/
 	void hdmirx_INT_5V_Pwr_Chg(struct it6602_dev_data *it6602, unsigned char ucport);
 	void hdmirx_INT_P0_ECC(struct it6602_dev_data *it6602);
-	void hdmirx_INT_P1_ECC(struct it6602_dev_data *it6602);
 	void hdmirx_INT_P0_Deskew(struct it6602_dev_data *it6602);
-	void hdmirx_INT_P1_Deskew(struct it6602_dev_data *it6602);
 	//FIX_ID_009 xxxxx	//verify interrupt event with reg51[0] select port
 	void hdmirx_INT_HDMIMode_Chg(struct it6602_dev_data *it6602, unsigned char ucport);
 	//FIX_ID_009 xxxxx
