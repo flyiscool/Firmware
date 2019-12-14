@@ -16,6 +16,7 @@ set(config_module_list
 	drivers/coolfly/cpu2
 	drivers/coolfly/RFUart
 	drivers/coolfly/bb
+	drivers/coolfly/can
 	
 	drivers/batt_smbus
 	# drivers/blinkm

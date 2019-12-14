@@ -346,7 +346,7 @@ int CPU2::task_spawn(int argc, char *argv[])
 {
 	// int ret;
 
-	_task_id = px4_task_spawn_cmd("fmu",
+	_task_id = px4_task_spawn_cmd("cpu2",
 					      SCHED_DEFAULT,
 					      SCHED_PRIORITY_ACTUATOR_OUTPUTS,
 					      1800,
@@ -362,12 +362,6 @@ int CPU2::task_spawn(int argc, char *argv[])
 		_task_id = -1;
 		return -1;
 	}
-
-	// if ((ret = work_queue(LPWORK, &_work, (worker_t)&CPU2::cycle_trampoline, nullptr, 0)) < 0) {
-	// 	return ret;
-	// }
-
-	// _task_id = task_id_is_work_queue;
 
 	return PX4_OK;
 }

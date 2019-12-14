@@ -42,9 +42,7 @@
 #include <nuttx/fs/fs.h>
 
 
-static struct work_s _work = {};
-
-static int fd;
+static int fd = -1;
 
 class Can : public ModuleBase<Can>
 {
@@ -55,55 +53,72 @@ public:
 
 	_EXT_ITCM static int print_usage(const char *reason = nullptr);
 
-private:
-	_EXT_ITCM static void cycle_trampoline(void *arg);
+	_EXT_ITCM void run() override;
 
+	_EXT_ITCM static Can *instantiate(int argc, char *argv[]);
 
 };
- 
 
-void Can::cycle_trampoline(void *arg)
+
+_EXT_ITCM Can *Can::instantiate(int argc, char *argv[]) 
 {
-	Can *dev = reinterpret_cast<Can *>(arg);
-
-	if (dev == nullptr) {
-
-		if ((dev = new Can()) == NULL) {
-			PX4_ERR("alloc failed");
-			return;
-		}
-
-		_object = dev;
-	}
-
-	work_queue(LPWORK, &_work, (worker_t)&Can::cycle_trampoline, nullptr, 10);
-
-
-	// dev->intercore_event_msg_cycle_trampoline(NULL);
-	// dev->h264_cycle(NULL);
+	return new Can();
 }
 
-int Can::task_spawn(int argc, char *argv[])
+void Can::run()
 {
-	int ret;
-	if ((ret = work_queue(LPWORK, &_work, (worker_t)&Can::cycle_trampoline, nullptr, 0)) < 0) {
-		return ret;
-	}
-
-	_task_id = task_id_is_work_queue;
-
 	if ((fd = open("/dev/can0", O_RDWR)) < 0) {
 		PX4_INFO("open file \n");
 	}
 
+	PX4_INFO("CAN RUN \r\n");
 
 
-	// if ((file = fs_getfilep(fd)) == NULL) {
-	// 	PX4_INFO("get filep fail \n");
-	// 	return;
-	// }
-		
+	while(1)
+	{
+		struct can_msg_s msgs;
+
+		msgs.cm_hdr.ch_id = 0x01;
+		msgs.cm_hdr.ch_dlc = 0x04;
+		msgs.cm_hdr.ch_rtr = 0x00;
+
+		msgs.cm_data[0] = 0x10;
+		msgs.cm_data[1] = 0x11;
+		msgs.cm_data[2] = 0x12;
+		msgs.cm_data[3] = 0x13;
+
+		write(fd, (uint8_t *)&msgs, sizeof(msgs));
+
+		usleep(1000 * 1000);
+
+	}
+
+	PX4_INFO("CAN END \n");
+}
+
+
+
+int Can::task_spawn(int argc, char *argv[])
+{
+	_task_id = px4_task_spawn_cmd("can",
+						SCHED_DEFAULT,
+						SCHED_PRIORITY_ACTUATOR_OUTPUTS,
+						1800,
+						(px4_main_t)&run_trampoline,
+						nullptr);
+
+	if (_task_id < 0) {
+		_task_id = -1;
+		return -errno;
+	}
+
+	if (wait_until_running() < 0) {
+		_task_id = -1;
+		return -1;
+	}
+
 	return PX4_OK;
+
 }
 
 
@@ -132,12 +147,6 @@ extern "C" __EXPORT int can_main(int argc, char *argv[]);
 _EXT_ITCM int can_main(int argc, char *argv[])
 {
 	Can::main(argc, argv);
-
-	while (1)
-	{
-		usleep(100);
-	}
-
 	return  OK;
 }
 
