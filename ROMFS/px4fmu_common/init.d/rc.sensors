@@ -31,7 +31,7 @@ fmu i2c 4 400000
 
 # echo "ms5611 -S start"
 # # External SPI
-ms5611 -S start
+#ms5611 -S start
 
 # echo "ms5611 -T 0 -s start"
 # # Internal SPI (auto detect ms5611 or ms5607)
@@ -69,7 +69,7 @@ bmi055 -G -R 10 start
 
 # # Possible internal compass
 #echo "ist8310 -C -R 8 -b 5 start"
-ist8310 -C -R 8 -b 5 start
+#ist8310 -C -R 8 -b 5 start
 
 #echo "ist8310 -C -b 1 start"
 ist8310 -C -b 1 start
