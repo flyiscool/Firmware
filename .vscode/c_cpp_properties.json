@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/src/drivers/boards/coolfly-f1/",
+                "${workspaceFolder}/src/drivers/it66021/",
+                "${workspaceFolder}/src/platforms",
+                "${workspaceFolder}/src/",
+                "${workspaceFolder}/src/include/",
+                "${workspaceFolder}/src/lib/",
+                "${workspaceFolder}/src/lib/matrix/",
+                "${workspaceFolder}/src/modules/"
+            ],
+
+            
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
