@@ -778,7 +778,7 @@ unsigned char ucChannelR[2]; // ch2
 unsigned char ucEQMode[2];
 #endif
 
-unsigned char HdmiI2cAddr = IT6602A0_HDMI_ADDR;
+unsigned char HdmiI2cAddr = IT66021A_HDMI_ADDR;
 
 int CurTMDSCLK;
 volatile VTiming CurVTiming;
@@ -3422,7 +3422,7 @@ void IT66021::IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 				IT_INFO("#### Port 0 Bus Mode : MHL ####\r\n");
 
 				//FIX_ID_002 xxxxx 	Check IT6602 chip version Identify for TogglePolarity and Port 1 Deskew
-				if (HdmiI2cAddr == IT6602A0_HDMI_ADDR) {
+				if (HdmiI2cAddr == IT66021A_HDMI_ADDR) {
 					chgbank(1);
 					hdmirxset(REG_RX_1B6, 0x07, 0x00);
 					//FIX_ID_007 xxxxx 	//for debug IT6681  HDCP issue
@@ -3437,7 +3437,7 @@ void IT66021::IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 				IT_INFO("#### Port 0 Bus Mode : HDMI ####\r\n");
 
 				//FIX_ID_002 xxxxx 	Check IT6602 chip version Identify for TogglePolarity and Port 1 Deskew
-				if (HdmiI2cAddr == IT6602A0_HDMI_ADDR) {
+				if (HdmiI2cAddr == IT66021A_HDMI_ADDR) {
 					chgbank(1);
 					hdmirxset(REG_RX_1B6, 0x07, 0x03);
 					////FIX_ID_007 xxxxx 	//for debug IT6681  HDCP issue
@@ -4855,7 +4855,7 @@ void IT66021::TogglePolarity(unsigned char ucPortSel)
 	return;
 #endif
 
-	if (HdmiI2cAddr == IT6602A0_HDMI_ADDR) {
+	if (HdmiI2cAddr == IT66021A_HDMI_ADDR) {
 		if (ucPortSelCurrent != ucPortSel) {
 			return;
 		}
@@ -4868,7 +4868,7 @@ void IT66021::TogglePolarity(unsigned char ucPortSel)
 		hdmirxset(REG_RX_1C5, 0x10, 0x00);
 
 		//FIX_ID_002 xxxxx 	Check IT6602 chip version Identify for TogglePolarity and Port 1 Deskew
-		if (HdmiI2cAddr == IT6602A0_HDMI_ADDR) {
+		if (HdmiI2cAddr == IT66021A_HDMI_ADDR) {
 			//xxxxx only for IT6602A0 Version
 			if ((hdmirxrd(REG_RX_1B9) & 0x80) >> 7) {
 				hdmirxset(REG_RX_1B9, 0x80, 0x00); // Change Polarity
@@ -4953,8 +4953,8 @@ void IT66021::TMDSCheck(unsigned char ucPortSel)
 		IT_INFO(" Port 0 TMDS CLK  = %X \r\n", (int)ucTMDSClk);
 	}
 
-	// TODO 不一样地方, sdk 确认的是 IT6602A0_HDMI_ADDR = 0x94 实际上不会有这个情况
-	// if (HdmiI2cAddr == IT6602A0_HDMI_ADDR)
+	// TODO 不一样地方, sdk 确认的是 IT66021A_HDMI_ADDR = 0x94 实际上不会有这个情况
+	// if (HdmiI2cAddr == IT66021A_HDMI_ADDR)
 	// {
 	// 	if (hdmirxrd(REG_RX_P0_SYS_STATUS) & (B_P0_MHL_MODE))
 	// 	{
@@ -4974,8 +4974,8 @@ void IT66021::TMDSCheck(unsigned char ucPortSel)
 	// 	}
 	// }
 
-	// TODO 不一样地方, sdk 确认的是 IT6602A0_HDMI_ADDR = 0x94 实际上不会有这个情况
-	// if (HdmiI2cAddr == IT6602A0_HDMI_ADDR)
+	// TODO 不一样地方, sdk 确认的是 IT66021A_HDMI_ADDR = 0x94 实际上不会有这个情况
+	// if (HdmiI2cAddr == IT66021A_HDMI_ADDR)
 	// {
 	// 	if (ucTMDSClk < TMDSCLKVALUE_480P || ucTMDSClk > TMDSCLKVALUE_1080P)
 	// 		hdmirxwr(REG_RX_020, 0x00); // Dr. Liu suggestion to 0x00

@@ -902,4 +902,17 @@ public:
 };
 
 
+
+typedef struct {
+	I2CARG *it66021arg;
+
+	I2CARG *edidarg;
+
+	IT66021TYPE type;
+
+	IT66021 *dev;
+
+} IT66021_BUS_ARG;
+
+
 #endif

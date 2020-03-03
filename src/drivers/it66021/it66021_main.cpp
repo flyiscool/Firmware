@@ -40,21 +40,21 @@
 #include "it66021_reg.h"
 #include "it66021_config.h"
 
-// static IT66021 *it66021_B = nullptr;
+
 static I2CARG IT66021_I2CARG_A = {
 	.name 		= "it66021",
 	.devname 	= "/dev/it66021_A",
-	.bus 		= PX4_I2C_BUS_IT66021_A,
-	.address	= IT6602A0_HDMI_ADDR >> 1,
-					     .frequency	= IT66021_DEFAULT_BUS_SPEED
+	.bus 		= PX4_I2C_BUS_IT66021_A,	// AR_I2C1_BUS
+	.address	= IT66021A_HDMI_ADDR >> 1,	// 0x92
+	.frequency	= IT66021_DEFAULT_BUS_SPEED	// IT66021_DEFAULT_BUS_SPEED 
 };
 
 static I2CARG IT66021_I2CARG_A_EDID = {
-	.name 		= "it66021_edid",
-	.devname 	= "/dev/it66021_A_edid",
-	.bus 		= PX4_I2C_BUS_IT66021_A_EDID,
-	.address	= IT66021A_HDMI_ADDR_EDID >> 1,
-			.frequency	= IT66021_DEFAULT_BUS_SPEED
+	.name 		= "it66021_edid",	
+	.devname 	= "/dev/it66021_A_edid",	
+	.bus 		= PX4_I2C_BUS_IT66021_A,	// AR_I2C1_BUS
+	.address	= EDID_ADDR >> 1, // 0xA8
+	.frequency	= IT66021_DEFAULT_BUS_SPEED
 };
 
 

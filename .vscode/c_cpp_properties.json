@@ -11,15 +11,19 @@
                 "${workspaceFolder}/src/include/",
                 "${workspaceFolder}/src/lib/",
                 "${workspaceFolder}/src/lib/matrix/",
-                "${workspaceFolder}/src/modules/"
+                "${workspaceFolder}/src/modules/",
+                "${workspaceFolder}/platforms/nuttx/NuttX/nuttx/arch/arm/src/artosyn/",
+                "${workspaceFolder}/platforms/nuttx/NuttX/nuttx/arch/arm/src/artosyn/chip",
+                "${workspaceFolder}/platforms/nuttx/NuttX/nuttx/arch/arm/include/artosyn"
+                
             ],
 
             
             "defines": [],
-            "compilerPath": "/usr/bin/clang",
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "intelliSenseMode": "clang-x64"
+            "intelliSenseMode": "${default}"
         }
     ],
     "version": 4
