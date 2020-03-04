@@ -12,7 +12,7 @@ set(config_module_list
 	# drivers/distance_sensor
 	drivers/magnetometer
 	# drivers/telemetry
-	drivers/it66021
+	#drivers/it66021
 
 	drivers/coolfly/cpu2
 	drivers/coolfly/vedio_monitor

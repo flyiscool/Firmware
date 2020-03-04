@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "ite_define.h"
+#include "it66021_define.h"
 
 
 #define _SUPPORT_HDCP_				FALSE
@@ -319,7 +319,7 @@ typedef enum  {
 #define SUPPORT_OUTPUTYUV
 #define SUPPORT_OUTPUTYUV444
 #define SUPPORT_OUTPUTYUV422
-
+#define SUPPORT_OUTPUTRGB
 
 #define F_PORT_SEL_0      0
 #define F_PORT_SEL_1      1
@@ -588,6 +588,15 @@ struct it6602_dev_data {
 
 
 
+
+#ifdef _IT6607_GeNPacket_Usage_
+	BYTE m_PollingPacket;
+	BYTE m_PacketState;
+	BYTE m_ACPState;
+	BYTE m_GeneralRecPackType;
+	BYTE m_GamutPacketRequest: 1;
+#endif
+
 //#if(_SUPPORT_HDCP_)
 //    //HDCP
 //    unsigned char HDCPEnable;
@@ -730,6 +739,8 @@ public:
 
 	SYS_STATUS EDID_RAM_Write(unsigned char offset, unsigned char byteno, _CODE unsigned char *p_data);
 	unsigned char EDID_RAM_Read(unsigned char offset);
+	unsigned char hdmirxrd(unsigned char address);
+	unsigned char hdmirxwr(unsigned char address, unsigned char data);
 	unsigned char hdmirxset(unsigned char offset, unsigned char mask, unsigned char ucdata);
 	void hdmirxbwr(unsigned char offset, unsigned char byteno, unsigned char *rddata);
 

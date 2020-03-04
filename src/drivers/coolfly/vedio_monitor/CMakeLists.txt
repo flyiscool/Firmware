@@ -34,9 +34,10 @@ px4_add_module(
 	MODULE drivers__vedio_monitor
 	MAIN vedio_monitor
 	COMPILE_FLAGS
-		-Wno-unused-function
+	- Wno - unused - function
 	SRCS
-		vedio_monitor.cpp
+	vedio_monitor.cpp
+
 	DEPENDS
-	)
+)
 

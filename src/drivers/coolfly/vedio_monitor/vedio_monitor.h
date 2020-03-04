@@ -6,25 +6,43 @@
 #include <chip/ar_config.h>
 
 
-#define SYS_EVENT_LEVEL_HIGH_MASK             0x10000000
-#define SYS_EVENT_LEVEL_MIDIUM_MASK           0x20000000
-#define SYS_EVENT_LEVEL_LOW_MASK              0x40000000
-#define SYS_EVENT_INTER_CORE_MASK             0x80000000
 
-#define SRAM_INTERCORE_MSG_LENGTH           64
-#define SRAM_INTERCORE_EVENT_MAX_COUNT            (SRAM_INTERCORE_EVENT_CPU2T0_ST_SIZE / sizeof(AR_INTERCORE_EVENT))
+#define IT66021A_RST_PIN		25
+#define IT66021A_INT_PIN		27
 
-typedef struct {
-	uint16_t             length;
-	uint16_t             seq;
-	char                data[SRAM_INTERCORE_MSG_LENGTH];
-	uint32_t            type;
-	uint32_t             isUsed;
-} AR_INTERCORE_EVENT;
+#define USE_IT66021_EDID_CONFIG_BIN
 
-#define SYS_EVENT_ID_CPU2_LOG                        (SYS_EVENT_LEVEL_MIDIUM_MASK   | 0x001F)
 
-#define SYS_EVENT_ID_READ_REG                       (SYS_EVENT_LEVEL_MIDIUM_MASK   | 0x0040)
+class VEDIO_MONITOR : public device::I2C, public ModuleBase<VEDIO_MONITOR>
+{
+public:
+	_EXT_ITCM VEDIO_MONITOR(const char *name, const char *devname,
+				int bus, uint16_t address, uint32_t frequency);
+
+	_EXT_ITCM ~VEDIO_MONITOR();
+
+	_EXT_ITCM virtual int init();
+
+	_EXT_ITCM static int custom_command(int argc, char *argv[]);
+
+	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
+
+	_EXT_ITCM static int print_usage(const char *reason = nullptr);
+
+	_EXT_ITCM static VEDIO_MONITOR *instantiate(int argc, char *argv[]);
+
+	_EXT_ITCM void run() override;
+
+	_EXT_ITCM int read(unsigned address, void *data, unsigned count);
+	_EXT_ITCM int write(unsigned address, void *data, unsigned count);
+	_EXT_ITCM unsigned char readbyte(unsigned char address);
+	_EXT_ITCM unsigned char writebyte(unsigned char address, unsigned char data);
+
+private:
+	_EXT_ITCM static void it66021_polling(void *arg);
+
+
+};
 
 
 #endif

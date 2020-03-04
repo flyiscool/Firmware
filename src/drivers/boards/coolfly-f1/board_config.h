@@ -216,6 +216,8 @@
 #define PX4_I2C_BUS_IT66021_A         AR_I2C1_BUS
 #define PX4_I2C_BUS_IT66021_B         AR_I2C0_BUS
 
+// new liuwei
+#define PX4_I2C_IT66021_A         	AR_I2C1_BUS
 
 #define BOARD_NUMBER_I2C_BUSES      4
 #define BOARD_I2C_BUS_CLOCK_INIT    {100000, 100000, 100000, 100000}
