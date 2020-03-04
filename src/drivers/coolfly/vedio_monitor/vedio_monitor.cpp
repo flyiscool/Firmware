@@ -58,7 +58,7 @@
 
 #include "it66021_reg.h"
 #include "it66021_type.h"
-#include "ar_define.h"
+#include "chip/ar_define.h"
 
 static struct work_s _work = {};
 
@@ -254,140 +254,9 @@ void VEDIO_MONITOR::run()
 		return;
 	}
 
-	char ret = FALSE;
-
-	it6602HPDCtrl(1, 0); // HDMI port , set HPD = 0
-	IT_Delay(10); //for power sequence
-	ret = IT6602_fsm_init();
-	it6602HPDCtrl(1, 1);
-
-	if (FALSE != ret) {
-		mhlrxwr(MHL_RX_0A, 0xFF);
-		mhlrxwr(MHL_RX_08, 0xFF);
-		mhlrxwr(MHL_RX_09, 0xFF);
-
-		hdmirxset(REG_RX_063, 0xFF, 0x3F);
-		hdmirxset(REG_RX_012, 0xFF, 0xF8);
-
-		DLOG_Info("REG_RX_012=%2x", hdmirxrd(REG_RX_012));
-		DLOG_Info("REG_RX_063=%2x", hdmirxrd(REG_RX_063));
-		DLOG_Info("MHL_RX_0A=%2x", mhlrxrd(MHL_RX_0A));
-		DLOG_Info("MHL_RX_08=%2x", mhlrxrd(MHL_RX_08));
-		DLOG_Info("MHL_RX_09=%2x", mhlrxrd(MHL_RX_09));
-	}
-
-	return ret;
-
-
-
 	while (true) {
 		usleep(1000 * 1000);
 	}
 
 }
-
-
-
-
-// char it66021_init(void)
-// {
-
-
-//     //IT_Delay(1000); //for power sequence
-// }
-
-
-
-
-// void it6602_SetOutputColorDepth(unsigned char color_depth)
-// {
-// 	if (color_depth == 0)
-// 	{
-// 		HDMIRX_OUTPUT_VID_MODE = eYUV422_Sep_Sync_SDR;
-// 	}
-// 	else if(color_depth == 1)
-// 	{
-// 		HDMIRX_OUTPUT_VID_MODE = eCCIR656_Sep_Sync_SDR;
-// 	}
-// }
-
-
-
-// char IT_66021_Initial(uint8_t index, uint8_t color_depth)
-// {
-//     it6602_SetOutputColorDepth(color_depth);
-
-//     return it66021_init();
-
-// }
-
-
-// static uint8_t HDMI_RX_MapToDeviceIndex(ENUM_HAL_HDMI_RX e_hdmiIndex)
-// {
-//     return (e_hdmiIndex == HAL_HDMI_RX_0) ? 0 : 1;
-// }
-
-// HAL_RET_T HAL_HDMI_RX_Init(ENUM_HAL_HDMI_RX e_hdmiIndex,
-//                            STRU_HDMI_CONFIGURE *pst_hdmiConfigure)
-// {
-//     s_st_hdmiRxStatus[e_hdmiIndex].u8_devEnable = 1;
-//     memcpy(&(s_st_hdmiRxStatus[e_hdmiIndex].st_configure),pst_hdmiConfigure,sizeof(STRU_HDMI_CONFIGURE));
-
-// 	// use the orb to publish to the cpu2 then notify
-//     //SYS_EVENT_RegisterHandler(SYS_EVENT_ID_VIDEO_EVENT, HDMI_RxVideoHandle);
-//     //SYS_EVENT_RegisterHandler(SYS_EVENT_ID_AUDIO_EVENT, HDMI_RxAudioHandle);
-
-//     // if (s_st_hdmiRxStatus[e_hdmiIndex].st_configure.e_getFormatMethod == HAL_HDMI_INTERRUPT)
-//     // {
-//     //     HAL_NVIC_SetPriority(GPIO_INTR_N0_VECTOR_NUM + ((pst_hdmiConfigure->st_interruptGpio.e_interruptGpioNum)>>5),INTR_NVIC_PRIORITY_HDMI_GPIO,0);
-//     //     switch (e_hdmiIndex)
-//     //     {
-//     //         case HAL_HDMI_RX_0:
-//     //         {
-//     //             HAL_GPIO_RegisterInterrupt(s_st_hdmiRxStatus[e_hdmiIndex].st_configure.st_interruptGpio.e_interruptGpioNum,
-//     //                                        s_st_hdmiRxStatus[e_hdmiIndex].st_configure.st_interruptGpio.e_interruptGpioType,
-//     //                                        s_st_hdmiRxStatus[e_hdmiIndex].st_configure.st_interruptGpio.e_interruptGpioPolarity, HAL_HDMI_RX_IrqHandler0);
-//     //             break;
-//     //         }
-//     //         case HAL_HDMI_RX_1:
-//     //         {
-//     //              HAL_GPIO_RegisterInterrupt(s_st_hdmiRxStatus[e_hdmiIndex].st_configure.st_interruptGpio.e_interruptGpioNum,
-//     //                                        s_st_hdmiRxStatus[e_hdmiIndex].st_configure.st_interruptGpio.e_interruptGpioType,
-//     //                                        s_st_hdmiRxStatus[e_hdmiIndex].st_configure.st_interruptGpio.e_interruptGpioPolarity, HAL_HDMI_RX_IrqHandler1);
-
-//     //             break;
-//     //         }
-//     //         default :
-//     //         {
-//     //             return HAL_HDMI_INPUT_COUNT;
-//     //         }
-
-//     //     }
-//     // }
-
-//     // #ifdef USE_ADV7611_EDID_CONFIG_BIN
-//     //     ADV_7611_Initial(HDMI_RX_MapToDeviceIndex(e_hdmiIndex));
-//     // #endif
-
-//     #ifdef USE_IT66021_EDID_CONFIG_BIN
-//     if (FALSE == IT_66021_Initial(HDMI_RX_MapToDeviceIndex(e_hdmiIndex), s_st_hdmiRxStatus[e_hdmiIndex].st_configure.e_colorDepth))
-//     {
-//         return HAL_HDMI_RX_ERR_INIT;
-//     }
-//         //SYS_EVENT_RegisterHandler(SYS_EVENT_ID_IDLE, (SYS_Event_Handler)IT6602_fsm);
-//     #endif
-
-//     // if (s_st_hdmiRxStatus[e_hdmiIndex].st_configure.e_getFormatMethod == HAL_HDMI_POLLING)
-//     // {
-//     //     SYS_EVENT_RegisterHandler(SYS_EVENT_ID_IDLE, e_hdmiIndex == HAL_HDMI_RX_0 ? HDMI_RX_IdleCallback0 : HDMI_RX_IdleCallback1);
-//     // }
-
-//     if (s_st_hdmiRxStatus[e_hdmiIndex].st_configure.e_getFormatMethod != HAL_HDMI_POLLING ||
-//         s_st_hdmiRxStatus[e_hdmiIndex].st_configure.e_getFormatMethod != HAL_HDMI_INTERRUPT)
-//     {
-//         return HAL_HDMI_GET_ERR_GORMAT_METHOD;
-//     }
-
-//     return HAL_OK;
-// }
 
