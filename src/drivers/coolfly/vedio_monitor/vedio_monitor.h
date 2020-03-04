@@ -4,8 +4,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <chip/ar_config.h>
-
-
+#include <drivers/device/i2c.h>
+#include <px4_module.h>
 
 #define IT66021A_RST_PIN		25
 #define IT66021A_INT_PIN		27

@@ -56,6 +56,7 @@
 #include "vedio_monitor.h"
 #include <board_config.h>
 
+#include "it66021.h"
 #include "it66021_reg.h"
 #include "it66021_type.h"
 #include "chip/ar_define.h"
@@ -64,8 +65,12 @@ static struct work_s _work = {};
 
 STRU_HDMI_RX_STATUS s_st_hdmiRxStatus;
 
+exturn _CODE struct IT6602_REG_INI  IT6602_HDMI_INIT_TABLE[];
 
 VEDIO_MONITOR *p_it66021a;
+VEDIO_MONITOR *p_it66021a_edid;
+VEDIO_MONITOR *p_it66021a_mhl;
+
 
 VEDIO_MONITOR::VEDIO_MONITOR(const char *name, const char *devname,
 			     int bus, uint16_t address, uint32_t frequency):
@@ -230,7 +235,7 @@ void VEDIO_MONITOR::run()
 	p_it66021a = new VEDIO_MONITOR("it66021a",
 				       "/dev/it66021a",
 				       PX4_I2C_IT66021_A,
-				       0x92 >> 1,
+				       IT66021A_HDMI_ADDR >> 1,
 				       100000);
 
 	ar_gpiowrite(IT66021A_RST_PIN, 0);
@@ -253,6 +258,38 @@ void VEDIO_MONITOR::run()
 		PX4_INFO("can't find the 66021\r\n");
 		return;
 	}
+
+	// init fresh the dev
+	hdimrx_write_init(IT6602_HDMI_INIT_TABLE);
+
+	p_it66021a_edid = new VEDIO_MONITOR("it66021a_edid",
+				       "/dev/it66021a_edid",
+				       PX4_I2C_IT66021_A,
+				       EDID_ADDR >> 1,
+				       100000);
+
+
+	ret = p_it66021a_edid->init();
+
+	if (ret != OK) {
+		PX4_INFO("p_it66021a_edid i2c init fail \r\n");
+		return ;
+	}				   
+
+	p_it66021a_mhl = new VEDIO_MONITOR("it66021a_mhl",
+				       "/dev/it66021a_mhl",
+				       PX4_I2C_IT66021_A,
+				       MHL_ADDR >> 1,
+				       100000);
+
+	ret = p_it66021a_mhl->init();
+
+	if (ret != OK) {
+		PX4_INFO("p_it66021a_mhl i2c init fail \r\n");
+		return ;
+	}		
+
+
 
 	while (true) {
 		usleep(1000 * 1000);

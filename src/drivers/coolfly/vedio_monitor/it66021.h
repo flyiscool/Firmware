@@ -1,27 +1,51 @@
 #ifndef _COOLFLY_IT66021_H_
 #define _COOLFLY_IT66021_H_
 
-#include <stddef.h>
-#include <stdint.h>
-#include "it66021_define.h"
 
-
-#define _SUPPORT_HDCP_				FALSE
-#define _SUPPORT_EDID_RAM_			TRUE
+#define _SUPPORT_HDCP_			FALSE
+#define _SUPPORT_EDID_RAM_		TRUE
 
 //FIX_ID_001 xxxxx Add Auto EQ with Manual EQ
-#define _SUPPORT_AUTO_EQ_           TRUE
-#define _SUPPORT_EQ_ADJUST_         TRUE
+#define _SUPPORT_AUTO_EQ_       TRUE
+#define _SUPPORT_EQ_ADJUST_     TRUE
 //FIX_ID_001 xxxxx
 
+//FIX_ID_032 xxxxx	//Support HDCP Repeater function for HDMI Tx device
+// For enable HDCP repeater function , Please to enable the #define _SUPPORT_HDCP_REPEATER_
+
+//#define _SUPPORT_HDCP_REPEATER_
+
+#ifdef _SUPPORT_HDCP_REPEATER_
+#define _PSEUDO_HDCP_REPEATER_TEST_			TRUE
+//#define _ONLY_SUPPORT_MANUAL_EQ_ADJUST_		TRUE
+#endif
+
+//FIX_ID_032 xxxxx
+
+//FIX_ID_021 xxxxx		//To use CP_100ms for CBus_100ms and CEC_100m
+//FIX_ID_004 xxxxx 		//Add calibration ring osc for Cbus
+
 #define _SelectExtCrystalForCbus_	TRUE
+//FIX_ID_004 xxxxx
+//FIX_ID_021 xxxxx
+
+//FIX_ID_023 xxxxx		//Fixed for Audio Channel Status Error with invalid HDMI source
+//#define EnableCalFs
+//FIX_ID_023 xxxxx
+
+//FIX_ID_028 xxxxx //For Debug Audio error with S2
+//#define _FIX_ID_028_
+//FIX_ID_028 xxxxx
+//FIX_ID_026 xxxxx 		//Support RB SWAP for TTL output
+//#define _SUPPORT_RBSWAP_
+//FIX_ID_026 xxxxx
 
 /*****************************************************************************/
 /* Type defs enums  **********************************************************/
 /*****************************************************************************/
 //FIX_ID_033 xxxxx  //Fine-tune EQ Adjust function for HDCP receiver and repeater mode
 //xxxxx 2014-0421 modify 50 to 100
-#define MS_LOOP                 100
+#define MS_LOOP		100
 //xxxxx 2014-0421
 //FIX_ID_033 xxxxx
 
@@ -169,6 +193,7 @@ typedef enum _Video_OutputSync_Mode {
 } Video_OutputSync_Mode;
 
 //FIX_ID_003 xxxxx
+
 typedef enum _Video_State_Type {
 	VSTATE_Off = 0,
 	VSTATE_TerminationOff,
@@ -218,17 +243,19 @@ typedef enum  {
 } RCPResult_Type;
 
 
-#define F_MODE_RGB24	0
-#define F_MODE_RGB444  	0
-#define F_MODE_YUV422  	1
-#define F_MODE_YUV444  	2
-#define F_MODE_CLRMOD_MASK 	3
-#define F_MODE_ITU709  	(1<<4)
-#define F_MODE_ITU601  	0
-#define F_MODE_0_255   	0
-#define F_MODE_16_235  	(1<<5)
-#define F_MODE_EN_UDFILT 	(1<<6)
-#define F_MODE_EN_DITHER 	(1<<7)
+
+
+#define F_MODE_RGB24  0
+#define F_MODE_RGB444  0
+#define F_MODE_YUV422 1
+#define F_MODE_YUV444 2
+#define F_MODE_CLRMOD_MASK 3
+#define F_MODE_ITU709  (1<<4)
+#define F_MODE_ITU601  0
+#define F_MODE_0_255   0
+#define F_MODE_16_235  (1<<5)
+#define F_MODE_EN_UDFILT (1<<6)
+#define F_MODE_EN_DITHER (1<<7)
 
 #define RCVABORT        2
 #define RCVNACK         3
@@ -319,15 +346,18 @@ typedef enum  {
 #define SUPPORT_OUTPUTYUV
 #define SUPPORT_OUTPUTYUV444
 #define SUPPORT_OUTPUTYUV422
-#define SUPPORT_OUTPUTRGB
+
+#if (defined(SUPPORT_OUTPUTYUV444))||(defined(SUPPORT_OUTPUTYUV422))
+#define SUPPORT_OUTPUTYUV
+#endif
 
 #define F_PORT_SEL_0      0
 #define F_PORT_SEL_1      1
 
+#endif
 
 
 
-#if 1
 /*****************************************************************************/
 /* Type defs struct **********************************************************/
 /*****************************************************************************/
@@ -336,6 +366,7 @@ struct IT6602_REG_INI {
 	unsigned char andmask;
 	unsigned char ucValue;
 };
+
 
 struct IT6602_VIDEO_CONFIGURE_REG {
 	unsigned char ucReg51;
@@ -391,6 +422,7 @@ typedef struct _set_de3d_frame {
 	unsigned int V_act_end;      // Vactive end -1
 	unsigned int V_sync_end;     // LSB(Vtotal -1 + sync With)
 	unsigned int V_2D_active_total;     // V_2D_active_total
+
 } SET_DE3D_FRAME;
 
 typedef enum {
@@ -424,13 +456,12 @@ struct it6602_eq_data {
 	unsigned char ucPkt_Err;
 	unsigned char ucPortID;
 	unsigned char f_manualEQadjust;
-	//FIX_ID_010 xxxxx 	//Add JudgeBestEQ to avoid wrong EQ setting
+//FIX_ID_010 xxxxx 	//Add JudgeBestEQ to avoid wrong EQ setting
 	unsigned char ErrorCount[MaxEQIndex];
-	//FIX_ID_010 xxxxx
+//FIX_ID_010 xxxxx
 };
-#endif
-//FIX_ID_001 xxxxx
 
+//FIX_ID_001 xxxxx
 
 //FIX_ID_005 xxxxx	//Add Cbus Event Handler
 #define B_MSC_Waiting 		0x10
@@ -496,6 +527,38 @@ struct AVI_info {
 };
 
 
+#ifdef _SUPPORT_HDCP_REPEATER_
+//FIX_ID_032 xxxxx	//Support HDCP Repeater function for HDMI Tx device
+// ---------------------------------------------------------------------------
+// hdmi rx event notify enum
+// ---------------------------------------------------------------------------
+typedef enum {
+	eAVMUTE_SET_NOTIFY,
+	eAVMUTE_CLEAR_NOTIFY,
+	eAKSV_WRITTEN_NOTIFY,
+	eAUTHENTICATION_COMPLETE_NOTIFY,
+	eAUTHENTICATION_5_SEC_TIMEOUT_NOTIFY,
+	eINVALID_ITEHDMI_NOTIFY
+} eITEHDMIEventNotify;
+
+
+typedef void (*callback_avmute_set_notify_t)(void);
+typedef void (*callback_avmute_clear_notify_t)(void);
+typedef void (*callback_aksv_written_notify_t)(void);
+typedef void (*callback_authentication_complete_notify_t)(void);
+typedef void (*callback_authentication_5_sec_timeout_notify_t)(void);
+
+typedef struct _xxxITEHDMICallbackList_t {
+	callback_avmute_set_notify_t                                	callback_avmute_set_notify;
+	callback_avmute_clear_notify_t                              	callback_avmute_clear_notify;
+	callback_aksv_written_notify_t                                	callback_aksv_written_notify;
+	callback_authentication_complete_notify_t                 callback_authentication_complete_notify;
+	callback_authentication_5_sec_timeout_notify_t         callback_authentication_5_sec_timeout_notify;
+
+} ITEHDMICallbackList_t, *pITEHDMICallbackList_t;
+//FIX_ID_032 xxxxx
+#endif
+
 struct it6602_dev_data {
 	Video_State_Type m_VState;
 	Audio_State_Type m_AState;
@@ -507,7 +570,6 @@ struct it6602_dev_data {
 	unsigned char m_ucCurrentHDMIPort;
 	unsigned char m_bOutputVideoMode;
 	unsigned char m_bInputVideoMode;
-
 //FIX_ID_039 xxxxx fix image flick when enable RGB limited / Full range convert
 #ifdef _AVOID_REDUNDANCE_CSC_
 	unsigned char m_Backup_OutputVideoMode;
@@ -515,16 +577,19 @@ struct it6602_dev_data {
 #endif
 //FIX_ID_039 xxxxx
 
+
 	unsigned char m_ucSCDTOffCount;
 	unsigned char m_ucEccCount_P0;
+	unsigned char m_ucEccCount_P1;
 	unsigned char m_ucDeskew_P0;
+	unsigned char m_ucDeskew_P1;
 
 	SRC_3D_SOURCE_CONFIG de3dframe_config;
 	DE3DFRAME s_Current3DFr;
 
 	unsigned char oldVIC;
 	unsigned char newVIC;
-	unsigned char f_de3dframe_hdmi;
+	unsigned char  f_de3dframe_hdmi;
 
 //FIX_ID_001 xxxxx Add Auto EQ with Manual EQ
 #ifdef _SUPPORT_EQ_ADJUST_
@@ -537,17 +602,16 @@ struct it6602_dev_data {
 	Video_DataTrigger_Mode m_VidOutDataTrgger;
 	Video_OutputSync_Mode m_VidOutSyncMode;
 	//FIX_ID_003 xxxxx
-
-	//FIX_ID_005 xxxxx	//Add Cbus Event Handler
+//FIX_ID_005 xxxxx	//Add Cbus Event Handler
 	unsigned char CBusIntEvent;
 	unsigned char CBusSeqNo;
 	unsigned char CBusWaitNo;
-	//FIX_ID_005 xxxxx
+//FIX_ID_005 xxxxx
 
-	//FIX_ID_014 xxxxx	//Add Cbus Event Handler
+//FIX_ID_014 xxxxx	//Add Cbus Event Handler
 	unsigned char HDMIIntEvent;
 	unsigned char HDMIWaitNo[2];
-	//FIX_ID_014 xxxxx
+//FIX_ID_014 xxxxx
 
 //FIX_ID_021 xxxxx		//To use CP_100ms for CBus_100ms and CEC_100m
 // #ifndef _SelectExtCrystalForCbus_
@@ -566,6 +630,13 @@ struct it6602_dev_data {
 	unsigned char RGBQuantizationRange;
 	unsigned char YCCQuantizationRange;
 	unsigned char VIC;
+
+
+#ifdef _SUPPORT_HDCP_REPEATER_
+//FIX_ID_032 xxxxx	//Support HDCP Repeater function for HDMI Tx device
+	pITEHDMICallbackList_t	pCallbackFunctionsList;
+//FIX_ID_032 xxxxx
+#endif
 
 
 //FIX_ID_034 xxxxx //Add MHL HPD Control by it6602HPDCtrl( )
@@ -597,12 +668,12 @@ struct it6602_dev_data {
 	BYTE m_GamutPacketRequest: 1;
 #endif
 
-//#if(_SUPPORT_HDCP_)
-//    //HDCP
-//    unsigned char HDCPEnable;
-//    HDCPSts_Type Hdcp_state;
-//    unsigned int HDCPFireCnt ;
-//#endif
+	//#if(_SUPPORT_HDCP_)
+	//    //HDCP
+	//    unsigned char HDCPEnable;
+	//    HDCPSts_Type Hdcp_state;
+	//    unsigned int HDCPFireCnt ;
+	//#endif
 
 	//CBUS MSC
 	unsigned char Mhl_devcap[16];
@@ -635,8 +706,6 @@ struct it6602_dev_data {
 
 };
 
-#endif
-
 
 /*****************************************************************************/
 /* Error codes ***************************************************************/
@@ -653,6 +722,58 @@ struct it6602_dev_data {
 #define ITEHDMI_DATA_INVALID                         -8
 
 
+//void read_mscmsg( void );
+//void parse_devcap( BYTE *devcap );
+//BYTE read_devcap_fwrpdmsg( void );
+//BYTE read_devcap_fwreqmsg( void );
+//void IT6602_fsm_init(void);
+//void IT6602_fsm(void);
+//void IT6602VideoOutputConfigure(void);
+//void SetVideoOutputFormat(void);
+//void it6602PortSelect(unsigned char ucPortSel);
+//void RCPKeyPush(unsigned char ucKey);
+//
+
+
+
+/*****************************************************************************/
+/* Public function prototypes ************************************************/
+/*****************************************************************************/
+#if 0
+void    ITEHDMI_CfgITEHDMI(I2CPORT i2c_port, I2CINIT *i2c_cfg);
+void    ITEHDMI_SwitchPort(IT6602_CURRENT_PORT port);
+void    ITEHDMI_InitITEHDMI(void);
+void    ITEHDMI_GetVersion(void);
+void    ITEHDMI_PollITEHDMI(void);
+void    ITEHDMI_EnableVideoOutput(PIXEL_MODE mode);
+
+int08   HDMI_SetHDMIPower(POWER_STATE pwr);
+int08   MHL_SetMHLPower(POWER_STATE pwr);
+
+void    MHL_GetPixelMode(PIXEL_MODE *mode);
+void    HDMI_GetColorType(uint08 *type);
+void    MHL_GetColorType(uint08 *type);
+//BOOL    MHL_Is_LINK_TrainDone(void);
+
+BOOL    MHL_IsInputInterlace(void);
+BOOL    MHL_IsMHLVideoON(void);
+BOOL    HDMI_IsInputHDMIMode(void);
+BOOL    HDMI_IsHDMIVideoON(void);
+BOOL    HDMI_IsHDMI5V(void);
+BOOL    HDMI_IsSCDT(void);
+void    IT6602_SetVideoMute(BOOL bMute);
+BOOL    oemIT6602PollEnable_Get(void);
+void    oemIT6602PollEnable_Set(BOOL val);
+BOOL    HDMI_IsRGBLimitedRange(BOOL isHighDefinitionVideo);
+void    HDMI_GetITEHDMI_3DStatus(uint08 *ReceiveData);
+void    HDMI_GetITEHDMI_InputTiming(uint16 *ReceiveData);
+BOOL    HDMI_GetThreeDMode(eThreeDMode type);
+void    HDMI_OutputCtrl(BOOL bEnableOutput);
+
+#endif
+
+
+
 /* ITEHDMI IO Functions   ***********************************************************/
 /* ITEHDMI Configuration and Initialization ***********************************/
 char IT6602_fsm_init(void);
@@ -663,6 +784,34 @@ void it6602HPDCtrl(unsigned char ucport, unsigned char ucEnable)	;
 /* HDMI Video function    *********************************************************/
 /* HDMI Interrupt function    *********************************************************/
 
+#ifdef _SUPPORT_HDCP_REPEATER_
+//FIX_ID_032 xxxxx	//Support HDCP Repeater function for HDMI Tx device
+// ---------------------------------------------------------------------------
+// ITEHDMI callback function
+// ---------------------------------------------------------------------------
+void ITEHDMI_AVMute_Set_Notify(void);
+void ITEHDMI_AVMute_Clear_Notify(void);
+void ITEHDMI_Aksv_Written_Notify(void);
+void ITEHDMI_Authentication_Complete_Notify(void);
+void ITEHDMI_Authentication_5_Sec_Timeout_Notify(void);
+void ITEHDMI_CallbackRegister(struct it6602_dev_data *it6602);
+
+/* HDCP functions    *********************************************************/
+void SHATransform(unsigned long *h);
+void SHA_Simple(void *p, unsigned int len, unsigned char *output);
+void ITEHDMI_RxHDCPRepeaterCapabilitySet(unsigned char uc);
+void ITEHDMI_RxHDCPRepeaterCapabilityClear(unsigned char uc);
+void ITEHDMI_RxKSVListMergeTxBksv(unsigned char ucTxDownStream, unsigned char *TxBksv, unsigned char *RxKSVList);
+void ITEHDMI_RxKSVListSet(unsigned char *pRxKSVList);
+void ITEHDMI_RxBstatusSet(unsigned int RxBstatus);
+void ITEHDMI_RxHDCPGenVr(unsigned char *pRx_KsvList, unsigned int Rx_Bstatus);
+void ITEHDMI_RxHDCPVrSet(unsigned char *pVr);
+void ITEHDMI_RxHDCPmodeChangeRequest(unsigned char bHDCPmode);
+void ITEHDMI_RxHDCP2ndAuthenticationRequest(unsigned char *pKsvList, unsigned char *pBksv, unsigned int Tx_Bstatus);
+void ITEHDMI_Event_Notify_Callback(eITEHDMIEventNotify event);
+//FIX_ID_032 xxxxx
+#endif
+
 
 /* MHLRX functions    *********************************************************/
 /* MHL interrupt    *******************************************************/
@@ -672,225 +821,24 @@ void it6602HPDCtrl(unsigned char ucport, unsigned char ucEnable)	;
 #ifdef _SUPPORT_RCP_
 void RCPKeyPush(unsigned char ucKey);
 #endif
+/* Driver State Machine Process **********************************************/
+void IT6602_fsm(void);
 
+void IT6602ChangeTTLVideoOutputMode(void);
+void IT6602MSCCmdTest(unsigned char ucCmd);
+void Dump_ITEHDMIReg(void);
+void debugEQ(unsigned char ucCmd);
+void debugxxx(void);
 
-////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-#include <drivers/device/i2c.h>
-#include <px4_workqueue.h>
-#include "edid.h"
-#include "px4_module.h"
-
-#ifndef _CODE
-#define _CODE
+void show_vid_info(void);
+void get_vid_info(void);
+char it66021_init(void);
+void IT6602_Interrupt(void);
+void it6602_GetAVIInfoFrame(void);
+unsigned char IsVideoOn(void);
+void it6602_SetOutputColorDepth(unsigned char color_depth);
+#ifdef SUPPORT_UART_CMD
+extern unsigned char m_UartCmd;
 #endif
-
-#define HAL_HDMI_RX_ERR_MASK	(0x70000)
-#define HAL_HDMI_RX_FALSE   	(HAL_HDMI_RX_ERR_MASK | 0x9)
-
-
-class IT66021: public device::I2C, public ModuleBase<IT66021>
-{
-public:
-	IT66021(I2CARG arg);
-	virtual ~IT66021();
-
-	_EXT_ITCM static int custom_command(int argc, char *argv[]);
-
-	_EXT_ITCM static int task_spawn(int argc, char *argv[]);
-
-	_EXT_ITCM static int print_usage(const char *reason = nullptr);
-
-	EDID *edid;
-
-	work_s work;
-
-	struct it6602_dev_data it6602DEV;
-
-	STRU_HDMI_RX_STATUS s_st_hdmiRxStatus;
-
-	uint8_t HDMI_RX_MapToDeviceIndex(ENUM_HAL_HDMI_RX e_hdmiIndex);
-
-	uint32_t HDMI_RX_CheckVideoFormatChangeOrNot(ENUM_HAL_HDMI_RX e_hdmiIndex,
-			uint16_t u16_width,
-			uint16_t u16_hight,
-			uint8_t u8_framerate);
-
-	uint8_t IT_66021_GetVideoFormat(uint8_t index, uint16_t *widthPtr, uint16_t *hightPtr, uint8_t *framteratePtr,
-					uint8_t *vic);
-
-	void HDMI_RX_CheckFormatStatus(ENUM_HAL_HDMI_RX e_hdmiIndex, uint32_t b_noDiffCheck);
-
-	/////////////////////////////////
-	virtual int init();
-	virtual int probe();
-
-	static void cycle_trampoline(void *arg);
-
-	void get_vid_info(void);
-	void show_vid_info(void);
-	void IT6602_Interrupt(void);
-
-	unsigned char mhlrxrd(unsigned char offset);
-	unsigned char mhlrxwr(unsigned char offset, unsigned char ucdata);
-
-	int read(unsigned address, void *data, unsigned count);
-	int write(unsigned address, void *data, unsigned count);
-
-	SYS_STATUS EDID_RAM_Write(unsigned char offset, unsigned char byteno, _CODE unsigned char *p_data);
-	unsigned char EDID_RAM_Read(unsigned char offset);
-	unsigned char hdmirxrd(unsigned char address);
-	unsigned char hdmirxwr(unsigned char address, unsigned char data);
-	unsigned char hdmirxset(unsigned char offset, unsigned char mask, unsigned char ucdata);
-	void hdmirxbwr(unsigned char offset, unsigned char byteno, unsigned char *rddata);
-
-	struct it6602_dev_data *get_it6602_dev_data(void);
-	void hdimrx_write_init(struct IT6602_REG_INI _CODE *tdata);
-
-	void IT6602_VideoOutputConfigure_Init(struct it6602_dev_data *it6602, Video_Output_Configure eVidOutConfig);
-	void hdmirx_Var_init(struct it6602_dev_data *it6602);
-	void IT6602_Rst(struct it6602_dev_data *it6602);
-
-	void chgbank(int bank);
-	unsigned char CheckSCDT(struct it6602_dev_data *it6602);
-	void WaitingForSCDT(struct it6602_dev_data *it6602);
-	unsigned char CLKCheck(unsigned char ucPortSel);
-
-	unsigned char IT6602_IsSelectedPort(unsigned char ucPortSel);
-
-#ifdef _SUPPORT_EQ_ADJUST_
-	void HDMIStartEQDetect(struct it6602_eq_data *ucEQPort);
-	void HDMISetEQValue(struct it6602_eq_data *ucEQPort, unsigned char ucIndex);
-	void HDMISwitchEQstate(struct it6602_eq_data *ucEQPort, unsigned char state);
-	void HDMICheckSCDTon(struct it6602_eq_data *ucEQPort);
-	void HDMIPollingErrorCount(struct it6602_eq_data *ucEQPort);
-	void HDMIJudgeECCvalue(struct it6602_eq_data *ucEQPort);
-	void HDMIAdjustEQ(struct it6602_eq_data *ucEQPort);
-	void JudgeBestEQ(struct it6602_eq_data *ucEQPort);
-	void StoreEccCount(struct it6602_eq_data *ucEQPort);
-	void IT6602VideoCountClr(void);
-
-#endif
-
-#ifdef _SUPPORT_AUTO_EQ_
-	void DisableOverWriteRS(unsigned char ucPortSel);
-	void AmpValidCheck(unsigned char ucPortSel);
-	void TogglePolarity(unsigned char ucPortSel);
-	void TMDSCheck(unsigned char ucPortSel);
-	void OverWriteAmpValue2EQ(unsigned char ucPortSel);
-#endif
-
-	unsigned char CheckAVMute(void);
-	unsigned char CheckPlg5VPwr(unsigned char ucPortSel);
-	unsigned char IsHDMIMode(void);
-	void GetAVIInfoFrame(struct it6602_dev_data *it6602);
-
-	void SetVideoInputFormatWithInfoFrame(struct it6602_dev_data *it6602);
-	void SetColorimetryByInfoFrame(struct it6602_dev_data *it6602);
-	void SetCSCBYPASS(struct it6602_dev_data *it6602);
-	void SetColorSpaceConvert(struct it6602_dev_data *it6602);
-	void SetNewInfoVideoOutput(struct it6602_dev_data *it6602);
-	void SetVideoInputFormatWithoutInfoFrame(struct it6602_dev_data *it6602, unsigned char bInMode);
-	void SetColorimetryByMode(struct it6602_dev_data *it6602);
-	void SetDVIVideoOutput(struct it6602_dev_data *it6602);
-
-	void IT6602_VideoOutputModeSet(struct it6602_dev_data *it6602);
-	void IT6602VideoOutputConfigure(struct it6602_dev_data *it6602);
-	void SetVideoOutputColorFormat(struct it6602_dev_data *it6602);
-	void it6602PortSelect(unsigned char ucPortSel);
-	void hdmirx_ECCTimingOut(unsigned char ucport);
-
-	/* HDMI Audio function    *********************************************************/
-	void aud_fiforst(void);
-	void IT6602AudioOutputEnable(unsigned char bEnable);
-	void hdmirx_ResetAudio(void);
-	void hdmirx_SetHWMuteClrMode(void);
-	void hdmirx_SetHWMuteClr(void);
-	void hdmirx_ClearHWMuteClr(void);
-	void getHDMIRXInputAudio(AUDIO_CAPS *pAudioCaps);
-	void IT6602SwitchAudioState(struct it6602_dev_data *it6602, Audio_State_Type state);
-
-	void IT6602AudioHandler(struct it6602_dev_data *it6602);
-
-	/* HDMI Video function    *********************************************************/
-	void IT6602_AFE_Rst(void);
-	void IT6602_HDCP_ContentOff(unsigned char ucPort, unsigned char bOff);
-	void IT6602_RAPContentOff(unsigned char bOff);
-
-	void IT6602_SetVideoMute(struct it6602_dev_data *it6602, unsigned char bMute);
-	void IT6602VideoOutputEnable(unsigned char bEnableOutput);
-	void IT6602SwitchVideoState(struct it6602_dev_data *it6602, Video_State_Type eNewVState);
-	void IT6602VideoHandler(struct it6602_dev_data *it6602);
-
-	/* HDMI Interrupt function    *********************************************************/
-	void hdmirx_INT_5V_Pwr_Chg(struct it6602_dev_data *it6602, unsigned char ucport);
-	void hdmirx_INT_P0_ECC(struct it6602_dev_data *it6602);
-	void hdmirx_INT_P0_Deskew(struct it6602_dev_data *it6602);
-	//FIX_ID_009 xxxxx	//verify interrupt event with reg51[0] select port
-	void hdmirx_INT_HDMIMode_Chg(struct it6602_dev_data *it6602, unsigned char ucport);
-	//FIX_ID_009 xxxxx
-	void hdmirx_INT_SCDT_Chg(struct it6602_dev_data *it6602);
-
-
-
-	//FIX_ID_001 xxxxx Add Auto EQ with Manual EQ
-#ifdef _SUPPORT_AUTO_EQ_
-	void hdmirx_INT_EQ_FAIL(struct it6602_dev_data *it6602, unsigned char ucPortSel);
-#endif
-
-
-	/* EDID RAM  functions    *******************************************************/
-#ifdef _SUPPORT_EDID_RAM_
-	unsigned char UpdateEDIDRAM(unsigned char *pEDID, unsigned char BlockNUM);
-
-	void EnableEDIDupdata(void);
-	void DisableEDIDupdata(void);
-	// void EDIDRAMInitial(_CODE unsigned char *pIT6602EDID);
-	void EDIDRAMInitial(unsigned char *pIT6602EDID);
-	// unsigned char Find_Phyaddress_Location(_CODE unsigned char *pEDID,unsigned char Block_Number);
-	unsigned char Find_Phyaddress_Location(unsigned char *pEDID, unsigned char Block_Number);
-	void UpdateEDIDReg(unsigned char u8_VSDB_Addr, unsigned char CEC_AB, unsigned char CEC_CD,
-			   unsigned char Block1_CheckSum);
-	void PhyAdrSet(void);
-#endif
-
-	/* Driver State Machine Process **********************************************/
-	void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602);
-
-#ifndef Enable_IR
-	void it6602AutoPortSelect(struct it6602_dev_data *it6602);
-#endif
-
-// #ifdef Enable_Vendor_Specific_packet
-	void Dump3DReg(void);
-	unsigned char IT6602_DE3DFrame(unsigned char ena_de3d);
-// #endif
-
-	char it66021_init(void);
-	void it6602HPDCtrl(unsigned char ucport, unsigned char ucEnable);
-
-	void IT6602HDMIEventManager(struct it6602_dev_data *it6602);
-
-	void IT6602_fsm(void);
-
-	char IT6602_fsm_init(void);
-	void IT6602_ManualVideoTristate(unsigned char bOff);
-	int mscCheckResult(void);
-	void Dump_ITEHDMIReg(void);
-};
-
-
-
-typedef struct {
-	I2CARG *it66021arg;
-
-	I2CARG *edidarg;
-
-	IT66021TYPE type;
-
-	IT66021 *dev;
-
-} IT66021_BUS_ARG;
-
 
 #endif

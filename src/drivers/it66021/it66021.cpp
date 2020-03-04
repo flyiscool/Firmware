@@ -59,6 +59,7 @@
 
 
 
+
 static STRU_HDMI_RX_OUTPUT_FORMAT s_st_hdmiRxSupportedOutputFormat[] = {
 	{720,  480,  60},
 	{1280, 720,  30},

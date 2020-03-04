@@ -37,7 +37,7 @@ px4_add_module(
 	-Wno-unused-function
 	SRCS
 	vedio_monitor.cpp
-
+	it66021.cpp
 	DEPENDS
 )
 
