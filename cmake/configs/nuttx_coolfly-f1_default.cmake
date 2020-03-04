@@ -13,8 +13,9 @@ set(config_module_list
 	drivers/magnetometer
 	# drivers/telemetry
 	drivers/it66021
-	drivers/vedio_monitor
+
 	drivers/coolfly/cpu2
+	drivers/coolfly/vedio_monitor
 	drivers/coolfly/RFUart
 	drivers/coolfly/bb
 	

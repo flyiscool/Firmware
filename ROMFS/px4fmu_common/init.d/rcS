@@ -595,5 +595,5 @@ cpu2 start
 usleep 1000000
 
 #echo "it66021 start -d a"
-it66021 start -d a 
+#it66021 start -d a 
 

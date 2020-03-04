@@ -41,7 +41,9 @@
             "typeindex": "cpp",
             "typeinfo": "cpp",
             "random": "c",
-            "fstream": "cpp"
+            "fstream": "cpp",
+            "condition_variable": "cpp",
+            "tuple": "cpp"
         }
     }
 }
