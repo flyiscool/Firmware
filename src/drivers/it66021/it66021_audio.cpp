@@ -31,10 +31,9 @@
  *
  ****************************************************************************/
 
+#include "ite_type.h"
 #include "it66021.h"
-#include "it66021_reg.h"
-#include "it66021_config.h"
-
+#include "ite_reg.h"
 
 
 #ifdef _FIX_ID_028_
@@ -49,7 +48,9 @@
 //FIX_ID_023 xxxxx
 #endif
 
+
 #define AUDIO_MONITOR_TIMEOUT               MS_TimeOut(150)
+
 
 const char  *AStateStr[] = {
 	"ASTATE_AudioOff",

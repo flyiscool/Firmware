@@ -36,7 +36,8 @@
 #define _COOLFLY_IT66021_EDID_H_
 
 #include <drivers/device/i2c.h>
-#include "it66021_i2c.h"
+
+#include "ite_type.h"
 
 class EDID : public device::I2C
 {

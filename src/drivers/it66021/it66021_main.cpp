@@ -34,11 +34,14 @@
 #include <string.h>
 #include <px4_workqueue.h>
 #include <px4_getopt.h>
+
+#include "ite_type.h"
+#include "ite_reg.h"
+
 #include "it66021.h"
-#include "it66021_i2c.h"
+
 #include "px4_log.h"
-#include "it66021_reg.h"
-#include "it66021_config.h"
+
 
 
 static I2CARG IT66021_I2CARG_A = {
@@ -46,12 +49,12 @@ static I2CARG IT66021_I2CARG_A = {
 	.devname 	= "/dev/it66021_A",
 	.bus 		= PX4_I2C_BUS_IT66021_A,	// AR_I2C1_BUS
 	.address	= IT66021A_HDMI_ADDR >> 1,	// 0x92
-	.frequency	= IT66021_DEFAULT_BUS_SPEED	// IT66021_DEFAULT_BUS_SPEED 
+	.frequency	= IT66021_DEFAULT_BUS_SPEED	// IT66021_DEFAULT_BUS_SPEED
 };
 
 static I2CARG IT66021_I2CARG_A_EDID = {
-	.name 		= "it66021_edid",	
-	.devname 	= "/dev/it66021_A_edid",	
+	.name 		= "it66021_edid",
+	.devname 	= "/dev/it66021_A_edid",
 	.bus 		= PX4_I2C_BUS_IT66021_A,	// AR_I2C1_BUS
 	.address	= EDID_ADDR >> 1, // 0xA8
 	.frequency	= IT66021_DEFAULT_BUS_SPEED
@@ -81,6 +84,7 @@ unsigned char IT66021::mhlrxwr(unsigned char offset, unsigned char ucdata)
 
 IT66021::IT66021(I2CARG arg) : I2C(arg.name, arg.devname, arg.bus, arg.address,  arg.frequency), work{}
 {
+	PX4_INFO("dev it66021 build~ \r\n");
 	this->s_st_hdmiRxStatus.st_configure.e_getFormatMethod = HAL_HDMI_INTERRUPT;
 	this->s_st_hdmiRxStatus.st_configure.e_colorDepth = HAL_HDMI_RX_8BIT;
 	this->s_st_hdmiRxStatus.st_configure.u8_hdmiToEncoderCh = 1;
@@ -96,9 +100,10 @@ int IT66021::init()
 	int ret;
 
 	if ((ret = I2C::init()) != OK) {
-		IT_INFO("ret != OK\r\n");
+		PX4_INFO("ret != OK\r\n");
 		return ret;
 	}
+
 	// 100 Microseconds Timer Calibration
 	usleep(100 * 1000);
 	return OK;
@@ -183,7 +188,7 @@ SYS_STATUS IT66021::EDID_RAM_Write(unsigned char offset, unsigned char byteno, _
 unsigned char IT66021::EDID_RAM_Read(unsigned char offset)
 {
 	uint8_t value = 0;
-	EDID *edit = it66021_A_EDID; 
+	EDID *edit = it66021_A_EDID;
 	edit->read(offset, &value, 1);
 
 	return value;
@@ -220,13 +225,13 @@ unsigned char IT66021::hdmirxset(unsigned char offset, unsigned char mask, unsig
 void IT66021::cycle_trampoline(void *arg)
 {
 	IT66021 *dev = (IT66021 *)arg;
-	
+
 	if (ar_gpioread(27) == 0) {
 		dev->IT6602_Interrupt();
 		dev->IT6602_fsm();
 		dev->HDMI_RX_CheckFormatStatus(HAL_HDMI_RX_1, HAL_HDMI_RX_FALSE);
-	}
-	else if (ar_gpioread(68) == 0) { }
+
+	} else if (ar_gpioread(68) == 0) { }
 
 	work_queue(LPWORK, &dev->work, (worker_t)&IT66021::cycle_trampoline, dev, USEC2TICK(1000 * 1000));
 }
@@ -247,7 +252,7 @@ int IT66021::task_spawn(int argc, char *argv[])
 		case 'd':
 			dev = *myoptarg;
 			break;
-			
+
 		default:
 			PX4_WARN("unrecognized flag");
 			error_flag = true;
@@ -260,6 +265,7 @@ int IT66021::task_spawn(int argc, char *argv[])
 	}
 
 	if (dev == 'a') {
+
 		bus_option = IT66021_BUS_ARG_A;
 		bus_option.dev = it66021_A;
 		it66021_A->edid = it66021_A_EDID;
@@ -271,12 +277,24 @@ int IT66021::task_spawn(int argc, char *argv[])
 	IT66021 *interface = bus_option.dev;
 
 	if (interface->init() != OK) {
+		PX4_INFO("IT66021 init failed...");
 		return false;
 	}
 
+	PX4_INFO("IT66021 init success");
+
+	//HDMIRX_OUTPUT_VID_MODE = eCCIR656_Sep_Sync_SDR;
+	// set edid table  as default
+
+	interface->it66021_init();
+
+
+
+
+
 	// EDID
 	interface->hdmirxset(REG_RX_0C0, 0x43, 0x40);
-	interface->hdmirxset(REG_RX_087, 0xFF, bus_option.edidarg->address | 0x01);
+	interface->hdmirxset(REG_RX_087, 0xFF, EDID_ADDR | 0x01);
 
 	EDID *edid = interface->edid;
 
@@ -286,7 +304,7 @@ int IT66021::task_spawn(int argc, char *argv[])
 
 	it66021_A_EDID = edid;
 
-	interface->it66021_init();
+	
 
 	int ret = work_queue(LPWORK, &interface->work, (worker_t)&IT66021::cycle_trampoline, interface, USEC2TICK(1000));
 
@@ -295,7 +313,7 @@ int IT66021::task_spawn(int argc, char *argv[])
 	}
 
 	_task_id = task_id_is_work_queue;
-	
+
 	return true;
 }
 

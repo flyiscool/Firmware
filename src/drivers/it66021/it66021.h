@@ -3,12 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "it66021_define.h"
-
-#define IT66021B_HDMI_ADDR (0x90)
-
-
-#if 1
+#include "ite_define.h"
 
 
 #define _SUPPORT_HDCP_				FALSE
@@ -16,9 +11,8 @@
 
 //FIX_ID_001 xxxxx Add Auto EQ with Manual EQ
 #define _SUPPORT_AUTO_EQ_           TRUE
-#define _SUPPORT_EQ_ADJUST_          TRUE
+#define _SUPPORT_EQ_ADJUST_         TRUE
 //FIX_ID_001 xxxxx
-
 
 #define _SelectExtCrystalForCbus_	TRUE
 
@@ -175,7 +169,6 @@ typedef enum _Video_OutputSync_Mode {
 } Video_OutputSync_Mode;
 
 //FIX_ID_003 xxxxx
-
 typedef enum _Video_State_Type {
 	VSTATE_Off = 0,
 	VSTATE_TerminationOff,
@@ -225,19 +218,17 @@ typedef enum  {
 } RCPResult_Type;
 
 
-
-
-#define F_MODE_RGB24  0
-#define F_MODE_RGB444  0
-#define F_MODE_YUV422 1
-#define F_MODE_YUV444 2
-#define F_MODE_CLRMOD_MASK 3
-#define F_MODE_ITU709  (1<<4)
-#define F_MODE_ITU601  0
-#define F_MODE_0_255   0
-#define F_MODE_16_235  (1<<5)
-#define F_MODE_EN_UDFILT (1<<6)
-#define F_MODE_EN_DITHER (1<<7)
+#define F_MODE_RGB24	0
+#define F_MODE_RGB444  	0
+#define F_MODE_YUV422  	1
+#define F_MODE_YUV444  	2
+#define F_MODE_CLRMOD_MASK 	3
+#define F_MODE_ITU709  	(1<<4)
+#define F_MODE_ITU601  	0
+#define F_MODE_0_255   	0
+#define F_MODE_16_235  	(1<<5)
+#define F_MODE_EN_UDFILT 	(1<<6)
+#define F_MODE_EN_DITHER 	(1<<7)
 
 #define RCVABORT        2
 #define RCVNACK         3
@@ -329,14 +320,11 @@ typedef enum  {
 #define SUPPORT_OUTPUTYUV444
 #define SUPPORT_OUTPUTYUV422
 
-#if (defined(SUPPORT_OUTPUTYUV444))||(defined(SUPPORT_OUTPUTYUV422))
-#define SUPPORT_OUTPUTYUV
-#endif
 
 #define F_PORT_SEL_0      0
 #define F_PORT_SEL_1      1
 
-#endif
+
 
 
 #if 1
@@ -348,7 +336,6 @@ struct IT6602_REG_INI {
 	unsigned char andmask;
 	unsigned char ucValue;
 };
-
 
 struct IT6602_VIDEO_CONFIGURE_REG {
 	unsigned char ucReg51;
@@ -404,7 +391,6 @@ typedef struct _set_de3d_frame {
 	unsigned int V_act_end;      // Vactive end -1
 	unsigned int V_sync_end;     // LSB(Vtotal -1 + sync With)
 	unsigned int V_2D_active_total;     // V_2D_active_total
-
 } SET_DE3D_FRAME;
 
 typedef enum {
@@ -438,13 +424,12 @@ struct it6602_eq_data {
 	unsigned char ucPkt_Err;
 	unsigned char ucPortID;
 	unsigned char f_manualEQadjust;
-//FIX_ID_010 xxxxx 	//Add JudgeBestEQ to avoid wrong EQ setting
+	//FIX_ID_010 xxxxx 	//Add JudgeBestEQ to avoid wrong EQ setting
 	unsigned char ErrorCount[MaxEQIndex];
-//FIX_ID_010 xxxxx
+	//FIX_ID_010 xxxxx
 };
 #endif
 //FIX_ID_001 xxxxx
-
 
 
 //FIX_ID_005 xxxxx	//Add Cbus Event Handler
@@ -452,7 +437,7 @@ struct it6602_eq_data {
 #define B_DevCapChange 		0x08
 #define B_3DSupporpt 		0x04 // bit2 B_3DSupporpt
 #define B_ReadDevCap 		0x02 // bit1 B_ReadDevCap
-#define B_DiscoveryDone 		0x01 // bit0 B_DiscoveryDone
+#define B_DiscoveryDone 	0x01 // bit0 B_DiscoveryDone
 //FIX_ID_005 xxxxx
 
 //FIX_ID_014 xxxxx
@@ -512,7 +497,6 @@ struct AVI_info {
 
 
 struct it6602_dev_data {
-
 	Video_State_Type m_VState;
 	Audio_State_Type m_AState;
 	RxHDCP_State_Type m_RxHDCPState;
@@ -523,13 +507,13 @@ struct it6602_dev_data {
 	unsigned char m_ucCurrentHDMIPort;
 	unsigned char m_bOutputVideoMode;
 	unsigned char m_bInputVideoMode;
+
 //FIX_ID_039 xxxxx fix image flick when enable RGB limited / Full range convert
 #ifdef _AVOID_REDUNDANCE_CSC_
 	unsigned char m_Backup_OutputVideoMode;
 	unsigned char m_Backup_InputVideoMode;
 #endif
 //FIX_ID_039 xxxxx
-
 
 	unsigned char m_ucSCDTOffCount;
 	unsigned char m_ucEccCount_P0;
@@ -540,7 +524,7 @@ struct it6602_dev_data {
 
 	unsigned char oldVIC;
 	unsigned char newVIC;
-	unsigned char  f_de3dframe_hdmi;
+	unsigned char f_de3dframe_hdmi;
 
 //FIX_ID_001 xxxxx Add Auto EQ with Manual EQ
 #ifdef _SUPPORT_EQ_ADJUST_
@@ -553,16 +537,17 @@ struct it6602_dev_data {
 	Video_DataTrigger_Mode m_VidOutDataTrgger;
 	Video_OutputSync_Mode m_VidOutSyncMode;
 	//FIX_ID_003 xxxxx
-//FIX_ID_005 xxxxx	//Add Cbus Event Handler
+
+	//FIX_ID_005 xxxxx	//Add Cbus Event Handler
 	unsigned char CBusIntEvent;
 	unsigned char CBusSeqNo;
 	unsigned char CBusWaitNo;
-//FIX_ID_005 xxxxx
+	//FIX_ID_005 xxxxx
 
-//FIX_ID_014 xxxxx	//Add Cbus Event Handler
+	//FIX_ID_014 xxxxx	//Add Cbus Event Handler
 	unsigned char HDMIIntEvent;
 	unsigned char HDMIWaitNo[2];
-//FIX_ID_014 xxxxx
+	//FIX_ID_014 xxxxx
 
 //FIX_ID_021 xxxxx		//To use CP_100ms for CBus_100ms and CEC_100m
 // #ifndef _SelectExtCrystalForCbus_
@@ -581,7 +566,6 @@ struct it6602_dev_data {
 	unsigned char RGBQuantizationRange;
 	unsigned char YCCQuantizationRange;
 	unsigned char VIC;
-
 
 
 //FIX_ID_034 xxxxx //Add MHL HPD Control by it6602HPDCtrl( )
@@ -688,12 +672,6 @@ void it6602HPDCtrl(unsigned char ucport, unsigned char ucEnable)	;
 #ifdef _SUPPORT_RCP_
 void RCPKeyPush(unsigned char ucKey);
 #endif
-/* Driver State Machine Process **********************************************/
-#ifdef SUPPORT_UART_CMD
-
-extern unsigned char m_UartCmd;
-
-#endif
 
 
 ////////////////////////////////////////////////////////////////
@@ -707,11 +685,11 @@ extern unsigned char m_UartCmd;
 #define _CODE
 #endif
 
-#define HAL_HDMI_RX_ERR_MASK                        (0x70000)
-#define HAL_HDMI_RX_FALSE                           (HAL_HDMI_RX_ERR_MASK | 0x9)
+#define HAL_HDMI_RX_ERR_MASK	(0x70000)
+#define HAL_HDMI_RX_FALSE   	(HAL_HDMI_RX_ERR_MASK | 0x9)
 
 
-class IT66021: public device::I2C, public ModuleBase<IT66021> 
+class IT66021: public device::I2C, public ModuleBase<IT66021>
 {
 public:
 	IT66021(I2CARG arg);

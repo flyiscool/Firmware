@@ -52,8 +52,8 @@ echo "Start CDC/ACM serial driver"
 sercon
 
 # print full system version
-echo "ver all"
-ver all
+#echo "ver all"
+#ver all
 
 #
 # Default to auto-start mode.

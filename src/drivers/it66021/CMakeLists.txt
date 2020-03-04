@@ -35,12 +35,12 @@ px4_add_module(
 	MAIN it66021
 	STACK_MAIN 2000
 	COMPILE_FLAGS
-		-Wno-unused-but-set-variable
-		-Wno-unused-variable
+	-Wno-unused-but-set-variable
+	-Wno-unused-variable
 	SRCS
-		it66021.cpp
-		edid.cpp
-		it66021_main.cpp
-		it66021_audio.cpp
+	it66021_main.cpp
+	it66021.cpp
+	edid.cpp
+	it66021_audio.cpp
 	DEPENDS
 )

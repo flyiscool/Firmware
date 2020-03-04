@@ -6,6 +6,20 @@
 #include <stdlib.h>
 #include <board_config.h>
 
+#include "px4_log.h"
+
+
+
+// #define IT66021DEBUG
+
+// debug opt
+#ifdef IT66021DEBUG
+#define  IT_INFO(...) PX4_INFO(__VA_ARGS__)
+#else
+#define  IT_INFO(...)
+#endif
+
+
 #define IT66021A_HDMI_ADDR 	0x92
 #define EDID_ADDR 			0xA8
 #define MHL_ADDR 			0xE0
@@ -64,5 +78,7 @@ typedef enum {
 } ENUM_HAL_HDMI_RX;
 
 #define HDMI_RX_FORMAT_NOT_SUPPORT_COUNT_MAX 50	// may need used
+
+#define MS_TimeOut(x) (x+1)
 
 #endif

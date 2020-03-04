@@ -23,11 +23,11 @@
 #define HIGH       	1
 #define LOW        	0
 
-typedef unsigned char BOOL ;
+typedef unsigned char 	BOOL ;
 //#define const code
 #define _IDATA idata
 #define _XDATA xdata
-typedef	unsigned char	cBYTE;
+typedef	unsigned char	cBYTE ;
 
 typedef char CHAR, *PCHAR ;
 typedef unsigned char uchar, *puchar ;
@@ -49,7 +49,6 @@ typedef unsigned long DWORD, *PDWORD ;
 
 typedef unsigned int UINT, uint, *PUINT, *puint ;
 
-
 //////////////////////////////////////////////////
 // data structur definition
 //////////////////////////////////////////////////
@@ -60,7 +59,7 @@ typedef enum _SYS_STATUS {
 	ER_RESERVED
 } SYS_STATUS ;
 
-#define abs(x) (((x)>=0)?(x):(-(x)))
+#define abs(x) ( ((x)>=0) ? (x) : (-(x)) )
 
 typedef struct {
 	WORD HActive ;
@@ -88,7 +87,6 @@ typedef struct {
 #define Vpos 1
 #define Hpos 1
 
-
 #define B_CAP_AUDIO_ON  (1<<7)
 #define B_CAP_HBR_AUDIO (1<<6)
 #define B_CAP_DSD_AUDIO (1<<5)
@@ -98,13 +96,12 @@ typedef struct {
 #define B_SPDIF         (1<<2)
 #define B_CAP_LPCM      (1<<0)
 
-// 2006/10/31 added by jjtseng
+
 // for customized uc
 typedef struct _REGPAIR {
 	BYTE ucAddr ;
 	BYTE ucValue ;
 } REGPAIR ;
-//~jjtseng 2006/10/31
 
 typedef struct {
 	BYTE AudioFlag ;
@@ -112,7 +109,6 @@ typedef struct {
 	BYTE SampleFreq ;
 	BYTE ChStat[5] ;
 } AUDIO_CAPS ;
-
 
 typedef enum _Audio_State_Type {
 	ASTATE_AudioOff = 0,
@@ -134,7 +130,6 @@ typedef enum _TXVideo_State_Type {
 	TXVSTATE_Reserved
 } TXVideo_State_Type ;
 
-
 typedef enum _TXAudio_State_Type {
 	TXASTATE_AudioOff = 0,
 	TXASTATE_AudioPrepare,
@@ -148,13 +143,11 @@ typedef enum _RXHDCP_State_Type {
 	RXHDCP_AuthStart,
 	RXHDCP_AuthDone,
 	RXHDCP_UpdateKSVList,
-//    RXHDCP_Ready,
+	// RXHDCP_Ready,
 	RXHDCP_CAP_REady,
 	RXHDCP_FailReady,
 	RXHDCP_Reserved
 } RXHDCP_State_Type ;
-
-
 
 typedef enum _ADC_State_Type {
 	ADCSTATE_DetectVideo = 0,
@@ -174,11 +167,10 @@ typedef enum {
 // Video Data Type
 ///////////////////////////////////////////////////////////////////////
 #define F_MODE_RGB24  0
-#define F_MODE_RGB444  0
+#define F_MODE_RGB444 0
 #define F_MODE_YUV422 1
 #define F_MODE_YUV444 2
 #define F_MODE_CLRMOD_MASK 3
-
 
 #define F_MODE_INTERLACE  1
 
@@ -190,7 +182,6 @@ typedef enum {
 
 #define F_MODE_EN_UDFILT (1<<6) // output mode only, and loaded from EEPROM
 #define F_MODE_EN_DITHER (1<<7) // output mode only, and loaded from EEPROM
-
 
 typedef union _VideoFormatCode {
 	struct _VFC {
@@ -405,21 +396,21 @@ struct VideoTiming {
 //////////////////////////////////////////////////////////////////
 
 // for sample clock
-#define FS_22K05  4
+#define FS_22K05 4
 #define FS_44K1 0
 #define FS_88K2 8
-#define FS_176K4    12
+#define FS_176K4 12
 
-#define FS_24K  6
-#define FS_48K  2
-#define FS_96K  10
+#define FS_24K 6
+#define FS_48K 2
+#define FS_96K 10
 #define FS_192K 14
 
-#define FS_32K  3
-#define FS_OTHER    1
+#define FS_32K 3
+#define FS_OTHER 1
 
 // Audio Enable
-#define ENABLE_SPDIF    (1<<4)
+#define ENABLE_SPDIF  (1<<4)
 #define ENABLE_I2S_SRC3  (1<<3)
 #define ENABLE_I2S_SRC2  (1<<2)
 #define ENABLE_I2S_SRC1  (1<<1)
@@ -434,8 +425,6 @@ struct VideoTiming {
 #define AUD_SWL_22          0x5
 #define AUD_SWL_23          0x9
 #define AUD_SWL_24          0xB
-
-
 
 typedef enum tagHDMI_Video_Type {
 	HDMI_Unkown = 0,
@@ -564,10 +553,8 @@ typedef enum tagMODE_ID {
 	UNKNOWN_MODE
 } MODE_ID;
 
-
-
 typedef enum _IT6536_INTERFACE_ {
-#ifdef _SUPPORT_ADC_
+#ifdef _SUPPORT_ADC_		// no used
 	PORT_ADC0,
 	PORT_ADC1,
 #endif
