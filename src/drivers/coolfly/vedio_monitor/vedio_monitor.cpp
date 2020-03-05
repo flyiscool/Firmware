@@ -65,7 +65,7 @@ static struct work_s _work = {};
 
 STRU_HDMI_RX_STATUS s_st_hdmiRxStatus;
 
-extern _CODE struct IT6602_REG_INI  IT6602_HDMI_INIT_TABLE[];
+extern struct IT6602_REG_INI  IT6602_HDMI_INIT_TABLE[];
 
 VEDIO_MONITOR *p_it66021a;
 VEDIO_MONITOR *p_it66021a_edid;
@@ -220,8 +220,18 @@ _EXT_ITCM int vedio_monitor_main(int argc, char *argv[])
 
 void VEDIO_MONITOR::it66021_polling(void *arg)
 {
+
+	if (ar_gpioread(27) == 0) {
+		IT6602_Interrupt();
+    	IT6602_fsm(); 
+
+		HDMI_RX_CheckFormatStatus();
+
+	}
+
+
 	if (is_running()) {
-		work_queue(LPWORK, &_work, (worker_t)&VEDIO_MONITOR::it66021_polling, nullptr, 1000);
+		work_queue(LPWORK, &_work, (worker_t)&VEDIO_MONITOR::it66021_polling, nullptr, MSEC2TICK(10));
 	}
 }
 
@@ -259,9 +269,6 @@ void VEDIO_MONITOR::run()
 		return;
 	}
 
-	// init fresh the dev
-	hdimrx_write_init(IT6602_HDMI_INIT_TABLE);
-
 	p_it66021a_edid = new VEDIO_MONITOR("it66021a_edid",
 				       "/dev/it66021a_edid",
 				       PX4_I2C_IT66021_A,
@@ -290,6 +297,9 @@ void VEDIO_MONITOR::run()
 	}		
 
 
+	it66021_init();
+
+	it66021_polling(NULL);
 
 	while (true) {
 		usleep(1000 * 1000);

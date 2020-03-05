@@ -843,4 +843,9 @@ void it6602_SetOutputColorDepth(unsigned char color_depth);
 extern unsigned char m_UartCmd;
 #endif
 
+
+void hdimrx_write_init(struct IT6602_REG_INI *tdata);
+uint8_t IT_66021_GetVideoFormat(uint16_t* widthPtr, uint16_t* hightPtr, uint8_t* framteratePtr, uint8_t* vic);
+uint32_t HDMI_RX_CheckVideoFormatSupportOrNot(uint16_t u16_width, uint16_t u16_hight, uint8_t u8_framerate);
+void HDMI_RX_CheckFormatStatus(void);
 #endif
