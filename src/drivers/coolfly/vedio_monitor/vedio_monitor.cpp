@@ -65,7 +65,7 @@ static struct work_s _work = {};
 
 STRU_HDMI_RX_STATUS s_st_hdmiRxStatus;
 
-exturn _CODE struct IT6602_REG_INI  IT6602_HDMI_INIT_TABLE[];
+extern _CODE struct IT6602_REG_INI  IT6602_HDMI_INIT_TABLE[];
 
 VEDIO_MONITOR *p_it66021a;
 VEDIO_MONITOR *p_it66021a_edid;

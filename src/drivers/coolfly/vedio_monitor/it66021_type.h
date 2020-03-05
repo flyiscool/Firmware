@@ -7,7 +7,7 @@
 #include <board_config.h>
 
 #include "px4_log.h"
-
+#include "it66021_define.h"
 
 
 // #define IT66021DEBUG
@@ -27,18 +27,12 @@
 
 #define IT66021_DEFAULT_BUS_SPEED 100000	// default 100kHz
 
-typedef struct {
-	const char *name;
-	const char *devname;
-	uint8_t bus;
-	uint32_t address;
-	uint32_t frequency;
-} I2CARG;
 
 typedef enum {
 	IT66021TYPE_A,
 	IT66021TYPE_B,
 } IT66021TYPE;
+
 
 typedef void (*HAL_HDMI_RxHandle)(void *pu8_rxBuf);
 
@@ -80,5 +74,7 @@ typedef enum {
 #define HDMI_RX_FORMAT_NOT_SUPPORT_COUNT_MAX 50	// may need used
 
 #define MS_TimeOut(x) (x+1)
+
+
 
 #endif

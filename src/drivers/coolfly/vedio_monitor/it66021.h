@@ -1,6 +1,8 @@
 #ifndef _COOLFLY_IT66021_H_
 #define _COOLFLY_IT66021_H_
 
+#include "it66021_type.h"
+
 
 #define _SUPPORT_HDCP_			FALSE
 #define _SUPPORT_EDID_RAM_		TRUE
