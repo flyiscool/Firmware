@@ -12204,7 +12204,6 @@ void HDMI_RX_CheckFormatStatus(void)
 							&get_formate.u8_framerate, 
 							&get_formate.u8_vic);
 
-
     if (HDMI_RX_CheckVideoFormatSupportOrNot(get_formate.u16_width, get_formate.u16_hight, get_formate.u8_framerate) == HAL_OK)  // support
     {
 		DLOG_INFO("RIGHT FORMATE");
@@ -12230,6 +12229,7 @@ void HDMI_RX_CheckFormatStatus(void)
     }
     else
     {
+		DLOG_INFO("can't get the right FORMATE");
         att.index = 1;
         att.width = 0;
         att.width = 0;
