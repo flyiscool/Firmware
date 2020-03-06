@@ -6,6 +6,7 @@
     ],
     "settings": {
         "files.associations": {
+            "rcS": "shellscript",
             "ar_otg.h": "c",
             "ar_uart.h": "c",
             "crc32.h": "c",
@@ -39,7 +40,12 @@
             "*.ipp": "cpp",
             "typeindex": "cpp",
             "typeinfo": "cpp",
-            "random": "c"
+            "random": "c",
+            "fstream": "cpp",
+            "condition_variable": "cpp",
+            "tuple": "cpp",
+            "*.idl": "cpp",
+            "types.h": "c"
         }
     }
 }

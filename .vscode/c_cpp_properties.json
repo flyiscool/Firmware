@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/src/drivers/boards/coolfly-f1/",
+                "${workspaceFolder}/src/drivers/it66021/",
+                "${workspaceFolder}/src/platforms",
+                "${workspaceFolder}/src/",
+                "${workspaceFolder}/src/include/",
+                "${workspaceFolder}/src/lib/",
+                "${workspaceFolder}/src/lib/matrix/",
+                "${workspaceFolder}/src/modules/",
+                "${workspaceFolder}/platforms/nuttx/NuttX/nuttx/arch/arm/src/artosyn/",
+                "${workspaceFolder}/platforms/nuttx/NuttX/nuttx/arch/arm/src/artosyn/chip",
+                "${workspaceFolder}/platforms/nuttx/NuttX/nuttx/arch/arm/include/artosyn"
+                
+            ],
+
+            
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

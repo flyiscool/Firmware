@@ -52,8 +52,8 @@ echo "Start CDC/ACM serial driver"
 sercon
 
 # print full system version
-echo "ver all"
-ver all
+#echo "ver all"
+#ver all
 
 #
 # Default to auto-start mode.
@@ -595,5 +595,6 @@ cpu2 start
 usleep 1000000
 
 #echo "it66021 start -d a"
-it66021 start -d a 
+#it66021 start -d a 
+vedio_monitor start
 

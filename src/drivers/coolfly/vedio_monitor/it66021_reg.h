@@ -11,7 +11,6 @@
 #ifndef _IT66021_HDMIRX_REG_H_
 #define _IT66021_HDMIRX_REG_H_
 
-#if 1
 /*****************************************************************************/
 /* Register Definitions ******************************************************/
 /*****************************************************************************/
@@ -1451,12 +1450,12 @@
 #define REG_RX_AVI_VER 0x13 // REG_RX_213
 #define REG_RX_AVI_DB0 0x14 // REG_RX_214
 #define O_AVI_COLOR_MODE 5
-#define M_AVI_COLOR_MASK   3
-#define B_AVI_COLOR_RGB24  0
+#define M_AVI_COLOR_MASK 3
+#define B_AVI_COLOR_RGB24 0
 #define B_AVI_COLOR_YUV422 1
 #define B_AVI_COLOR_YUV444 2
 
-#define B_AVI_PRESENT (1<<4)
+#define B_AVI_PRESENT (1 << 4)
 
 #define O_AVI_BAR_INFO 2
 #define M_AVI_BAR_INFO_MASK 3
@@ -1475,15 +1474,15 @@
 #define O_AVI_CLRMET 6
 #define M_AVI_CLRMET_MASK 3
 #define B_AVI_CLRMET_NODATA 0
-#define B_AVI_CLRMET_ITU601  1
-#define B_AVI_CLRMET_ITU709  2
-#define B_AVI_CLRMET_Extend  3	// _SupportXVYcc_ --> indicated in bits EC0~EC2
+#define B_AVI_CLRMET_ITU601 1
+#define B_AVI_CLRMET_ITU709 2
+#define B_AVI_CLRMET_Extend 3	// _SupportXVYcc_ --> indicated in bits EC0~EC2
 // D[5:4] M1M0 Picture Aspect Ratio
 #define O_AVI_PIC_ASRATIO 4
 #define M_AVI_PIC_ASRATIO_MASK 3
 #define B_AVI_PIC_ASRATIO_NODATA 0
-#define B_AVI_PIC_ASRATIO_4_3    1
-#define B_AVI_PIC_ASRATIO_16_9   2
+#define B_AVI_PIC_ASRATIO_4_3 1
+#define B_AVI_PIC_ASRATIO_16_9 2
 // D[3:0] R3R2R1R0 Active Format Aspect Ratio
 #define O_AVI_FMT_ASRATIO 0
 #define M_AVI_FMT_ASRATIO_MASK  0xF
@@ -1515,8 +1514,5 @@
 #define REG_RX_AVI_DB13 0x21 // REG_RX_221
 #define REG_RX_AVI_DB14 0x22 // REG_RX_222
 #define REG_RX_AVI_DB15 0x23 // REG_RX_223
-
-#endif
-
 
 #endif

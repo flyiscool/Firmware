@@ -31,16 +31,13 @@
 #
 ############################################################################
 px4_add_module(
-	MODULE drivers__it66021
-	MAIN it66021
-	STACK_MAIN 2000
+	MODULE drivers__vedio_monitor
+	MAIN vedio_monitor
 	COMPILE_FLAGS
-		-Wno-unused-but-set-variable
-		-Wno-unused-variable
+	-Wno-unused-function
 	SRCS
-		it66021.cpp
-		edid.cpp
-		it66021_main.cpp
-		it66021_audio.cpp
+	vedio_monitor.cpp
+	it66021.cpp
 	DEPENDS
 )
+
