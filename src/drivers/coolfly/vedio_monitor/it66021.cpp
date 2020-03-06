@@ -2152,6 +2152,8 @@ static unsigned char CheckSCDT(struct it6602_dev_data *it6602)
 	ucPortSel = hdmirxrd(REG_RX_051) & B_PORT_SEL;
 	sys_state_P0 = hdmirxrd(REG_RX_P0_SYS_STATUS);
 
+	PX4_INFO("CheckSCDT: SEL = %d, po = %02x, curr = %d", ucPortSel, sys_state_P0, it6602->m_ucCurrentHDMIPort);
+
 	if (ucPortSel == it6602->m_ucCurrentHDMIPort) {
 
 		if (sys_state_P0 & B_P0_SCDT) {
@@ -2181,6 +2183,9 @@ static void WaitingForSCDT(struct it6602_dev_data *it6602)
 	sys_state_P1 = hdmirxrd(REG_RX_P1_SYS_STATUS) & (B_P1_SCDT | B_P1_PWR5V_DET | B_P1_RXCK_VALID);
 	ucPortSel = hdmirxrd(REG_RX_051) & B_PORT_SEL;
 
+
+	PX4_INFO("WaitingForSCDT sys_state_P0 = %02x, ucPortSel = %02x", sys_state_P0, ucPortSel);
+
 	if (sys_state_P0 & B_P0_SCDT) {
 		IT6602SwitchVideoState(it6602, VSTATE_SyncChecking);	//2013-0520
 		return;
@@ -2189,6 +2194,7 @@ static void WaitingForSCDT(struct it6602_dev_data *it6602)
 #ifdef _SUPPORT_EQ_ADJUST_
 
 		if (it6602->EQPort[ucPortSel].f_manualEQadjust == TRUE) {	// ignore SCDT off when manual EQ adjust !!!
+			PX4_INFO("[WaitingForSCDT]: f_manualEQadjust = TRUE \n");	
 			return;
 		}
 
@@ -2276,6 +2282,9 @@ static unsigned char CLKCheck(unsigned char ucPortSel)
 	} else {
 		sys_state = hdmirxrd(REG_RX_P0_SYS_STATUS) & (B_P0_RXCK_VALID);
 	}
+
+
+	PX4_INFO("CLKCheck: %d", sys_state);
 
 	if (sys_state == B_P0_RXCK_VALID) {
 		return TRUE;
@@ -2603,7 +2612,8 @@ static void AmpValidCheck(unsigned char ucPortSel)
 static void TogglePolarity(unsigned char ucPortSel)
 {
 #ifdef _SUPPORT_AUTO_EQ_
-
+	unsigned char ucPortSelCurrent;
+	ucPortSelCurrent = hdmirxrd(REG_RX_051) & B_PORT_SEL;
 
 #ifdef _ONLY_SUPPORT_MANUAL_EQ_ADJUST_
 	return;
@@ -2613,6 +2623,9 @@ static void TogglePolarity(unsigned char ucPortSel)
 
 	//xxxxx
 
+	if (ucPortSelCurrent != ucPortSel) {
+			return;
+	}
 
 	if (ucPortSel == F_PORT_SEL_1) {
 		DLOG_INFO(" ############# TogglePolarity Port 1###############\n");
@@ -2622,11 +2635,11 @@ static void TogglePolarity(unsigned char ucPortSel)
 
 		//FIX_ID_002 xxxxx 	Check IT6602 chip version Identify for TogglePolarity and Port 1 Deskew
 	
-		if ((hdmirxrd(REG_RX_1C9) & 0x80) >> 7) {
-			hdmirxset(REG_RX_1C9, 0x80, 0x00);	// Change Polarity
+		if ((hdmirxrd(REG_RX_1B9) & 0x80) >> 7) {
+			hdmirxset(REG_RX_1B9, 0x80, 0x00);	// Change Polarity
 
 		} else {
-			hdmirxset(REG_RX_1C9, 0x80, 0x80);	// Change Polarity
+			hdmirxset(REG_RX_1B9, 0x80, 0x80);	// Change Polarity
 		}
 
 		//FIX_ID_002 xxxxx
@@ -2680,103 +2693,26 @@ static void TogglePolarity(unsigned char ucPortSel)
 
 static void TMDSCheck(unsigned char ucPortSel)
 {
+	if (ucPortSel != 0) {
+		PX4_ERR("[TMDSCheck]: it66021 only support port 0 !! \n");
+		return;
+	}
+
 #ifdef _SUPPORT_AUTO_EQ_
 	unsigned int ucTMDSClk ;
 	unsigned char rddata ;
 	unsigned char ucClk ;
 
-//FIX_ID_009 xxxxx	//verify interrupt event with reg51[0] select port
 	struct it6602_dev_data *it6602data = get_it6602_dev_data();
-//FIX_ID_033 xxxxx  //Fine-tune EQ Adjust function for HDCP receiver and repeater mode
-#if 0  //xxxxx 2014-0421 disable
-
-	if (IT6602_IsSelectedPort(ucPortSel) == TRUE) {
-
-		//FIX_ID_017 xxxxx for Allion ATC 8-5 Min Swing chanage to Max Swing ,
-		//2013-1128 for Allion ATC 8-5 Min Swing chanage to Max Swing ,
-		//there are no SCDT off or SCDT on interrupt
-		//only CKOn interrupt happen !!!
-		IT6602SwitchVideoState(it6602data, VSTATE_SyncWait);
-		//FIX_ID_017 xxxxx
-
-		//2013-1217 disable --> IT6602VideoOutputEnable(FALSE);
-
-		//xxxxx 2013-0812 @@@@@
-		it6602data->m_ucSCDTOffCount = 0;
-		//xxxxx 2013-0812
-
-
-
-	}
-
-#endif //xxxxx 2014-0421 disable
-//FIX_ID_009 xxxxx
-//FIX_ID_033 xxxxx  //Fine-tune EQ Adjust function for HDCP receiver and repeater mode
 
 	DLOG_INFO("TMDSCheck() !!!\n");
 
-
-	if (ucPortSel == F_PORT_SEL_1) {
-		ucClk = hdmirxrd(REG_RX_092) ;
-		rddata = hdmirxrd(0x90);
-
-		if (ucClk != 0) {
-
-			if (rddata & 0x04) {
-				ucTMDSClk = 2 * RCLKVALUE * 256 / ucClk;
-
-			} else if (rddata & 0x08) {
-				ucTMDSClk = 4 * RCLKVALUE * 256 / ucClk;
-
-			} else {
-				ucTMDSClk = RCLKVALUE * 256 / ucClk;
-			}
+	DLOG_INFO(" HDMI Reg90  = %X ,Reg91  = %X ", (int) hdmirxrd(0x90), (int) hdmirxrd(0x91));
+	ucClk = hdmirxrd(REG_RX_091) ;
+	rddata = hdmirxrd(0x90);
 
 
-			DLOG_INFO(" Port 1 TMDS CLK  = %d  ", (int) ucTMDSClk);
-		}
-
-
-		DLOG_INFO(" HDMI Reg038  = %X  ", (int) hdmirxrd(REG_RX_038));
-
-		chgbank(1);
-		DLOG_INFO(" HDMI Reg1C1  = %X ,Reg1C2  = %X ", hdmirxrd(REG_RX_1C1), hdmirxrd(REG_RX_1C2));
-		chgbank(0);
-
-		//hdmirxset(0x3E, 0x80, 0x00);
-		//#ifdef 	ENABLE_AUTO_TRIGGER
-		//hdmirxset(0x3E, 0x80, 0x80);
-		//#endif
-
-		if (ucPortAMPOverWrite[1] == 0) {	// 2013-0801
-			//FIX_ID_001 xxxxx check State of AutoEQ
-			chgbank(1);
-			rddata = hdmirxrd(REG_RX_1DC);
-			chgbank(0);
-
-			if (rddata == 0)
-				//FIX_ID_001 xxxxx
-			{
-				DLOG_INFO(" ############# Trigger Port 1 EQ ###############\n");
-				hdmirxset(REG_RX_03A, 0xFF, 0x38);	//07-04
-				hdmirxset(REG_RX_03A, 0x04, 0x04);
-				hdmirxset(REG_RX_03A, 0x04, 0x00);
-			}
-
-		} else {
-			DLOG_INFO(" ############# B_PORT1_TimingChgEvent###############\n");
-			it6602data->HDMIIntEvent |= (B_PORT1_Waiting);
-			it6602data->HDMIIntEvent |= (B_PORT1_TimingChgEvent);
-			it6602data->HDMIWaitNo[1] = MAX_TMDS_WAITNO;
-		}
-
-
-	} else {
-		DLOG_INFO(" HDMI Reg90  = %X ,Reg91  = %X ", (int) hdmirxrd(0x90), (int) hdmirxrd(0x91));
-		ucClk = hdmirxrd(REG_RX_091) ;
-		rddata = hdmirxrd(0x90);
-
-		if (ucClk != 0) {
+	if (ucClk != 0) {
 			if (rddata & 0x01) {
 				ucTMDSClk = 2 * RCLKVALUE * 256 / ucClk;
 
@@ -2788,34 +2724,37 @@ static void TMDSCheck(unsigned char ucPortSel)
 			}
 
 			DLOG_INFO(" Port 0 TMDS CLK  = %X  ", (int) ucTMDSClk);
-		}
+	}
 
 //FIX_ID_002 xxxxx
 
-		DLOG_INFO(" HDMI Reg020  = %X  ", (int) hdmirxrd(REG_RX_020));
+	DLOG_INFO(" HDMI Reg020  = %X  ", (int) hdmirxrd(REG_RX_020));
 
 		//hdmirxset(0x26, 0x80, 0x00);
 		//#ifdef 	ENABLE_AUTO_TRIGGER
 		//hdmirxset(0x26, 0x80, 0x80);
 		//#endif
 
+	DLOG_INFO(" HDMI Reg020  = %X  ucPortAMPOverWrite[0] = %d\r\n", (int)hdmirxrd(REG_RX_020), ucPortAMPOverWrite[0]);
 
-		//FIX_ID_019	xxxxx modify ENHYS control for MHL mode
-		if (hdmirxrd(REG_RX_P0_SYS_STATUS) & (B_P0_MHL_MODE)) {
-			chgbank(1);
-			hdmirxset(REG_RX_1B8, 0x80, 0x00);	// [7] Reg_HWENHYS = 0
-			hdmirxset(REG_RX_1B6, 0x07, 0x00);	// [2:0]Reg_P0_ENHYS = 00 for MHL mode only  [2:0]Reg_P0_ENHYS = 00 for disable ENHYS
-			chgbank(0);
-		}
+	//FIX_ID_019	xxxxx modify ENHYS control for MHL mode
+	if (hdmirxrd(REG_RX_P0_SYS_STATUS) & (B_P0_MHL_MODE)) {
+
+		DLOG_INFO("hdmirxrd(REG_RX_P0_SYS_STATUS) = %d", hdmirxrd(REG_RX_P0_SYS_STATUS));
+		chgbank(1);
+		hdmirxset(REG_RX_1B8, 0x80, 0x00);	// [7] Reg_HWENHYS = 0
+		hdmirxset(REG_RX_1B6, 0x07, 0x00);	// [2:0]Reg_P0_ENHYS = 00 for MHL mode only  [2:0]Reg_P0_ENHYS = 00 for disable ENHYS
+		chgbank(0);
+	}
 
 		//FIX_ID_019	xxxxx
 
 
-		if (ucPortAMPOverWrite[0] == 0) {	// 2013-0801
+	if (ucPortAMPOverWrite[0] == 0 || 1) {	// 2013-0801
 			//FIX_ID_001 xxxxx check State of AutoEQ
-			chgbank(1);
-			rddata = hdmirxrd(REG_RX_1D4);
-			chgbank(0);
+		chgbank(1);
+		rddata = hdmirxrd(REG_RX_1D4);
+		chgbank(0);
 
 //FIX_ID_032 xxxxx	//Support HDCP Repeater function for HDMI Tx device
 #ifdef _ONLY_SUPPORT_MANUAL_EQ_ADJUST_
@@ -2828,14 +2767,14 @@ static void TMDSCheck(unsigned char ucPortSel)
 #endif
 #else
 
-			if (rddata == 0)
-				//FIX_ID_001 xxxxx
-			{
-				DLOG_INFO(" ############# Trigger Port 0 EQ ###############\n");
-				hdmirxset(REG_RX_022, 0xFF, 0x38);	//07-04
-				hdmirxset(REG_RX_022, 0x04, 0x04);
-				hdmirxset(REG_RX_022, 0x04, 0x00);
-			}
+		if (rddata == 0)
+			//FIX_ID_001 xxxxx
+		{
+			DLOG_INFO(" ############# Trigger Port 0 EQ ###############\n");
+			hdmirxset(REG_RX_022, 0xFF, 0x38);	//07-04
+			hdmirxset(REG_RX_022, 0x04, 0x04);
+			hdmirxset(REG_RX_022, 0x04, 0x00);
+		}
 
 #endif
 //FIX_ID_032 xxxxx
@@ -2853,8 +2792,6 @@ static void TMDSCheck(unsigned char ucPortSel)
 			it6602data->HDMIWaitNo[0] = MAX_TMDS_WAITNO;
 		}
 
-
-	}
 
 #endif
 }
@@ -3187,7 +3124,7 @@ static void HDMICheckSCDTon(struct it6602_eq_data *ucEQPort)
 		ucEQPort->ucECCfailCount++;
 	}
 
-	DLOG_INFO("Port=%d, CheckSCDTon=%d, Receive_Err=%X, ucECCfailCount=%X, SCDT=%X, HDCP=%X  ",
+	DLOG_INFO("1Port=%d, CheckSCDTon=%d, Receive_Err=%X, ucECCfailCount=%X, SCDT=%X, HDCP=%X  ",
 		  (int) ucEQPort->ucPortID, (int) ucEQPort->ucEQState, (int) Receive_Err, (int)ucEQPort->ucECCfailCount, (int) ucStatus,
 		  (int) ucHDCP);
 
@@ -3974,30 +3911,43 @@ static unsigned char CheckAVMute(void)
 //FIX_ID_037 xxxxx //Allion MHL compliance issue !!!
 static unsigned char CheckPlg5VPwr(unsigned char ucPortSel)
 {
-	unsigned char sys_state_P0;
-	unsigned char sys_state_P1;
+	// unsigned char sys_state_P0;
+	// unsigned char sys_state_P1;
 
-	if (ucPortSel == 0) {
-		sys_state_P0 = hdmirxrd(REG_RX_P0_SYS_STATUS) & B_P0_PWR5V_DET;
+	// if (ucPortSel == 0) {
+	// 	sys_state_P0 = hdmirxrd(REG_RX_P0_SYS_STATUS) & B_P0_PWR5V_DET;
 
-		if ((sys_state_P0 & B_P0_PWR5V_DET)) {
-			return TRUE;
+	// 	if ((sys_state_P0 & B_P0_PWR5V_DET)) {
+	// 		return TRUE;
 
-		} else {
-			return FALSE;
-		}
+	// 	} else {
+	// 		return FALSE;
+	// 	}
 
-	} else {
-		sys_state_P1 = hdmirxrd(REG_RX_P1_SYS_STATUS) & B_P1_PWR5V_DET;
+	// } else {
+	// 	sys_state_P1 = hdmirxrd(REG_RX_P1_SYS_STATUS) & B_P1_PWR5V_DET;
 
-		if ((sys_state_P1 & B_P1_PWR5V_DET)) {
-			return TRUE;
+	// 	if ((sys_state_P1 & B_P1_PWR5V_DET)) {
+	// 		return TRUE;
 
-		} else {
-			return FALSE;
-		}
+	// 	} else {
+	// 		return FALSE;
+	// 	}
 
+	// }
+
+	if (ucPortSel != 0) {
+		PX4_ERR("it66021 only support Port0 in reg51 \r\n");
+		return FALSE;
 	}
+
+	unsigned char sys_state_P0 = hdmirxrd(REG_RX_P0_SYS_STATUS);
+
+	// IT_INFO("CheckPlg5VPwr: sys_state_P0 = %d", sys_state_P0);
+
+	return sys_state_P0 & B_P0_PWR5V_DET;
+
+
 }
 //FIX_ID_037 xxxxx
 
@@ -4012,6 +3962,8 @@ static unsigned char IsHDMIMode(void)
 	sys_state_P0 = hdmirxrd(REG_RX_P0_SYS_STATUS) & B_P0_HDMI_MODE;
 	sys_state_P1 = hdmirxrd(REG_RX_P1_SYS_STATUS) & B_P1_HDMI_MODE;
 	ucPortSel = hdmirxrd(REG_RX_051) & B_PORT_SEL;
+
+	PX4_INFO("P0 = %d, p1 = %d, sel = %d", sys_state_P0, sys_state_P1, ucPortSel);
 
 	if (((sys_state_P0 & B_P0_HDMI_MODE) && (ucPortSel == F_PORT_SEL_0)) ||
 	    ((sys_state_P1 & B_P1_HDMI_MODE) && (ucPortSel == F_PORT_SEL_1))) {
@@ -4952,55 +4904,80 @@ void it6602PortSelect(unsigned char ucPortSel)
 
 void it6602HPDCtrl(unsigned char ucport, unsigned char ucEnable)
 {
-	if (ucport == 0) {
-		if (ucEnable == 0) {
-
-			// Disable HDMI DDC Bus to access ITEHDMI EDID RAM
-			//hdmirxset(REG_RX_0C0, 0x01, 0x01);                            // HDMI RegC0[1:0]=11 for disable HDMI DDC bus to access EDID RAM
-
-			DLOG_INFO("Port 0 HPD HDMI 00000  ");
-			chgbank(1);
-			hdmirxset(REG_RX_1B0, 0x03, 0x01); //clear port 0 HPD=1 for EDID update
-			chgbank(0);
-
-		} else {
-
-
-			if ((hdmirxrd(REG_RX_P0_SYS_STATUS) & B_P0_PWR5V_DET)) {
-
-
-				// Enable HDMI DDC bus to access ITEHDMI EDID RAM
-				//hdmirxset(REG_RX_0C0, 0x01, 0x00);                        // HDMI RegC0[1:0]=00 for enable HDMI DDC bus to access EDID RAM
-
-//FIX_ID_036	xxxxx  
-                DLOG_INFO("Port 0 HPD HDMI 11111  ");
-				chgbank(1);
-				hdmirxset(REG_RX_1B0, 0x03, 0x03); //set port 0 HPD=1
-				chgbank(0);
-			}
-		}
+	if(ucport != 0) {
+		PX4_INFO("it66021 only support ucport in it6602HPDCtrl ");
+		return;
 	}
 
-#if defined(_IT6602_) || defined(_IT66023_)
+	if (ucEnable == 0) {
+		// Disable HDMI DDC Bus to access ITEHDMI EDID RAM
+		//hdmirxset(REG_RX_0C0, 0x01, 0x01);                            // HDMI RegC0[1:0]=11 for disable HDMI DDC bus to access EDID RAM
+		PX4_INFO("[it6602HPDCtrl]: Port 0 HPD HDMI");
+		chgbank(1);
+		hdmirxset(REG_RX_1B0, 0x03, 0x01); //clear port 0 HPD=1 for EDID update
+		chgbank(0);
 
-	else {
-		if (ucEnable) {
+	} else {
+		if ((hdmirxrd(REG_RX_P0_SYS_STATUS) & B_P0_PWR5V_DET)) {
 			// Enable HDMI DDC bus to access ITEHDMI EDID RAM
-			//hdmirxset(REG_RX_0C0, 0x02, 0x00);                        // HDMI RegC0[1:0]=00 for enable HDMI DDC bus to access EDID RAM
-
-			DLOG_INFO("Port 1 HPD 11111  ");
-			gpHPD0 = HPDON;
-
-		} else {
-			// Disable HDMI DDC Bus to access ITEHDMI EDID RAM
-			//hdmirxset(REG_RX_0C0, 0x02, 0x02);                            // HDMI RegC0[1:0]=11 for disable HDMI DDC bus to access EDID RAM
-
-			DLOG_INFO("Port 1 HPD 00000  ");
-			gpHPD0 = HPDOFF;
+			//hdmirxset(REG_RX_0C0, 0x01, 0x00);                        // HDMI RegC0[1:0]=00 for enable HDMI DDC bus to access EDID RAM
+			PX4_INFO("[it6602HPDCtrl] Port 0 HPD HDMI 11111 ");
+			chgbank(1);
+			hdmirxset(REG_RX_1B0, 0x03, 0x03); //set port 0 HPD=1
+			chgbank(0);
 		}
 	}
 
-#endif
+
+// 	if (ucport == 0) {
+// 		if (ucEnable == 0) {
+
+// 			// Disable HDMI DDC Bus to access ITEHDMI EDID RAM
+// 			//hdmirxset(REG_RX_0C0, 0x01, 0x01);                            // HDMI RegC0[1:0]=11 for disable HDMI DDC bus to access EDID RAM
+
+// 			DLOG_INFO("Port 0 HPD HDMI 00000  ");
+// 			chgbank(1);
+// 			hdmirxset(REG_RX_1B0, 0x03, 0x01); //clear port 0 HPD=1 for EDID update
+// 			chgbank(0);
+
+// 		} else {
+
+
+// 			if ((hdmirxrd(REG_RX_P0_SYS_STATUS) & B_P0_PWR5V_DET)) {
+
+
+// 				// Enable HDMI DDC bus to access ITEHDMI EDID RAM
+// 				//hdmirxset(REG_RX_0C0, 0x01, 0x00);                        // HDMI RegC0[1:0]=00 for enable HDMI DDC bus to access EDID RAM
+
+// //FIX_ID_036	xxxxx  
+//                 DLOG_INFO("Port 0 HPD HDMI 11111  ");
+// 				chgbank(1);
+// 				hdmirxset(REG_RX_1B0, 0x03, 0x03); //set port 0 HPD=1
+// 				chgbank(0);
+// 			}
+// 		}
+// 	}
+
+// #if defined(_IT6602_) || defined(_IT66023_)
+
+// 	else {
+// 		if (ucEnable) {
+// 			// Enable HDMI DDC bus to access ITEHDMI EDID RAM
+// 			//hdmirxset(REG_RX_0C0, 0x02, 0x00);                        // HDMI RegC0[1:0]=00 for enable HDMI DDC bus to access EDID RAM
+
+// 			DLOG_INFO("Port 1 HPD 11111  ");
+// 			gpHPD0 = HPDON;
+
+// 		} else {
+// 			// Disable HDMI DDC Bus to access ITEHDMI EDID RAM
+// 			//hdmirxset(REG_RX_0C0, 0x02, 0x02);                            // HDMI RegC0[1:0]=11 for disable HDMI DDC bus to access EDID RAM
+
+// 			DLOG_INFO("Port 1 HPD 00000  ");
+// 			gpHPD0 = HPDOFF;
+// 		}
+// 	}
+
+// #endif
 }
 
 
@@ -6490,7 +6467,7 @@ static void IT6602SwitchVideoState(struct it6602_dev_data *it6602, Video_State_T
 static void IT6602VideoHandler(struct it6602_dev_data *it6602)
 {
 //	unsigned char uc;
-	usleep(1000*500);
+	usleep(1000 * 500);
 
 	if (it6602->m_VideoCountingTimer > MS_LOOP) {
 		it6602->m_VideoCountingTimer -= MS_LOOP;
@@ -6499,7 +6476,8 @@ static void IT6602VideoHandler(struct it6602_dev_data *it6602)
 		it6602->m_VideoCountingTimer = 0;
 	}
 
-
+	PX4_INFO("it6602->m_VideoCountingTimer = %d", it6602->m_VideoCountingTimer);
+	PX4_INFO("it6602->m_VState = %s\n", VStateStr[(unsigned char)it6602->m_VState]);
 
 	switch (it6602->m_VState) {
 
@@ -6627,30 +6605,50 @@ static void hdmirx_INT_5V_Pwr_Chg(struct it6602_dev_data *it6602, unsigned char 
 	unsigned char ucPortSel;
 	ucPortSel = hdmirxrd(REG_RX_051)&B_PORT_SEL;
 
-//FIX_ID_037 xxxxx //Allion MHL compliance issue !!!
-	if (ucPortSel == ucport) {
-		if (CheckPlg5VPwr(ucport) == TRUE) {
-			DLOG_INFO("#### Power 5V ON #### ");
-			IT6602SwitchVideoState(it6602, VSTATE_SyncWait);
-			it6602HPDCtrl(ucport, 1);	// set ucport's HPD = 1
+// //FIX_ID_037 xxxxx //Allion MHL compliance issue !!!
+// 	if (ucPortSel == ucport) {
+// 		if (CheckPlg5VPwr(ucport) == TRUE) {
+// 			DLOG_INFO("#### Power 5V ON #### ");
+// 			IT6602SwitchVideoState(it6602, VSTATE_SyncWait);
+// 			it6602HPDCtrl(ucport, 1);	// set ucport's HPD = 1
 
-		} else {
-			DLOG_INFO("#### Power 5V OFF #### ");
-			IT6602SwitchVideoState(it6602, VSTATE_SWReset);
-			it6602HPDCtrl(ucport, 0);	// clear ucport's HPD = 0
-		}
+// 		} else {
+// 			DLOG_INFO("#### Power 5V OFF #### ");
+// 			IT6602SwitchVideoState(it6602, VSTATE_SWReset);
+// 			it6602HPDCtrl(ucport, 0);	// clear ucport's HPD = 0
+// 		}
 
-	} else {
-		if (CheckPlg5VPwr(ucport) == FALSE) {
-#ifdef _SUPPORT_AUTO_EQ_
-			DisableOverWriteRS(ucport);
-#endif
-			it6602HPDCtrl(ucport, 0);	// clear ucport's HPD = 0
+// 	} else {
+// 		if (CheckPlg5VPwr(ucport) == FALSE) {
+// #ifdef _SUPPORT_AUTO_EQ_
+// 			DisableOverWriteRS(ucport);
+// #endif
+// 			it6602HPDCtrl(ucport, 0);	// clear ucport's HPD = 0
 
-		} else {
-			it6602HPDCtrl(ucport, 1);	// set ucport's HPD = 1
-		}
+// 		} else {
+// 			it6602HPDCtrl(ucport, 1);	// set ucport's HPD = 1
+// 		}
+// 	}
+
+
+	if (ucport != 0 || ucPortSel != 0) {
+		PX4_ERR("it66021 Only support port 0, some error!!");
+		return;
 	}
+
+	if (CheckPlg5VPwr(ucport) == TRUE) 
+	{
+		PX4_INFO("#### Power 5V ON ####\r\n");
+		IT6602SwitchVideoState(it6602, VSTATE_SyncWait);
+		it6602HPDCtrl(ucport, 1); // set ucport's HPD = 1
+	} 
+	else
+	{
+		PX4_INFO("#### Power 5V OFF ####\r\n");
+		IT6602SwitchVideoState(it6602, VSTATE_SWReset);
+		it6602HPDCtrl(ucport, 0); // clear ucport's HPD = 0
+	}
+
 
 //FIX_ID_037 xxxxx
 }
@@ -6819,6 +6817,7 @@ static void hdmirx_INT_HDMIMode_Chg(struct it6602_dev_data *it6602, unsigned cha
 {
 	unsigned char ucPortSel;
 	ucPortSel = hdmirxrd(REG_RX_051)&B_PORT_SEL;
+	PX4_INFO("hdmirx_INT_HDMIMode_Chg = %d", ucPortSel);
 
 	if (ucPortSel != ucport) {
 		return;
@@ -8776,9 +8775,11 @@ static unsigned char UpdateEDIDRAM(unsigned char *pEDID, unsigned char BlockNUM)
 		offset = 0x00 + 128 * BlockNUM;
 	}
 
+	DLOG_INFO("block No =%02X offset = %02X \n", (int) BlockNUM, (int) offset);
 	for (i = 0; i < 0x7F; i++) {
 		EDID_RAM_Write(offset, 1, (pEDID + offset));
 
+		DLOG_INFO("%02X ", (int) * (pEDID + offset));
 		sum += *(pEDID + offset);
 		offset ++;
 
@@ -8789,7 +8790,8 @@ static unsigned char UpdateEDIDRAM(unsigned char *pEDID, unsigned char BlockNUM)
 
 static void EnableEDIDupdata(void)
 {
-	//it6602HPDCtrl(0, 0);	// HDMI/MHL port 0, set HPD = 0
+	DLOG_INFO("EnableEDIDupdata() \n");
+	it6602HPDCtrl(0, 0);	// HDMI/MHL port 0, set HPD = 0
 }
 
 static void DisableEDIDupdata(void)
@@ -8809,31 +8811,31 @@ static void EDIDRAMInitial(unsigned char *pIT6602EDID)
 
 	u8_VSDB_Addr = 0;
 
-	//EnableEDIDupdata();
+	EnableEDIDupdata();
 
 	for (BlockNo = 0; BlockNo < 2; BlockNo++) {
 
-		//DLOG_INFO("IT6602 EDIDRAMInitial = %02X\n", (int) BlockNo);
+		DLOG_INFO("IT6602 EDIDRAMInitial = %02X\n", (int) BlockNo);
 
 		if (BlockNo == 0) {
 			Block0_CheckSum =  UpdateEDIDRAM(pIT6602EDID, 0);
 			hdmirxwr(REG_RX_0C4, Block0_CheckSum);		//Port 0 Bank 0 CheckSum
 			hdmirxwr(REG_RX_0C8, Block0_CheckSum);		//Port 1 Bank 0 CheckSum
 
-			//DLOG_INFO(" Block0_CheckSum = %02X\n", (int) Block0_CheckSum);
+			DLOG_INFO(" Block0_CheckSum = %02X\n", (int) Block0_CheckSum);
 
 		} else {
 			Block1_CheckSum =  UpdateEDIDRAM(pIT6602EDID, 1);
-			//DLOG_INFO(" Block1_CheckSum = %02X\n", (int) Block1_CheckSum);
+			DLOG_INFO(" Block1_CheckSum = %02X\n", (int) Block1_CheckSum);
 			u8_VSDB_Addr = Find_Phyaddress_Location(pIT6602EDID, 1);
 
-			//DLOG_INFO("u8_VSDB_Addr = %02X\n", (int) u8_VSDB_Addr);
+			DLOG_INFO("u8_VSDB_Addr = %02X\n", (int) u8_VSDB_Addr);
 			PhyAdrSet();
 
 			if (u8_VSDB_Addr != 0) {
 
 				UpdateEDIDReg(u8_VSDB_Addr, pIT6602EDID[u8_VSDB_Addr], pIT6602EDID[u8_VSDB_Addr + 1], Block1_CheckSum);
-				//DLOG_INFO("EDID Parsing OK\n");
+				DLOG_INFO("EDID Parsing OK\n");
 			}
 		}
 	}
@@ -8887,14 +8889,14 @@ static unsigned char Find_Phyaddress_Location(unsigned char *pEDID, unsigned cha
 		count = (*(pEDID + offset)) & 0x1f;
 
 		//#ifdef printf_EDID
-		//DLOG_INFO("offset = %X , Tag = %X , count =%X \n", (int) offset, (int)  tag, (int) count);
+		DLOG_INFO("offset = %X , Tag = %X , count =%X \n", (int) offset, (int)  tag, (int) count);
 		//#endif
 
 		offset++;
 
 		if (tag == 0x03) {	// HDMI VSDB Block of EDID
 			//#ifdef printf_EDID
-			//DLOG_INFO("HDMI VSDB Block address = %X\n", (int)  offset);
+			DLOG_INFO("HDMI VSDB Block address = %X\n", (int)  offset);
 			//#endif
 
 			if ((*(pEDID + offset)) == 0x03 &&
@@ -8904,8 +8906,8 @@ static unsigned char Find_Phyaddress_Location(unsigned char *pEDID, unsigned cha
 				txphyadr[0] = (*(pEDID + offset + 3));
 				txphyadr[1] = (*(pEDID + offset + 4));
 				//#ifdef printf_EDID
-				//DLOG_INFO("txphyadr[0] = %X\n", (int)  txphyadr[0]);
-				//DLOG_INFO("txphyadr[1] = %X\n", (int)  txphyadr[1]);
+				DLOG_INFO("txphyadr[0] = %X\n", (int)  txphyadr[0]);
+				DLOG_INFO("txphyadr[1] = %X\n", (int)  txphyadr[1]);
 				//#endif
 
 #ifdef FIX_ID_013_
@@ -10427,14 +10429,14 @@ static void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 	hdmirxwr(REG_RX_009, Reg09h);
 //2013-0606 disable ==>
 	hdmirxwr(REG_RX_0D0, RegD0h & 0x0F);
-	// DLOG_INFO("ite interrupt");
-	// DLOG_INFO("Reg05 = %X", (int) Reg05h);
-	// DLOG_INFO("Reg06 = %X", (int) Reg06h);
-	// DLOG_INFO("Reg07 = %X", (int) Reg07h);
-	// DLOG_INFO("Reg08 = %X", (int) Reg08h);
-	// DLOG_INFO("Reg09 = %X", (int) Reg09h);
-	// DLOG_INFO("Reg0A = %X", (int) Reg0Ah);
-	// DLOG_INFO("RegD0 = %X", (int) RegD0h);
+	DLOG_INFO("---------ite interrupt------------");
+	DLOG_INFO("Reg05 = %X", (int) Reg05h);
+	DLOG_INFO("Reg06 = %X", (int) Reg06h);
+	DLOG_INFO("Reg07 = %X", (int) Reg07h);
+	DLOG_INFO("Reg08 = %X", (int) Reg08h);
+	DLOG_INFO("Reg09 = %X", (int) Reg09h);
+	DLOG_INFO("Reg0A = %X", (int) Reg0Ah);
+	DLOG_INFO("RegD0 = %X", (int) RegD0h);
 	MHL04 = mhlrxrd(0x04);
 	MHL05 = mhlrxrd(0x05);
 	MHL06 = mhlrxrd(0x06);
@@ -10483,7 +10485,7 @@ static void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 	// DLOG_INFO("ClearRegD0 = %X", (int) ClearRegD0h);
 
 
-	DLOG_INFO("-----process-----------");
+//	DLOG_INFO("111111111111111111111111 STATUS 111111111111111111111= %X \r\n",hdmirxrd(REG_RX_P0_SYS_STATUS));
 	if (Reg05h != 0x00){
 
 		DLOG_INFO("Reg05 = %X", (int) Reg05h);
@@ -10574,7 +10576,6 @@ static void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 			}
 
 //FIX_ID_005 xxxxx
-
 
 #ifdef _SUPPORT_HDCP_REPEATER_
 //FIX_ID_032 xxxxx	//Support HDCP Repeater function for HDMI Tx device
@@ -10791,6 +10792,7 @@ static void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 //FIX_ID_033 xxxxx
 #endif
 
+
 		}
 
 
@@ -10858,15 +10860,12 @@ static void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 	}
 
 	if (Reg07h != 0x00) {
-		//DLOG_INFO("Reg07h = %X",(int) Reg07h);
+		DLOG_INFO("Reg07h = %X",(int) Reg07h);
+		
 		if (Reg07h & 0x80) {
 			DLOG_INFO("#### Audio FIFO Error #### ");
 			aud_fiforst();
-#ifdef EnableCalFs
-//FIX_ID_023 xxxxx		//Fixed for Audio Channel Status Error with invalid HDMI source
-			AudioFsCal();
-//FIX_ID_023 xxxxx
-#endif
+
 		}
 
 		if (Reg07h & 0x40) {
@@ -10886,8 +10885,6 @@ static void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 
 		if (Reg07h & 0x08) {
 			DLOG_INFO("#### Timer Counter Tntterrupt #### ");
-			//if(it6602->m_VState == VSTATE_VideoOn)
-			//	hdmirxset(0x84,0x80,0x80);	//2011/06/17 xxxxx, for enable Rx Chip count
 
 		}
 
@@ -10900,11 +10897,33 @@ static void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 		}
 
 		if (Reg07h & 0x01) {
-			if ((Reg0Ah & 0x40) >> 6) {
-				DLOG_INFO("#### Port 0 Bus Mode : MHL #### ");
 
+			if ((Reg0Ah & 0x40) >> 6) {
+				PX4_INFO("#### Port 0 Bus Mode : MHL ####\r\n");
+	
+				chgbank(1);
+				hdmirxset(REG_RX_1B6, 0x07, 0x00);
+				//FIX_ID_007 xxxxx 	//for debug IT6681  HDCP issue
+				hdmirxset(REG_RX_1B1, 0x20, 0x20); //Reg1b1[5] = 1 for enable over-write
+				hdmirxset(REG_RX_1B2, 0x07, 0x01); // default 0x04 , change to 0x01
+				PX4_INFO(" Port 0 Bus Mode Reg1B1  = %X ,Reg1B2  = %X\r\n", (int)hdmirxrd(REG_RX_1B1), (int)hdmirxrd(REG_RX_1B2));
+				//FIX_ID_007 xxxxx
+				chgbank(0);
+		
 			} else {
-				DLOG_INFO("#### Port 0 Bus Mode : HDMI #### ");
+				PX4_INFO("#### Port 0 Bus Mode : HDMI ####\r\n");
+
+				//FIX_ID_002 xxxxx 	Check IT6602 chip version Identify for TogglePolarity and Port 1 Deskew
+				chgbank(1);
+				hdmirxset(REG_RX_1B6, 0x07, 0x03);
+				////FIX_ID_007 xxxxx 	//for debug IT6681  HDCP issue
+				hdmirxset(REG_RX_1B1, 0x20, 0x00); //Reg1b1[5] = 0 for disable over-write
+				hdmirxset(REG_RX_1B2, 0x07, 0x04); // default 0x04 , change to 0x01
+				PX4_INFO(" Port 0 Bus Mode Reg1B1  = %X ,Reg1B2  = %X\r\n", (int)hdmirxrd(REG_RX_1B1), (int)hdmirxrd(REG_RX_1B2));
+				////FIX_ID_007 xxxxx
+				chgbank(0);
+
+				//FIX_ID_002 xxxxx
 			}
 
 		};
@@ -11089,10 +11108,9 @@ static void IT6602HDMIInterruptHandler(struct it6602_dev_data *it6602)
 void IT6602_Interrupt(void)
 {
 	struct it6602_dev_data *it6602data = get_it6602_dev_data();
-//	DLOG_Output(1000);
 	IT6602HDMIInterruptHandler(it6602data);
-//	DLOG_Output(1000);
 }
+
 void IT6602_fsm(void)
 {
 	struct it6602_dev_data *it6602data = get_it6602_dev_data();
@@ -11135,6 +11153,7 @@ void IT6602_fsm(void)
 #ifdef _SUPPORT_EQ_ADJUST_
 
 	if (it6602data->EQPort[F_PORT_SEL_0].f_manualEQadjust == TRUE) {
+		PX4_INFO("[IT6602_fsm]: f_manualEQadjust == TRUE \n");
 		HDMIAdjustEQ(&(it6602data->EQPort[F_PORT_SEL_0]));        // for port 0
 	}
 
@@ -12071,6 +12090,11 @@ char it66021_init(void)
 
 		hdmirxset(REG_RX_063, 0xFF, 0x3F);
 		hdmirxset(REG_RX_012, 0xFF, 0xF8);
+		DLOG_INFO("REG_RX_012=%2x", hdmirxrd(REG_RX_012));
+		DLOG_INFO("REG_RX_063=%2x", hdmirxrd(REG_RX_063));
+		DLOG_INFO("MHL_RX_0A=%2x", mhlrxrd(MHL_RX_0A));
+		DLOG_INFO("MHL_RX_08=%2x", mhlrxrd(MHL_RX_08));
+		DLOG_INFO("MHL_RX_09=%2x", mhlrxrd(MHL_RX_09));
 	}
 
 	return ret;

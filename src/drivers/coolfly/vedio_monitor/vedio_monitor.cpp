@@ -223,6 +223,7 @@ void VEDIO_MONITOR::it66021_polling(void *arg)
 
 	if (ar_gpioread(27) == 0) {
 		IT6602_Interrupt();
+
     	IT6602_fsm(); 
 
 		HDMI_RX_CheckFormatStatus();
@@ -231,7 +232,7 @@ void VEDIO_MONITOR::it66021_polling(void *arg)
 
 
 	if (is_running()) {
-		work_queue(LPWORK, &_work, (worker_t)&VEDIO_MONITOR::it66021_polling, nullptr, MSEC2TICK(10));
+		work_queue(LPWORK, &_work, (worker_t)&VEDIO_MONITOR::it66021_polling, nullptr, USEC2TICK(1000 * 1000));
 	}
 }
 
