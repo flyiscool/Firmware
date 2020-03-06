@@ -10,7 +10,7 @@
 #include "it66021_define.h"
 
 
-// #define IT66021DEBUG
+//#define IT66021DEBUG
 
 // debug opt
 #ifdef IT66021DEBUG

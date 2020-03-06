@@ -232,7 +232,7 @@ void VEDIO_MONITOR::it66021_polling(void *arg)
 
 
 	if (is_running()) {
-		work_queue(LPWORK, &_work, (worker_t)&VEDIO_MONITOR::it66021_polling, nullptr, USEC2TICK(1000 * 1000));
+		work_queue(LPWORK, &_work, (worker_t)&VEDIO_MONITOR::it66021_polling, nullptr, MSEC2TICK(1000));
 	}
 }
 

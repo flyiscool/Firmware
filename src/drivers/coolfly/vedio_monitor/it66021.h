@@ -7,49 +7,17 @@
 #define _SUPPORT_HDCP_			FALSE
 #define _SUPPORT_EDID_RAM_		TRUE
 
-//FIX_ID_001 xxxxx Add Auto EQ with Manual EQ
 #define _SUPPORT_AUTO_EQ_       TRUE
 #define _SUPPORT_EQ_ADJUST_     TRUE
-//FIX_ID_001 xxxxx
-
-//FIX_ID_032 xxxxx	//Support HDCP Repeater function for HDMI Tx device
-// For enable HDCP repeater function , Please to enable the #define _SUPPORT_HDCP_REPEATER_
-
-//#define _SUPPORT_HDCP_REPEATER_
 
 #ifdef _SUPPORT_HDCP_REPEATER_
 #define _PSEUDO_HDCP_REPEATER_TEST_			TRUE
 //#define _ONLY_SUPPORT_MANUAL_EQ_ADJUST_		TRUE
 #endif
 
-//FIX_ID_032 xxxxx
-
-//FIX_ID_021 xxxxx		//To use CP_100ms for CBus_100ms and CEC_100m
-//FIX_ID_004 xxxxx 		//Add calibration ring osc for Cbus
-
 #define _SelectExtCrystalForCbus_	TRUE
-//FIX_ID_004 xxxxx
-//FIX_ID_021 xxxxx
 
-//FIX_ID_023 xxxxx		//Fixed for Audio Channel Status Error with invalid HDMI source
-//#define EnableCalFs
-//FIX_ID_023 xxxxx
-
-//FIX_ID_028 xxxxx //For Debug Audio error with S2
-//#define _FIX_ID_028_
-//FIX_ID_028 xxxxx
-//FIX_ID_026 xxxxx 		//Support RB SWAP for TTL output
-//#define _SUPPORT_RBSWAP_
-//FIX_ID_026 xxxxx
-
-/*****************************************************************************/
-/* Type defs enums  **********************************************************/
-/*****************************************************************************/
-//FIX_ID_033 xxxxx  //Fine-tune EQ Adjust function for HDCP receiver and repeater mode
-//xxxxx 2014-0421 modify 50 to 100
 #define MS_LOOP		100
-//xxxxx 2014-0421
-//FIX_ID_033 xxxxx
 
 enum {
 	MHD_RAP_CMD_POLL         	= 0x00,
