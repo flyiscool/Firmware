@@ -21,7 +21,7 @@ set(config_module_list
 	
 	drivers/batt_smbus
 	# drivers/blinkm
-	# drivers/camera_trigger
+	drivers/camera_trigger
 	drivers/gps
 	# drivers/imu/bma180
 	drivers/imu/bmi055

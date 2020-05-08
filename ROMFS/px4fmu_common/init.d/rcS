@@ -332,7 +332,7 @@ then
 		echo "mavlink start----------------"
 		set MAVLINK_F "-r 1200 -f"
 		mavlink start -r 800000 -b 115200 -d /dev/ttyS20
-
+		mavlink start -r 1200 -b 57600 -d /dev/ttyS6 -m camera
 	fi
 
 	# if [ "x$MAVLINK_F" == xnone ]
